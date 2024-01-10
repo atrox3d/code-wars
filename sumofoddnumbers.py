@@ -14,9 +14,7 @@ Calculate the sum of the numbers in the nth row of this triangle
 '''
 
 def row_sum_odd_numbers(n):
-    def odd_range_generator(n):
-        for x in range(1, 2*n+1, 2):
-            yield x
+    odd_range_generator = (x for x in range(1, 2*n+1, 2))
 
     def odd_generator(_):
         n = 0
