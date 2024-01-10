@@ -17,20 +17,21 @@ def row_sum_odd_numbers(n):
     print(f'{n = }')
     
     to_skip = sum(x for x in range(n))
-    odd_numbers = (x * 2 + 1 for x in range(n + to_skip))
-    g = odd_numbers
+    top = n + to_skip
 
+    odd_val = 0
+    total = 0
     skipping = []
-    for i in range(to_skip):
-        skip_val = next(g)
-        skipping.append(skip_val)
-    print(f'{skipping = }')
-
     printing = []
-    for i in range(n):
-        print_val = next(g)
-        printing.append(print_val)
+    for i in range(top):
+        odd_val = i * 2 + 1
+        if i >= to_skip:
+            printing.append(odd_val)
+            total += odd_val
+        else:
+            skipping.append(odd_val)
+    print(f'{skipping = }')
     print(f'{printing = }')
+    print(f'{total    = }')
     
-for t in range(1, 6):
-    row_sum_odd_numbers(t)
+    return total
