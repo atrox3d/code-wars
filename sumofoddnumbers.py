@@ -14,12 +14,17 @@ Calculate the sum of the numbers in the nth row of this triangle
 '''
 
 def row_sum_odd_numbers(n):
+    # get the count of value to skip
     to_skip = sum(x for x in range(n))
+    # compute the upper range
     top = n + to_skip
+
     odd_val = 0
     total = 0
     for i in range(top):
+        # compute odd value
         odd_val = i * 2 + 1
+        # add to total only if part of the row
         if i >= to_skip:
             total += odd_val
 
