@@ -14,20 +14,13 @@ Calculate the sum of the numbers in the nth row of this triangle
 '''
 
 def row_sum_odd_numbers(n):
-    odd_range_generator = (x for x in range(1, 2*n+1, 2))
-
-    def odd_generator(_):
-        x = 0
-        while True:
-            yield x * 2 + 1 
-            x += 1
-    # odd_numbers = (n * 2)
-
     print(f'{n = }')
-    g = odd_generator(n)
+    
+    to_skip = sum(x for x in range(n))
+    odd_numbers = (x * 2 + 1 for x in range(n + to_skip))
+    g = odd_numbers
 
     skipping = []
-    to_skip = sum(x for x in range(n))
     for i in range(to_skip):
         skip_val = next(g)
         skipping.append(skip_val)
