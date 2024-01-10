@@ -17,10 +17,11 @@ def row_sum_odd_numbers(n):
     odd_range_generator = (x for x in range(1, 2*n+1, 2))
 
     def odd_generator(_):
-        n = 0
+        x = 0
         while True:
-            yield n * 2 + 1 
-            n += 1
+            yield x * 2 + 1 
+            x += 1
+    # odd_numbers = (n * 2)
 
     print(f'{n = }')
     g = odd_generator(n)
