@@ -49,9 +49,8 @@ def expanded_form(num):
     
     def int_enumerate_version(num):
         e = enumerate((num%10, num:=num//10) for n in range(len(str(num))))
-        le = list(e)
         digits = []
-        for power, (number, _) in le[::-1]:
+        for power, (number, _) in list(e)[::-1]:
             digit = number * 10**power
             if digit:
                 digits.append(digit)
