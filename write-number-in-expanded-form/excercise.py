@@ -34,14 +34,48 @@ def expanded_form(num):
                 digits.append(m*power)
             power *= 10
         return ' + '.join(map(str, digits[::-1]))
+    
+    def string_enumerate_version(num):
+        '''
+        decompose number as integer
+        compute powers of 10 via enumerate
+        '''
+        digits = []
+        for p, n in enumerate(str(num)[::-1]):
+            digit = 10**p * int(n)
+            if digit:
+                digits.append(digit)
+        return ' + '.join(map(str, digits[::-1]))
+    
+    def int_enumerate_version(num):
+        e = enumerate((num%10, num:=num//10) for n in range(len(str(num))))
+        le = list(e)
+        print(f'{le = }')
+        digits = []
+        for power, (number, _) in le[::-1]:
+            print(f'{(power, number) = }')
+            digit = number * 10**power
+            print(f'{digit = }')
+            if digit:
+                digits.append(digit)
+        print(f'{digits = }')
+        return ' + '.join(map(str, digits))
 
 
-    sv = string_version(num)
-    iv = int_version(num)
-    assert sv == iv, ValueError(f'{sv!r} != {iv!r}')
-    return iv
+    def autotest(num):
+        '''
+        test each version against the others
+        '''
+        sv = string_version(num)
+        iv = int_version(num)
+        sev = string_enumerate_version(num)
+        iev = int_enumerate_version(num)
+        assert sv == iv == sev == iev, \
+            ValueError(f'{sv!r} != {iv!r} != {sev!r} != {iev!r}')
+        return iev
 
+    return autotest(num)
 
-
-for n in 12, 42, 70304:
-    print(expanded_form(n))
+if __name__ == '__main__':
+    for n in 12, 42, 70304:
+        print(expanded_form(n))
