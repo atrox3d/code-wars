@@ -9,6 +9,12 @@ NOTE: All numbers will be whole numbers greater than 0.
 '''
 
 def expanded_form(num):
+    '''
+    contains various versions of the same algorithm
+    tested against each other
+    the purpose is learning more and more without deleting old code
+    '''
+    
     def string_version(num):
         '''
         decompose number as string
