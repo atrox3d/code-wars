@@ -19,6 +19,7 @@ Example:
 solution([-10, -9, -8, -6, -3, -2, -1, 0, 1, 3, 4, 5, 7, 8, 9, 10, 11, 14, 15, 17, 18, 19, 20])
 # returns "-10--8,-6,-3-1,3-5,7-11,14,15,17-20"
 '''
+import try1
 
 def solution(args):
     # your code here
@@ -26,26 +27,8 @@ def solution(args):
     data = sorted(args)
     print(f'{data = }')
 
-    def try1(data):
-        prev = 0
-        diff = 0
-        result = []
-        group = []
-        for current in data:
-            diff = current - prev
-            if diff == 1:
-                group.append(prev)
-            else:
-                group.append(prev)
-                if len(group) >= 3:
-                    result.append(group)
-                else:
-                    result.extend(group)
-                group = []
-            prev = current
-        return result
     
-    result = try1(data)
+    result = try1.solution(data)
     print(result)
     return result
 
