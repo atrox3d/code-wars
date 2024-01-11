@@ -50,15 +50,11 @@ def expanded_form(num):
     def int_enumerate_version(num):
         e = enumerate((num%10, num:=num//10) for n in range(len(str(num))))
         le = list(e)
-        print(f'{le = }')
         digits = []
         for power, (number, _) in le[::-1]:
-            print(f'{(power, number) = }')
             digit = number * 10**power
-            print(f'{digit = }')
             if digit:
                 digits.append(digit)
-        print(f'{digits = }')
         return ' + '.join(map(str, digits))
 
 
