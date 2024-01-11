@@ -12,37 +12,30 @@ like in the original Rot13 "implementation".
 Please note that using encode is considered cheating.'''
 
 def rot13(message):
+    import string
     print(f'{message = }')
 
-    def rot13_chr(char):
-        asc = ord(char)
-        orda = ord('a')
-        offset = asc - orda
-        print(f'{char   = }')
-        print(f'{asc    = }')
-        print(f'{orda   = }')
-        print(f'{offset = }')
-
-        r13 = asc + 13
-        r13_offset = r13 - orda
-        print(f'{r13      = }')
-        print(f'{chr(r13) = }')
-
-        print(f'{r13_offset      = }')
-        print(f'{chr(r13_offset) = }')
-        
-        print(f'{r13_offset % 26      = }')
-        print(f'{chr(r13_offset % 26) = }')
-        
-        print(f'{ord("g")              = }')
-        print(f'{ord("g") - ord(char)  = }')
-
-        x = (ord(char) - orda + 13) % 26 + orda
-        print(f'{x, chr(x) = }')
-
-
-    # for char in message:
-        # rot13_chr(char)
+    def get_first_char_ord(char):
+        return ord('a') if char.islower() else ord('A')
     
-    rot13_chr(message[0])
-print(rot13('test'))
+    def get_alpha_len(char):
+        return len(string.ascii_lowercase) if char.islower() else len(string.ascii_uppercase)
+    
+    def rot13_chr(char, ord_a, alpha_len):
+
+        if char.isalpha():
+            ord_char = ord(char)
+            ord_r13 = (ord_char - ord_a(char) + 13) % alpha_len(char) + ord_a(char)
+            chr_ord13 = chr(ord_r13)
+            return chr_ord13
+        else:
+            return char
+
+    return ''.join(rot13_chr(char, get_first_char_ord, get_alpha_len) for char in message)
+
+def tests():
+    assert rot13('test') == 'grfg' 
+    assert rot13('test123!') == 'grfg123!'
+    assert rot13('Test') == 'Grfg'
+
+tests()
