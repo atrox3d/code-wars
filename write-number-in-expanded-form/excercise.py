@@ -22,26 +22,23 @@ def expanded_form(num):
         return result
     
     def int_version(num):
-        print(f'{num = }')
+        '''
+        decompose number as integer
+        '''
         digits = []
         power = 1
         while num:
             m = num % 10
             num = num // 10
-            print(f'{m, num, power = }')
             if m:
                 digits.append(m*power)
             power *= 10
-        print(f'{digits = }')
-        
         return ' + '.join(map(str, digits[::-1]))
 
 
     sv = string_version(num)
     iv = int_version(num)
-
     assert sv == iv, ValueError(f'{sv!r} != {iv!r}')
-
     return iv
 
 
