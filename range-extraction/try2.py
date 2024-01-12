@@ -21,10 +21,12 @@ def solution(data):
                     buffer = []                 # empty buffer
                     buffer.append(current)      # as for the first element
             prev = current                      # save prev
-
+        #
+        # end of the loop, could be some trapped elements in buffer
+        #
         if len(buffer) >= 3:                    # do we have spare elements?
             result.append(buffer)               # append sublist
-        else:
+        else:                                   # not enough elements
             result.extend(buffer)               # add elements as single
         
         return result
