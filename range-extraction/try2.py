@@ -14,8 +14,6 @@ def solution(data):
                         result.append(buffer)   # append sub list
                     else:                       # not enough elements
                         result.extend(buffer)   # add elements as single
-                        # result.append(current)  # * append current?
-                    # result.append(current)      # * append current?
                     buffer = []                 # empty buffer
                     buffer.append(current)
             prev = current                      # save prev
