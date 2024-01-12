@@ -15,9 +15,14 @@ def solution(data):
                     else:                       # not enough elements
                         result.extend(buffer)   # add elements as single
                         # result.append(current)  # * append current?
-                    result.append(current)      # * append current?
+                    # result.append(current)      # * append current?
                     buffer = []                 # empty buffer
+                    buffer.append(current)
             prev = current                      # save prev
+        if len(buffer) >= 3:
+            result.append(buffer)
+        else:
+            result.extend(buffer)
         return result
     
     def format_result(result):
