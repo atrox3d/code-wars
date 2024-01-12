@@ -23,34 +23,40 @@ def fibonacci(n, branch: str):
     if n in [0, 1]:
         return n
     
-    left = cache.get(n-1, None) 
-    right = cache.get(n-2, None) 
-    if left is None:
+    try:
+        left = cache[n-1]
+    except KeyError: 
         left = fibonacci(n - 1, 'left')
         cache[n-1] = left
-    
-    if right is None:
+
+    try:
+        right = cache[n-2] 
+    except KeyError: 
         right = fibonacci(n - 2, 'right')
         cache[n-2] = right
-
     
     return  left + right
 
 def main():
     import time
 
-    root = 35
+    root = 50
     
+    print(f'running cached fibonacci...')
     start_time = time.time()
     result = fibonacci(root, 'root')
     fibonacci_time = time.time() - start_time
+    print(f'end running cached fibonacci...')
 
+    print(f'running original _fibonacci...')
     start_time = time.time()
     _result = _fibonacci(root)
     _fibonacci_time = time.time() - start_time
+    print(f'end running original _fibonacci...')
     
     print(f'{_result = }, {_fibonacci_time = }')
     print(f'{result = }, {fibonacci_time = }')
+    print(f'{cache = }')
 
     assert result == _result, f'{result} != {_result}'
 
