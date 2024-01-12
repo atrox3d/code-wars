@@ -23,10 +23,16 @@ def fibonacci(n, branch: str):
     if n in [0, 1]:
         return n
     
-    left = fibonacci(n - 1, 'left')
-    cache[n-1] = left
-    right = fibonacci(n - 2, 'right')
-    cache[n-2] = right
+    left = cache.get(n-1, None) 
+    right = cache.get(n-2, None) 
+    if left is None:
+        left = fibonacci(n - 1, 'left')
+        cache[n-1] = left
+    
+    if right is None:
+        right = fibonacci(n - 2, 'right')
+        cache[n-2] = right
+
     
     return  left + right
 
