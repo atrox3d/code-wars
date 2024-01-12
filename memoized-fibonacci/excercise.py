@@ -39,7 +39,7 @@ def fibonacci(n, branch: str):
 def main():
     import time
 
-    root = 20
+    root = 35
     
     start_time = time.time()
     result = fibonacci(root, 'root')
