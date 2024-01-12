@@ -1,9 +1,13 @@
 def solution(data):
     def create_result(data):
-        result = []
-        buffer = []
-        prev = None
-        for current in data:
+        '''
+        scans data list, looking for ranges
+        every range found is saved as a sublist
+        '''
+        result = []                             # will contain result list
+        buffer = []                             # accumulator buffer for ranges
+        prev = None                             # previous element, None when loop starts
+        for current in sorted(data):
             if prev is None:                    # first element, first loop
                 buffer.append(current)          # stash it
             else:                               # all the other loops
@@ -19,29 +23,31 @@ def solution(data):
             prev = current                      # save prev
 
         if len(buffer) >= 3:                    # do we have spare elements?
-            result.append(buffer)
+            result.append(buffer)               # append sublist
         else:
-            result.extend(buffer)
+            result.extend(buffer)               # add elements as single
         
         return result
     
     def format_result(result):
+        '''
+        formats the result as a comma-separated string
+        - integers to strings
+        - list to ranges (n-nx)
+        '''
         format_list = []
         for current in result:
             if isinstance(current, list):
-                format_list.append(
-                    f'{current[0]}-{current[-1]}'
-                )
+                format_list.append(f'{current[0]}-{current[-1]}')
             elif isinstance(current, int):
                 format_list.append(str(current))
             else:
-                t = type(current)
-                raise TypeError(f'unknown type {t} for {current}')
+                raise TypeError(f'unknown type {type(current)} for {current}')
         
         return ','.join(format_list)
 
     result = create_result(data)
-    print(f'{result = }')
+    # print(f'{result = }')
     format_list = format_result(result)
-    print(f'{format_list = }')
+    # print(f'{format_list = }')
     return format_list
