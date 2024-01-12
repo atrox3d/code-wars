@@ -12,15 +12,41 @@ r'''
 
 '''
 
+def _fibonacci(n):
+    if n in [0, 1]:
+        return n
+    return _fibonacci(n - 1) + _fibonacci(n - 2)
+
+cache = {}
 def fibonacci(n, branch: str):
     print(f'{branch:10}: {n = }')
     if n in [0, 1]:
         return n
-    return fibonacci(n - 1, 'left') + fibonacci(n - 2, 'right')
+    
+    left = fibonacci(n - 1, 'left')
+    cache[n-1] = left
+    right = fibonacci(n - 2, 'right')
+    cache[n-2] = right
+    
+    return  left + right
 
 def main():
-    result = fibonacci(5, 'root')
-    print(f'{result = }')
+    import time
+
+    root = 20
+    
+    start_time = time.time()
+    result = fibonacci(root, 'root')
+    fibonacci_time = time.time() - start_time
+
+    start_time = time.time()
+    _result = _fibonacci(root)
+    _fibonacci_time = time.time() - start_time
+    
+    print(f'{_result = }, {_fibonacci_time = }')
+    print(f'{result = }, {fibonacci_time = }')
+
+    assert result == _result, f'{result} != {_result}'
 
 if __name__ == '__main__':
     main()
