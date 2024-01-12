@@ -39,23 +39,33 @@ def fibonacci(n, branch: str):
 
 def main():
     import time
+    import functools
 
-    root = 50
-    
-    print(f'running cached fibonacci...')
-    start_time = time.time()
-    result = fibonacci(root, 'root')
-    fibonacci_time = time.time() - start_time
-    print(f'end running cached fibonacci...')
+    def timed(func):
+        functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            start_time = time.time()
+            ret = func(*args, **kwargs)
+            end_time = time.time() - start_time
+            print(f'{end_time = }')
+            return ret
+        return wrapper
 
-    print(f'running original _fibonacci...')
-    start_time = time.time()
-    _result = _fibonacci(root)
-    _fibonacci_time = time.time() - start_time
-    print(f'end running original _fibonacci...')
+    @timed
+    def runner(func, *args, **kwargs):
+        print(f'running {func.__name__}...')
+        ret = func(*args, **kwargs)
+        print(f'end running {func.__name__}...')
+        return ret
+
+    root = 35
     
-    print(f'{_result = }, {_fibonacci_time = }')
-    print(f'{result = }, {fibonacci_time = }')
+    result = runner(fibonacci, root, 'root')
+
+    _result = runner(_fibonacci, root)
+    
+    print(f'{_result = }')
+    print(f'{result = }')
     print(f'{cache = }')
 
     assert result == _result, f'{result} != {_result}'
