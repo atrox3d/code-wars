@@ -23,21 +23,15 @@ def recoverSecret(triplets: list[list]):
     Return the string.
     '''
     flatten = [i for l in triplets for i in l]
-    print(f'{flatten = }')
-    uniques = list(dict.fromkeys(flatten))
-    print(f'{uniques = }')
-    
-    def to_str(l:list) -> str:
-        return ''.join(l)
-    
+    result = list(dict.fromkeys(flatten))
+        
     # loop through unique chars
     done = False
     while not done:
         done = True
-        print(f'while | uniques = {to_str(uniques)}')
-        for idx in range(len(uniques)):
+        for idx in range(len(result)):
             # for each char in unique
-            char = uniques[idx]
+            char = result[idx]
             # scan triplets
             for triplet in triplets:
                 # check only triplets containing char
@@ -46,21 +40,21 @@ def recoverSecret(triplets: list[list]):
                     for triplet_ndx, triplet_char in enumerate(triplet):
                         control = triplet.index(char)
                         if triplet_char != char:
-                            where = uniques.index(triplet_char)
+                            where = result.index(triplet_char)
                             if triplet_ndx < control:
                                 if where > idx:
-                                    uniques.remove(triplet_char)
-                                    uniques.insert( idx, triplet_char )
+                                    result.remove(triplet_char)
+                                    result.insert( idx, triplet_char )
                                     done = False
                                     break
                             else:
                                 if where < idx:
-                                    uniques.remove(triplet_char)
-                                    uniques.insert( idx +1, triplet_char )
+                                    result.remove(triplet_char)
+                                    result.insert( idx +1, triplet_char )
                                     done = False
                     # end for triplet
             # end for idx
-    return to_str(uniques)
+    return ''.join(result)
 
 if __name__ == '__main__':
     secret = "whatisup"
