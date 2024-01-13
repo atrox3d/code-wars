@@ -88,20 +88,41 @@ def recoverSecret(triplets: list[list]):
         # ['t','i','s'],
         # ['w','h','s']
         # ]
-    for unique_idx, unique_char in enumerate(uniques):
-            # for every char and index in UNIQUE
-            # scan the triplets to check position order
-            for triplet in triplets:
-                # check only triplets containing char
-                try:
-                    triplet_idx = triplet.index(unique_char)
-                    try:
-                        triplet_next_char = triplet[triplet_idx + 1]
-                    except IndexError:
-                        pass                    
-                except ValueError:
-                    pass
-
+    
+    # loop through unique chars
+    modified = False
+    done = False
+    while not done:
+        done = True
+        for unique_idx in range(len(uniques)):
+                # for each char in unique
+                unique_char = uniques[unique_idx]
+                # scan triplets
+                for triplet in triplets:
+                    # check only triplets containing char
+                    if unique_char in triplet:
+                        # get position of unique char in triplet
+                        triplet_idx = triplet.index(unique_char)
+                        try:
+                            # try to get previous char in triplet
+                            triplet_prev_char = triplet[triplet_idx - 1]
+                            # check the relative position inside uniques
+                            prev_idx = uniques.index(triplet_prev_char)
+                            # prev char should be before current char
+                            if prev_idx > unique_idx:
+                                # change place
+                                uniques.remove(triplet_prev_char)
+                                uniques.insert(
+                                    unique_idx -1,
+                                    triplet_prev_char
+                                )
+                                modified = True
+                                done = False
+                                break
+                        except IndexError:
+                            pass                    
+                if modified:
+                    break
     print(f'{uniques = }')
 
 
