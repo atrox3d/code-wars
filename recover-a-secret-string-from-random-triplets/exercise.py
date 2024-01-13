@@ -64,9 +64,33 @@ def recoverSecret(triplets):
     triplets is a list of triplets from the secrent string. 
     Return the string.
     '''
-    explore_matrix(triplets)            
-    linked_list(triplets)
-        
+    # explore_matrix(triplets)            
+    # linked_list(triplets)
+    # print(*triplets)
+    flatten = [i for l in triplets for i in l]
+    print(f'{flatten = }')
+    # uniques = list(set(flatten))
+    uniques = list(dict.fromkeys(flatten))
+    print(f'{uniques = }')
+    done = False
+    while not done:
+        print('LOOP ------------------set done to True')
+        done = True
+        for u, c in enumerate(uniques):
+            for f, cl in enumerate(flatten):
+                if cl == c:
+                    try:
+                        next = flatten[f+1]
+                        if temp:=uniques.index(next) < f:
+                            uniques[u], uniques[temp] = uniques[temp], uniques[u]
+                            print('set done to False')
+                            done = False
+                    except IndexError:
+                        print('exception: set done to True')
+                        done = True
+        print(f'{c = }, {cl = }, {done = }')
+    print(f'{uniques = }')
+
 
 if __name__ == '__main__':
     secret = "whatisup"
