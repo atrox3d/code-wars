@@ -67,8 +67,8 @@ def recoverSecret(triplets):
     # explore_matrix(triplets)            
     # linked_list(triplets)
     # print(*triplets)
-    flatten = [i for l in triplets for i in l]
-    print(f'{flatten = }')
+    # flatten = [i for l in triplets for i in l]
+    # print(f'{flatten = }')
     # uniques = list(set(flatten))
     uniques = list(dict.fromkeys(flatten))
     print(f'{uniques = }')
@@ -77,21 +77,11 @@ def recoverSecret(triplets):
     while not done:
         # ready to quit loop
         done = True
+        # flatten = ['t', 'u', 'p', 'w', 'h', 'i', 't', 's', 'u', 'a', 't', 's', 'h', 'a', 'p', 't', 'i', 's', 'w', 'h', 's']
         # unique =  ['t', 'u', 'p', 'w', 'h', 'i', 's', 'a']
         for unique_idx, char_unique in enumerate(uniques):
-            # flatten = ['t', 'u', 'p', 'w', 'h', 'i', 't', 's', 'u', 'a', 't', 's', 'h', 'a', 'p', 't', 'i', 's', 'w', 'h', 's']
-            for flatten_idx, char_flatten in enumerate(flatten):
-                if char_flatten == char_unique:
-                    try:
-                        flatten_next_char = flatten[flatten_idx + 1]
-                        unique_next_idx = uniques.index(flatten_next_char)
-                        if  unique_next_idx < flatten_idx:
-                            (uniques[unique_idx], uniques[unique_next_idx]) = (
-                                uniques[unique_next_idx], uniques[unique_idx])
-                            done = False
-                    except IndexError:
-                        done = True
-        print(f'{char_unique = }, {char_flatten = }, {done = }')
+            # for every char and index in UNIQUE
+            pass
     print(f'{uniques = }')
 
 
