@@ -39,14 +39,20 @@ def recoverSecret(triplets: list[list]):
                     # get position of unique char in triplet
                     for triplet_ndx, triplet_char in enumerate(triplet):
                         control = triplet.index(char)
+                        # skip current char
                         if triplet_char != char:
+                            #
+                            # controls wether the chars in the triplets
+                            # are relatively before or after the current char
+                            # if they are not positioned relatively in the list
+                            # as in the triplet (a sort of guide) the move them
+                            #
                             where = result.index(triplet_char)
                             if triplet_ndx < control:
                                 if where > idx:
                                     result.remove(triplet_char)
                                     result.insert( idx, triplet_char )
                                     done = False
-                                    break
                             else:
                                 if where < idx:
                                     result.remove(triplet_char)
