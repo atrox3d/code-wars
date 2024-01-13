@@ -1,0 +1,101 @@
+    t u p
+    w h i
+    t s u
+    a t s
+    h a p
+    t i s
+    w h s
+
+t u p w h i s a
+*
+    t u p: ok
+    t s u: ok
+    a t s: 
+        a is before: a t u p w h i s
+    LOOP
+
+a t u p w h i s
+*
+    a t s: ok
+    h a p:
+        h is before: h a t u p w i s
+    LOOP
+
+h a t u p w i s
+*
+    w h i:
+        w is before: w h a t u p i s
+    LOOP
+
+w h a t u p i s
+*
+    w h i: ok
+    w h s: ok
+
+w h a t u p i s
+  *
+    w h i: ok
+    h a p: ok
+    w h s: ok
+
+w h a t u p i s
+    *
+    a t s: ok
+    h a p: ok
+
+w h a t u p i s
+      *
+    t u p: ok
+    t s u: ok
+    a t s: ok
+    t i s: ok
+
+w h a t u p i s
+        *
+    t u p: ok
+    t s u:
+        s is before: s w  h a t u p i -> inefficient
+        s is before: w  h a t s u p i -> efficient ?
+    LOOP
+
+w h a t s u p i
+* ----------->*  loop to i, everything in order
+    w h i: ok
+    t i s:
+        s is after: s w h a t u p i: inefficient
+        s is after: w h a t u p i s: inefficient
+    LOOP
+
+w h a t u p i s:
+* --------->*  loop to i, everything in order
+    w h i: ok
+    t i s: ok
+
+w h a t u p i s:
+              *
+    t s u:
+        u is after: w h a t p i s u
+    LOOP
+
+w h a t p i s u:     
+------->*
+    t u p:
+        u is before: w h a t u p i s
+
+w h a t u p i s:
+----------->*
+    w h i: ok
+    t i s: ok
+
+w h a t u p i s:
+              *
+    t s u
+        u is after: w h a t p i s u
+
+w h a t u p i s:
+--------------              *
+    t s u
+    a t s
+    h a p
+    t i s
+    w h s

@@ -59,7 +59,7 @@ def linked_list(triplets):
         node = node.next
     print(values)
 
-def recoverSecret(triplets):
+def recoverSecret(triplets: list[list]):
     '''
     triplets is a list of triplets from the secrent string. 
     Return the string.
@@ -79,9 +79,29 @@ def recoverSecret(triplets):
         done = True
         # flatten = ['t', 'u', 'p', 'w', 'h', 'i', 't', 's', 'u', 'a', 't', 's', 'h', 'a', 'p', 't', 'i', 's', 'w', 'h', 's']
         # unique =  ['t', 'u', 'p', 'w', 'h', 'i', 's', 'a']
-        for unique_idx, char_unique in enumerate(uniques):
+        # triplets = [
+        # ['t','u','p'],
+        # ['w','h','i'],
+        # ['t','s','u'],
+        # ['a','t','s'],
+        # ['h','a','p'],
+        # ['t','i','s'],
+        # ['w','h','s']
+        # ]
+    for unique_idx, unique_char in enumerate(uniques):
             # for every char and index in UNIQUE
-            pass
+            # scan the triplets to check position order
+            for triplet in triplets:
+                # check only triplets containing char
+                try:
+                    triplet_idx = triplet.index(unique_char)
+                    try:
+                        triplet_next_char = triplet[triplet_idx + 1]
+                    except IndexError:
+                        pass                    
+                except ValueError:
+                    pass
+
     print(f'{uniques = }')
 
 
