@@ -73,22 +73,25 @@ def recoverSecret(triplets):
     uniques = list(dict.fromkeys(flatten))
     print(f'{uniques = }')
     done = False
+    # exit()
     while not done:
-        print('LOOP ------------------set done to True')
+        # ready to quit loop
         done = True
-        for u, c in enumerate(uniques):
-            for f, cl in enumerate(flatten):
-                if cl == c:
+        # unique =  ['t', 'u', 'p', 'w', 'h', 'i', 's', 'a']
+        for unique_idx, char_unique in enumerate(uniques):
+            # flatten = ['t', 'u', 'p', 'w', 'h', 'i', 't', 's', 'u', 'a', 't', 's', 'h', 'a', 'p', 't', 'i', 's', 'w', 'h', 's']
+            for flatten_idx, char_flatten in enumerate(flatten):
+                if char_flatten == char_unique:
                     try:
-                        next = flatten[f+1]
-                        if temp:=uniques.index(next) < f:
-                            uniques[u], uniques[temp] = uniques[temp], uniques[u]
-                            print('set done to False')
+                        flatten_next_char = flatten[flatten_idx + 1]
+                        unique_next_idx = uniques.index(flatten_next_char)
+                        if  unique_next_idx < flatten_idx:
+                            (uniques[unique_idx], uniques[unique_next_idx]) = (
+                                uniques[unique_next_idx], uniques[unique_idx])
                             done = False
                     except IndexError:
-                        print('exception: set done to True')
                         done = True
-        print(f'{c = }, {cl = }, {done = }')
+        print(f'{char_unique = }, {char_flatten = }, {done = }')
     print(f'{uniques = }')
 
 
