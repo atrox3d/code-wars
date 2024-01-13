@@ -22,11 +22,6 @@ def recoverSecret(triplets: list[list]):
     triplets is a list of triplets from the secrent string. 
     Return the string.
     '''
-    import time
-    import logging
-
-    logging.basicConfig(level='DEBUG')
-    logger = logging.getLogger('test')
     flatten = [i for l in triplets for i in l]
     print(f'{flatten = }')
     uniques = list(dict.fromkeys(flatten))
@@ -36,12 +31,10 @@ def recoverSecret(triplets: list[list]):
         return ''.join(l)
     
     # loop through unique chars
-    modified = False
     done = False
     while not done:
         done = True
         print(f'while | uniques = {to_str(uniques)}')
-        time.sleep(2)
         for idx in range(len(uniques)):
             # for each char in unique
             char = uniques[idx]
@@ -63,7 +56,6 @@ def recoverSecret(triplets: list[list]):
                                     print(f'            ***move*** {triplet_char}')
                                     uniques.remove(triplet_char)
                                     uniques.insert( idx, triplet_char )
-                                    modified = True
                                     done = False
                                     break
                             else:
@@ -71,7 +63,6 @@ def recoverSecret(triplets: list[list]):
                                     print(f'            ***move*** {triplet_char}')
                                     uniques.remove(triplet_char)
                                     uniques.insert( idx +1, triplet_char )
-                                    modified = True
                                     done = False
                     # end for triplet
             # end for idx
