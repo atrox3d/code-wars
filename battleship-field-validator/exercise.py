@@ -143,13 +143,26 @@ def find_ships(field: list[list], direction: str):
                 ship = False
     return ships
 
+def check_overlapping_ships(hships: list[list], vships: [list[list]]):
+    # for ship in hships:
+    #     for coord in ship:
+    #         if coord in []
+    print(f'{hships = }')
+    print(f'{vships = }')
+    vflatten = [coord for i in vships for coord in i]
+    print(f'{vflatten = }')
+    for ship in hships:
+        for coord in ship:
+            if coord in vflatten:
+                return False
+    return True
+
 def validate_battlefield(field):
     # write your magic here
     hships = find_ships(field, 'h')
-    print(hships)
     vships = find_ships(field, 'v')
-    print(vships)
-    return True
+    return check_overlapping_ships(hships, vships)
+    
 
 def main():
     runner = exercise_runner(validate_battlefield)
