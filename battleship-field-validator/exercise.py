@@ -51,16 +51,71 @@ consecutive numbers
 For C: The result is freed.
 '''
 
-def your_function_here(*args, **kwargs):
-    pass
+def scan_ones(field) -> list[tuple]:
+    """
+    """
+    ships = []
+    for y in range(len(field)):
+        for x in range(len(field[y])):
+            current = field[y][x]
+            print(f'{y, x, current = }', end='')
+            if current:
+                ships.append((y, x))
+                print(' *')
+            else:
+                print()
+    return ships
+
+def print_ones(ones, field):
+    """
+    """
+    ones = scan_ones(field)
+    print(ones)
+    for y, x in ones:
+        print(f'{y, x, field[y][x] =}')
+
+def find_h_ships(field: list[list]):
+    ships = []
+    ship = False
+    for y in range(len(field)):
+        for x in range(len(field[y])):
+            value = field[y][x]
+            coords = y, x
+            if value and not ship:
+                ship = True
+                new_ship = [coords]
+            elif value and ship:
+                new_ship.append(coords)
+            elif ship and not value:
+                if len(new_ship) > 1:
+                    ships.append(new_ship)
+                    ship = []
+                ship = False
+    return ships
+                
+def validate_battlefield(field):
+    # write your magic here
+    ships = find_h_ships(field)
+    print(ships)
+    return True
 
 def main():
-    runner = exercise_runner(your_function_here)
+    runner = exercise_runner(validate_battlefield)
+    battleField = [[1, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+                   [1, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+                   [1, 0, 1, 0, 1, 1, 1, 0, 1, 0],
+                   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                   [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+                   [0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+                   [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+                   [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                   [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
     tests = [
-        ('input', 'expected')
+        (battleField, True)
     ]
     for input, expected in tests:
-        result = runner(input)
+        result = validate_battlefield(input)
         try:
             assert result == expected, f'{result} != {expected}'
         except AssertionError as ae:
