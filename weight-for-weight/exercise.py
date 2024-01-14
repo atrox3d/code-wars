@@ -67,14 +67,33 @@ def order_weight(strng: str):
     sort = sorted(weighted, key=lambda w:list(w.keys())[0])
     print(f'{sort = }')
 
-    sorted_weights = [list(d.values())[0] for d in sort]
-    print(f'{sorted_weights = }')
-
     sorted_weighted = [list(d.keys())[0] for d in sort]
     print(f'{sorted_weighted = }')
 
-    # if len(set(str_weights)) != len(str_weights):
-    #     raise NotImplementedError('TODO: duplicates')
+    sorted_weights = [list(d.values())[0] for d in sort]
+    print(f'{sorted_weights = }')
+
+    if len(set(sorted_weighted)) != len(sorted_weighted):
+        # sort duplicates:
+        # they are already in weighted order
+        # they are consecutive
+        # - extract them as a subgroup
+        groups = []
+        subgroup = []
+        for i in range(len(sorted_weighted)):
+            weighted = sorted_weighted[i]
+            if (count := sorted_weighted.count(weighted)) > 1:
+                subgroup = sorted_weights[i:count]
+                print(subgroup)
+                groups.append(subgroup)
+                i += count
+            else:
+                groups.append(weighted)
+
+        print(groups)
+        # - sort them alphabetically as sub group
+        # - flatten them in final list
+        raise NotImplementedError('TODO: duplicates')
 
     return ' '.join(map(str, sort))
 
@@ -82,9 +101,9 @@ def order_weight(strng: str):
 def main():
     runner = exercise_runner(order_weight)
     tests = [
-        ("103 123 4444 99 2000", "2000 103 123 4444 99"),
+        # ("103 123 4444 99 2000", "2000 103 123 4444 99"),
         ("2000 10003 1234000 44444444 9999 11 11 22 123", "11 11 2000 10003 22 123 1234000 44444444 9999"),
-        ("", ""),
+        # ("", ""),
     ]
     for input, expected in tests:
         try:
