@@ -59,6 +59,9 @@ def order_weight(strng: str):
     str_weights = strng.split()
     print(str_weights)
 
+    if len(set(str_weights)) != len(str_weights):
+        raise NotImplementedError('TODO: duplicates')
+    
     weighted = {sum(map(int, list(w))):w for w in str_weights}
     print(weighted)
 
@@ -75,12 +78,19 @@ def main():
         ("", ""),
     ]
     for input, expected in tests:
-        result = runner(input)
         try:
+            raised = True
+            result = runner(input)
             assert result == expected, f'{result} != {expected}'
+            raised = False
         except AssertionError as ae:
             print(repr(ae))
+        except Exception as e:
+            print(repr(e))
         finally:
             print()
+            if raised:
+                exit()
+
 if __name__ == '__main__':
     main()
