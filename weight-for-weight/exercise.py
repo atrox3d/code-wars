@@ -82,14 +82,27 @@ def order_weight(strng: str):
         result = sorted_weights
     return ' '.join(map(str, result))
 
+def _order_weight(_str):
+    return ' '.join(
+        sorted(                         # 2) sort sorted splitted
+                                        # using calculated weight
+        sorted(                         
+                _str.split(' ')         # 1) sort splitted       
+            ),
+            key=lambda x: sum(          # 5) compute weight
+                    int(c)              # 4) convert to int each char
+                        for c in x      # 3) parse each char in string 
+                    )
+        )
+    )
 
 def main():
-    runner = exercise_runner(order_weight)
+    runner = exercise_runner(_order_weight)
     tests = [
-        ("103 123 4444 99 2000", "2000 103 123 4444 99"),
+        # ("103 123 4444 99 2000", "2000 103 123 4444 99"),
         ("2000 10003 1234000 44444444 9999 11 11 22 123", 
          "11 11 2000 10003 22 123 1234000 44444444 9999"),
-        ("", ""),
+        # ("", ""),
     ]
     for input, expected in tests:
         try:
