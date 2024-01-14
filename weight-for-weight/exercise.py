@@ -55,27 +55,21 @@ For C: The result is freed.
 '''
 
 def order_weight(strng: str):
-    # your code
+    # get list of strings
     str_weights = strng.split()
-    print(f'{str_weights = }')
-    
-    # list of dicts
+    # create list of dicts {computed_weight:weight_string}
     weighted = [{sum(map(int, list(weight))):weight} for weight in str_weights]
-    # print(f'{weighted = }')
-
-    # ordered list of dicts by wighted
+    # temporary list of dicts sorted by computed_weight
     sort = sorted(weighted, key=lambda w:list(w.keys())[0])
-    # print(f'{sort = }')
-
+    # create two separated sorted lists
     sorted_weighted = [list(d.keys())[0] for d in sort]
-    # print(f'{sorted_weighted = }')
-
     sorted_weights = [list(d.values())[0] for d in sort]
-    # print(f'{sorted_weights = }')
-
+    # create final list
     if len(set(sorted_weighted)) != len(sorted_weighted):
+        # manage same weighted values
         i = 0
         result = []
+        # group and flatten same weight values
         while i < len(sorted_weighted):
             current = sorted_weighted[i]
             if (count := sorted_weighted.count(current)) > 1:
@@ -86,8 +80,6 @@ def order_weight(strng: str):
                 i += 1
     else:
         result = sorted_weights
-    print(result)
-
     return ' '.join(map(str, result))
 
 
