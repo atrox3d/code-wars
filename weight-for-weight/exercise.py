@@ -61,49 +61,43 @@ def order_weight(strng: str):
     
     # list of dicts
     weighted = [{sum(map(int, list(weight))):weight} for weight in str_weights]
-    print(f'{weighted = }')
+    # print(f'{weighted = }')
 
     # ordered list of dicts by wighted
     sort = sorted(weighted, key=lambda w:list(w.keys())[0])
-    print(f'{sort = }')
+    # print(f'{sort = }')
 
     sorted_weighted = [list(d.keys())[0] for d in sort]
-    print(f'{sorted_weighted = }')
+    # print(f'{sorted_weighted = }')
 
     sorted_weights = [list(d.values())[0] for d in sort]
-    print(f'{sorted_weights = }')
+    # print(f'{sorted_weights = }')
 
     if len(set(sorted_weighted)) != len(sorted_weighted):
-        # sort duplicates:
-        # they are already in weighted order
-        # they are consecutive
-        # - extract them as a subgroup
-        groups = []
-        subgroup = []
-        for i in range(len(sorted_weighted)):
-            weighted = sorted_weighted[i]
-            if (count := sorted_weighted.count(weighted)) > 1:
-                subgroup = sorted_weights[i:count]
-                print(subgroup)
-                groups.append(subgroup)
+        i = 0
+        result = []
+        while i < len(sorted_weighted):
+            current = sorted_weighted[i]
+            if (count := sorted_weighted.count(current)) > 1:
+                result.extend(sorted(sorted_weights[i:i+count]))
                 i += count
             else:
-                groups.append(weighted)
+                result.append(sorted_weights[i])
+                i += 1
+    else:
+        result = sorted_weights
+    print(result)
 
-        print(groups)
-        # - sort them alphabetically as sub group
-        # - flatten them in final list
-        raise NotImplementedError('TODO: duplicates')
-
-    return ' '.join(map(str, sort))
+    return ' '.join(map(str, result))
 
 
 def main():
     runner = exercise_runner(order_weight)
     tests = [
-        # ("103 123 4444 99 2000", "2000 103 123 4444 99"),
-        ("2000 10003 1234000 44444444 9999 11 11 22 123", "11 11 2000 10003 22 123 1234000 44444444 9999"),
-        # ("", ""),
+        ("103 123 4444 99 2000", "2000 103 123 4444 99"),
+        ("2000 10003 1234000 44444444 9999 11 11 22 123", 
+         "11 11 2000 10003 22 123 1234000 44444444 9999"),
+        ("", ""),
     ]
     for input, expected in tests:
         try:
@@ -113,8 +107,8 @@ def main():
             raised = False
         except AssertionError as ae:
             print(repr(ae))
-        except Exception as e:
-            print(repr(e))
+        # except Exception as e:
+            # print(repr(e))
         finally:
             print()
             if raised:
