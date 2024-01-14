@@ -33,6 +33,7 @@ def increment_string(strng):
     # exp = r'^(.*)(\d*)$'
 
     exp = r'(.*)(?<=\D)(\d+)'
+    exp = r'(.*)(?<=\D)(\d*)'
     
     print(f'{strng = }')
     print(f'{exp   = }')
