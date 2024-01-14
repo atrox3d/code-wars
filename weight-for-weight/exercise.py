@@ -57,17 +57,26 @@ For C: The result is freed.
 def order_weight(strng: str):
     # your code
     str_weights = strng.split()
-    print(str_weights)
-
-    if len(set(str_weights)) != len(str_weights):
-        raise NotImplementedError('TODO: duplicates')
+    print(f'{str_weights = }')
     
-    weighted = {sum(map(int, list(w))):w for w in str_weights}
-    print(weighted)
+    # list of dicts
+    weighted = [{sum(map(int, list(weight))):weight} for weight in str_weights]
+    print(f'{weighted = }')
 
-    ordered = [weighted[k] for k in sorted(weighted)]
+    # ordered list of dicts by wighted
+    sort = sorted(weighted, key=lambda w:list(w.keys())[0])
+    print(f'{sort = }')
 
-    return ' '.join(ordered)
+    sorted_weights = [list(d.values())[0] for d in sort]
+    print(f'{sorted_weights = }')
+
+    sorted_weighted = [list(d.keys())[0] for d in sort]
+    print(f'{sorted_weighted = }')
+
+    # if len(set(str_weights)) != len(str_weights):
+    #     raise NotImplementedError('TODO: duplicates')
+
+    return ' '.join(map(str, sort))
 
 
 def main():
@@ -90,7 +99,7 @@ def main():
         finally:
             print()
             if raised:
-                exit()
+                pass
 
 if __name__ == '__main__':
     main()
