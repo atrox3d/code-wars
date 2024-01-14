@@ -1,4 +1,7 @@
 def exercise_runner(func):
+    import logging
+    logging.basicConfig(level='DEBUG')
+    logger = logging.getLogger('excercise_runner')
     def param2str(*args, **kwargs) -> str:
         params = list(map(str, args)) + [f'{k}={v}' for k, v in kwargs.items()]
         params = ', '.join(params)
@@ -8,9 +11,9 @@ def exercise_runner(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         params = param2str(*args, **kwargs)
-        print(f'running {func.__name__}({params})')
+        logger.debug(f'running {func.__name__}({params})')
         result = func(*args, **kwargs)
-        print(f'{result = }')
+        logger.debug(f'{result = }')
         return result
     return wrapper
 
@@ -51,13 +54,25 @@ consecutive numbers
 For C: The result is freed.
 '''
 
-def your_function_here(*args, **kwargs):
-    pass
+def order_weight(strng: str):
+    # your code
+    str_weights = strng.split()
+    print(str_weights)
+
+    weighted = {sum(map(int, list(w))):w for w in str_weights}
+    print(weighted)
+
+    ordered = [weighted[k] for k in sorted(weighted)]
+
+    return ' '.join(ordered)
+
 
 def main():
-    runner = exercise_runner(your_function_here)
+    runner = exercise_runner(order_weight)
     tests = [
-        ('input', 'expected')
+        ("103 123 4444 99 2000", "2000 103 123 4444 99"),
+        ("2000 10003 1234000 44444444 9999 11 11 22 123", "11 11 2000 10003 22 123 1234000 44444444 9999"),
+        ("", ""),
     ]
     for input, expected in tests:
         result = runner(input)
@@ -65,5 +80,7 @@ def main():
             assert result == expected, f'{result} != {expected}'
         except AssertionError as ae:
             print(repr(ae))
+        finally:
+            print()
 if __name__ == '__main__':
     main()
