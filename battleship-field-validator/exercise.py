@@ -111,12 +111,43 @@ def find_v_ships(field: list[list]):
                     ship = []
                 ship = False
     return ships
-                
+
+def find_ships(field: list[list], direction: str):
+    ships = []
+    ship = False
+
+    if direction == 'v':
+        outer_range = range(len(field[0]))
+        inner_range = range(len(field))
+    elif direction == 'h':
+        inner_range = range(len(field[0]))
+        outer_range = range(len(field))
+
+    for outer in outer_range:
+        for inner in inner_range:
+            if direction == 'v':
+                value = field[inner][outer]
+                coords = inner, outer
+            else:
+                value = field[outer][inner]
+                coords = outer, inner
+            if value and not ship:
+                ship = True
+                new_ship = [coords]
+            elif value and ship:
+                new_ship.append(coords)
+            elif ship and not value:
+                if len(new_ship) > 1:
+                    ships.append(new_ship)
+                    ship = []
+                ship = False
+    return ships
+
 def validate_battlefield(field):
     # write your magic here
-    hships = find_h_ships(field)
+    hships = find_ships(field, 'h')
     print(hships)
-    vships = find_v_ships(field)
+    vships = find_ships(field, 'v')
     print(vships)
     return True
 
