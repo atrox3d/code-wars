@@ -83,6 +83,20 @@ def order_weight(strng: str):
     return ' '.join(map(str, result))
 
 def _order_weight(_str):
+
+    # 1)
+    sl = sorted(_str.split())
+    print(f'{sl = }')
+
+    # 3-4-5
+    for x in sl:
+        y = sum(int(c) for c in x)
+        print(f'{y = }')
+    
+    # 3-4-5
+    comp = [sum(int(c) for c in x) for x in sl]
+    print(f'{comp = }')
+
     return ' '.join(
         sorted(                         # 2) sort sorted splitted
                                         # using calculated weight
