@@ -33,7 +33,7 @@ def increment_string(strng):
     # exp = r'^(.*)(\d*)$'
 
     exp = r'(.*)(?<=\D)(\d+)'
-    exp = r'(.*)(?<=\D)(\d*)'
+    exp = r'(.*?)(\d*$)'
     
     print(f'{strng = }')
     print(f'{exp   = }')
@@ -58,6 +58,8 @@ def increment_string(strng):
 
 if __name__ == '__main__':
     tests = [
+        ('1', '2'),
+        ('009', '010'),
         ("foobar001", "foobar002"),
         ("foobar1", "foobar2"),
         ("foobar00", "foobar01"),
@@ -77,6 +79,6 @@ if __name__ == '__main__':
             print('[               OK                  ]')
         except AssertionError as ae:
             print(repr(ae))
-            # exit()
+            exit()
         finally:
             print()
