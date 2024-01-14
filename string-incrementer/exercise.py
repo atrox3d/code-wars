@@ -24,36 +24,18 @@ considered.
 def increment_string(strng):
     import re
     
-    # exp = r'([a-z]+[0-9]*[a-z]+)([0-9+]*)'
+    exp = r'(.*?)(\d*)$'
     
-    # exp = r'(.+(?!.*\d))([0-9+]*)'
-    # exp = r'(.+)(?!.*\d)(\d*)'
-    # exp = r'(.*)(?:\D|^)(\d+)'
-    # exp = r'(\d+)\D*$'
-    # exp = r'^(.*)(\d*)$'
-
-    exp = r'(.*)(?<=\D)(\d+)'
-    exp = r'(.*?)(\d*$)'
-    
-    print(f'{strng = }')
-    print(f'{exp   = }')
     match = re.match(exp, strng)
     if match:
-        # print(f'{match.groups() = }')
-        # print(f'{type(match.groups()) = }')
-        # print(f'{len(match.groups()) = }')
-
-        str_part, int_part = match.groups() 
+        str_part, num_part = match.groups() 
     else:
-        str_part, int_part = ("", "")
+        str_part, num_part = ("", "")
 
-    print(f'{str_part = }')
-    print(f'{int_part = }')
-
-    len_int_part = len(int_part)
-    int_part = int(int_part) if int_part else 0
-    result = f'{str_part}{int_part + 1:0{len_int_part}}'
-    print(f'------->{result = }')
+    num_len = len(num_part)
+    num_part = int(num_part) if num_part else 0
+    result = f'{str_part}{num_part + 1:0{num_len}}'
+    
     return result
 
 if __name__ == '__main__':
