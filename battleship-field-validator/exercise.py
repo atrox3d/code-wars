@@ -141,18 +141,10 @@ def validate_battlefield(field):
     
 
 def main():
-    try:
-        from runner import exercise_runner
-    except ModuleNotFoundError:
-        try:
-            import sys
-            sys.path.insert(0, '..')
-            sys.path.insert(0, '.')
-            from runner import exercise_runner
-        except ModuleNotFoundError:
-            print('canot load runner')
-            print('use run.py path/to/this/file')
-            exit(1)
+    import sys
+    sys.path.insert(0, '..')
+    sys.path.insert(0, '.')
+    from runner import exercise_runner
     
     runner = exercise_runner(validate_battlefield)
     battleField = [[1, 0, 0, 0, 0, 1, 1, 0, 0, 0],
