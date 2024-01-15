@@ -54,12 +54,8 @@ def find_ships(field: list[list], direction: str):
     ships = []
     ship = False
 
-    if direction == 'v':
-        outer_range = range(len(field[0]))
-        inner_range = range(len(field))
-    elif direction == 'h':
-        inner_range = range(len(field[0]))
-        outer_range = range(len(field))
+    outer_range = range(len(field[0])) if direction == 'v' else range(len(field))
+    inner_range = range(len(field)) if direction == 'v' else range(len(field[0]))
 
     for outer in outer_range:
         for inner in inner_range:
