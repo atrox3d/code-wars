@@ -7,19 +7,18 @@ def your_function_here(*args, **kwargs):
 
 def main():
     import sys
-    sys.path.insert(0, '..')
     sys.path.insert(0, '.')
-    from runner import exercise_runner
+    from runner import run
     
-    runner = exercise_runner(your_function_here)
     tests = [
-        ('input', 'expected')
+        ('input', True)
     ]
     for input, expected in tests:
-        result = runner(input)
+        result = run(your_function_here, input)
         try:
             assert result == expected, f'{result} != {expected}'
         except AssertionError as ae:
             print(repr(ae))
+
 if __name__ == '__main__':
     main()
