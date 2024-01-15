@@ -26,30 +26,6 @@ neither by edge nor by corner.
 This is all you need to solve this kata. 
 If you're interested in more information about the game, visit this link.
 '''
-
-def scan_ones(field) -> list[tuple]:
-    """
-    """
-    ships = []
-    for y in range(len(field)):
-        for x in range(len(field[y])):
-            current = field[y][x]
-            print(f'{y, x, current = }', end='')
-            if current:
-                ships.append((y, x))
-                print(' *')
-            else:
-                print()
-    return ships
-
-def print_ones(ones, field):
-    """
-    """
-    ones = scan_ones(field)
-    print(ones)
-    for y, x in ones:
-        print(f'{y, x, field[y][x] =}')
-
 def find_ships(field: list[list], direction: str):
     ships = []
     ship = False
