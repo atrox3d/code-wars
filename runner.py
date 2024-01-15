@@ -1,16 +1,3 @@
-def exercise_runner(params_to_string=param2str):
-    def arg_wrapper(func):
-        import functools
-        @functools.wraps(func)
-        def function_wrapper(*args, **kwargs):
-            params = params_to_string(*args, **kwargs)
-            print(f'running {func.__name__}({params})')
-            result = func(*args, **kwargs)
-            print(f'{result = }')
-            return result
-        return function_wrapper
-    return arg_wrapper
-
 def param2str(*args, **kwargs) -> str:
     params = list(map(str, args)) + [f'{k}={v}' for k, v in kwargs.items()]
     params = ', '.join(params)
