@@ -120,9 +120,6 @@ def find_ships(field: list[list], direction: str):
     return ships
 
 def check_overlapping_ships(hships: list[list], vships: [list[list]]):
-    # for ship in hships:
-    #     for coord in ship:
-    #         if coord in []
     print(f'{hships = }')
     print(f'{vships = }')
     vflatten = [coord for i in vships for coord in i]
@@ -169,5 +166,6 @@ def main():
             assert result == expected, f'{result} != {expected}'
         except AssertionError as ae:
             print(repr(ae))
+
 if __name__ == '__main__':
     main()
