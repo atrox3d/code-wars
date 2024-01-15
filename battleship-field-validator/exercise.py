@@ -15,40 +15,32 @@ def exercise_runner(func):
     return wrapper
 
 '''
-My friend John and I are members of the "Fat to Fit Club (FFC)". 
-John is worried because each month a list with the weights of members is 
-published and each month he is the last on the list which means he is 
-the heaviest.
+Write a method that takes a field for well-known board game "Battleship" as 
+an argument and returns true if it has a valid disposition of ships, 
+false otherwise. Argument is guaranteed to be 10*10 two-dimension array. 
+Elements in the array are numbers, 0 if the cell is free and 1 if occupied 
+by ship.
 
-I am the one who establishes the list so I told him: 
-"Don't worry any more, I will modify the order of the list". 
-It was decided to attribute a "weight" to numbers. 
-The weight of a number will be from now on the sum of its digits.
+Battleship (also Battleships or Sea Battle) is a guessing game for 
+two players. Each player has a 10x10 grid containing several "ships" 
+and objective is to destroy enemy's forces by targetting individual cells 
+on his field. The ship occupies one or more cells in the grid. 
+Size and number of ships may differ from version to version. 
+In this kata we will use Soviet/Russian version of the game.
 
-For example 99 will have "weight" 18, 100 will have "weight" 1 so 
-in the list 100 will come before 99.
+Before the game begins, players set up the board and place the ships 
+accordingly to the following rules:
+There must be single battleship (size of 4 cells), 2 cruisers (size 3), 
+3 destroyers (size 2) and 4 submarines (size 1). 
+Any additional ships are not allowed, as well as missing ships.
+Each ship must be a straight line, except for submarines, 
+which are just single cell.
 
-Given a string with the weights of FFC members in normal order 
-can you give this string ordered by "weights" of these numbers?
+The ship cannot overlap or be in contact with any other ship, 
+neither by edge nor by corner.
 
-Example:
-"56 65 74 100 99 68 86 180 90" ordered by numbers weights becomes: 
-
-"100 180 90 56 65 74 68 86 99"
-When two numbers have the same "weight", 
-let us class them as if they were strings (alphabetical ordering) 
-and not numbers:
-
-180 is before 90 since, having the same "weight" (9), 
-it comes before as a string.
-
-All numbers in the list are positive numbers and the list can be empty.
-
-Notes
-it may happen that the input string have leading,
-trailing whitespaces and more than a unique whitespace between two 
-consecutive numbers
-For C: The result is freed.
+This is all you need to solve this kata. 
+If you're interested in more information about the game, visit this link.
 '''
 
 def scan_ones(field) -> list[tuple]:
