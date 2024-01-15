@@ -139,14 +139,17 @@ def validate_battlefield(field):
     vships = find_ships(field, 'v')
     return check_overlapping_ships(hships, vships)
     
+def matrix_formatter(matrix):
+    ret = '\n'
+    for row in matrix:
+        ret += str(row) + '\n'
+    return ret
 
 def main():
     import sys
-    sys.path.insert(0, '..')
     sys.path.insert(0, '.')
-    from runner import exercise_runner
+    from runner import run
     
-    runner = exercise_runner(validate_battlefield)
     battleField = [[1, 0, 0, 0, 0, 1, 1, 0, 0, 0],
                    [1, 0, 1, 0, 0, 0, 0, 0, 1, 0],
                    [1, 0, 1, 0, 1, 1, 1, 0, 1, 0],
@@ -161,7 +164,7 @@ def main():
         (battleField, True)
     ]
     for input, expected in tests:
-        result = runner(input)
+        result = run(validate_battlefield, input, param_formatter=matrix_formatter)
         try:
             assert result == expected, f'{result} != {expected}'
         except AssertionError as ae:
