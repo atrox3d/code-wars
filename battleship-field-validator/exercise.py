@@ -50,44 +50,6 @@ def print_ones(ones, field):
     for y, x in ones:
         print(f'{y, x, field[y][x] =}')
 
-def find_h_ships(field: list[list]):
-    ships = []
-    ship = False
-    for y in range(len(field)):
-        for x in range(len(field[y])):
-            value = field[y][x]
-            coords = y, x
-            if value and not ship:
-                ship = True
-                new_ship = [coords]
-            elif value and ship:
-                new_ship.append(coords)
-            elif ship and not value:
-                if len(new_ship) > 1:
-                    ships.append(new_ship)
-                    ship = []
-                ship = False
-    return ships
-
-def find_v_ships(field: list[list]):
-    ships = []
-    ship = False
-    for x in range(len(field[0])):
-        for y in range(len(field)):
-            value = field[y][x]
-            coords = y, x
-            if value and not ship:
-                ship = True
-                new_ship = [coords]
-            elif value and ship:
-                new_ship.append(coords)
-            elif ship and not value:
-                if len(new_ship) > 1:
-                    ships.append(new_ship)
-                    ship = []
-                ship = False
-    return ships
-
 def find_ships(field: list[list], direction: str):
     ships = []
     ship = False
