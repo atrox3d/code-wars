@@ -1,8 +1,3 @@
-def param2str(*args, **kwargs) -> str:
-    params = list(map(str, args)) + [f'{k}={v}' for k, v in kwargs.items()]
-    params = ', '.join(params)
-    return params     
-
 def exercise_runner(params_to_string=param2str):
     def arg_wrapper(func):
         import functools
@@ -15,6 +10,11 @@ def exercise_runner(params_to_string=param2str):
             return result
         return function_wrapper
     return arg_wrapper
+
+def param2str(*args, **kwargs) -> str:
+    params = list(map(str, args)) + [f'{k}={v}' for k, v in kwargs.items()]
+    params = ', '.join(params)
+    return params     
 
 def info_decorator(func, param_formatter, *args, **kwargs):
         params = param_formatter(*args, **kwargs)
