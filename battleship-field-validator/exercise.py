@@ -26,17 +26,30 @@ neither by edge nor by corner.
 This is all you need to solve this kata. 
 If you're interested in more information about the game, visit this link.
 '''
-from v1 import find_ships, check_overlapping_ships
-
-def validate_battlefield(field):
-    # write your magic here
-    hships = find_ships(field, 'h')
-    vships = find_ships(field, 'v')
-    return check_overlapping_ships(hships, vships)
+from v2 import find_v_ships, find_h_ships, check_overlapping_ships
     
 def matrix_formatter(matrix):
     return '\n' + '\n'.join(map(str, [row for row in matrix]))
 
+
+def print_ships(ships):
+    for ship in ships:
+        print(ship)
+    print()
+
+def validate_battlefield(field):
+    # write your magic here
+    # hships = find_ships(field, 'h')
+    # vships = find_ships(field, 'v')
+    # return check_overlapping_ships(hships, vships)
+    vships = find_v_ships(field)
+    hships = find_h_ships(field)
+    print_ships(hships)
+    print_ships(vships)
+    check_overlapping_ships(hships, vships)
+    print_ships(hships)
+    print_ships(vships)
+    print(matrix_formatter(field))
 def main():
     import sys
     sys.path.insert(0, '.')
