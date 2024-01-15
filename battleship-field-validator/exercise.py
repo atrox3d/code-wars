@@ -35,10 +35,7 @@ def validate_battlefield(field):
     return check_overlapping_ships(hships, vships)
     
 def matrix_formatter(matrix):
-    ret = '\n'
-    for row in matrix:
-        ret += str(row) + '\n'
-    return ret
+    return '\n' + '\n'.join(map(str, [row for row in matrix]))
 
 def main():
     import sys
