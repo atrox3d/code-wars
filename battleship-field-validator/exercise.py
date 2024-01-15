@@ -1,19 +1,3 @@
-def exercise_runner(func):
-    def param2str(*args, **kwargs) -> str:
-        params = list(map(str, args)) + [f'{k}={v}' for k, v in kwargs.items()]
-        params = ', '.join(params)
-        return params     
-
-    import functools
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        params = param2str(*args, **kwargs)
-        print(f'running {func.__name__}({params})')
-        result = func(*args, **kwargs)
-        print(f'{result = }')
-        return result
-    return wrapper
-
 '''
 Write a method that takes a field for well-known board game "Battleship" as 
 an argument and returns true if it has a valid disposition of ships, 
@@ -157,6 +141,7 @@ def validate_battlefield(field):
     
 
 def main():
+    from runner import exercise_runner
     runner = exercise_runner(validate_battlefield)
     battleField = [[1, 0, 0, 0, 0, 1, 1, 0, 0, 0],
                    [1, 0, 1, 0, 0, 0, 0, 0, 1, 0],
