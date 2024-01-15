@@ -43,6 +43,7 @@ def check_overlapping_ships(hships: list[list], vships: [list[list]]):
                 for vship in vships:
                     if hcoord in vship:
                         if len(hship) >= 1 and len(vship) == 1:
+                            print(f'removing {vship}: {hcoord =}')
                             vships.remove(vship)
                             done = False
                         elif len(hship) == 1 and len(vship) > 1:
