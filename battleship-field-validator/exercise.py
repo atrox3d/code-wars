@@ -172,7 +172,7 @@ def main():
         (battleField, True)
     ]
     for input, expected in tests:
-        result = validate_battlefield(input)
+        result = runner(input)
         try:
             assert result == expected, f'{result} != {expected}'
         except AssertionError as ae:
