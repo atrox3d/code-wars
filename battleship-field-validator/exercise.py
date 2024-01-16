@@ -59,7 +59,11 @@ def validate_battlefield(field):
     all_ships = hships + vships
     print_ships(all_ships)
 
-    print(count_ships(all_ships))
+    ship_count = count_ships(all_ships)
+    print(f'{ship_count = }')
+    REQUIRED_SHIPS = {1: 4, 2: 3, 3: 2, 4: 1}
+    if ship_count != REQUIRED_SHIPS:
+        return False
 
     print(matrix_formatter(field))
 def main():
