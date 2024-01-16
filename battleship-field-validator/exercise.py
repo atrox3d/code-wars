@@ -31,8 +31,9 @@ import logging
 from v2 import (
     find_v_ships, 
     find_h_ships, 
-    check_overlapping_ships,
-    count_ships
+    check_overlapping_ships_and_normalize,
+    count_ships,
+    find_ships
 )
 
 logging.basicConfig(format=logging.BASIC_FORMAT, level='DEBUG')
@@ -49,15 +50,19 @@ def print_ships(ships, prefix=''):
 
 def validate_battlefield(field):
     # write your magic here
-    hships = find_h_ships(field)
-    print_ships(hships, 'hship')
+    # hships = find_h_ships(field)
+    # print_ships(hships, 'hship')
 
-    vships = find_v_ships(field)
+    # vships = find_v_ships(field)
+    # print_ships(vships, 'vship')
+
+    hships, vships = find_ships(field)
+    print_ships(hships, 'hship')
     print_ships(vships, 'vship')
 
-    check_overlapping_ships(hships, vships)
+    check_overlapping_ships_and_normalize(hships, vships)
     all_ships = hships + vships
-    print_ships(all_ships)
+    print_ships(all_ships, 'all')
 
     ship_count = count_ships(all_ships)
     print(f'{ship_count = }')

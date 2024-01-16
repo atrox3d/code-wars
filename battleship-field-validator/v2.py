@@ -2,6 +2,35 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+def find_ships(field: list[list]):
+    rows_range = range(len(field))
+    cols_range = range(len(field[0]))
+    h_ships = _find_ships(field, rows_range, cols_range, direction='h')
+    
+    rows_range = range(len(field[0]))
+    cols_range = range(len(field))
+    v_ships = _find_ships(field, rows_range, cols_range, direction='v')
+
+    return h_ships, v_ships
+
+def _find_ships(field: list[list],outer_range, inner_range, direction):
+    ships = []
+    for row in outer_range:
+        is_ship = False
+        ship = []
+        for col in inner_range:
+            current = field[row][col] if direction=='v' else field[col][row]
+            if current and not is_ship:
+                is_ship = True
+                ship.append((row, col))
+            elif current and is_ship:
+                ship.append((row, col))
+            elif not current and is_ship:
+                ships.append(ship)
+                is_ship = False
+                ship = []
+    return ships
+
 def find_h_ships(field: list[list]):
     ships = []
     for y in range(len(field)):
@@ -38,7 +67,7 @@ def find_v_ships(field: list[list]):
                 ship = []
     return ships
 
-def check_overlapping_ships(hships: list[list], vships: [list[list]]):
+def check_overlapping_ships_and_normalize(hships: list[list], vships: [list[list]]):
     done = False
     while not done:
         done = True
