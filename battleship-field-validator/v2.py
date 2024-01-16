@@ -59,3 +59,8 @@ def check_overlapping_ships(hships: list[list], vships: [list[list]]):
                             return False
     return True
 
+def count_ships(ships: list[list]) -> dict:
+    count = {}
+    for ship in ships:
+        count[len(ship)] = count.get(len[ship], 0) + len(ship)
+    return count

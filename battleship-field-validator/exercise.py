@@ -28,7 +28,12 @@ If you're interested in more information about the game, visit this link.
 '''
 import logging
 
-from v2 import find_v_ships, find_h_ships, check_overlapping_ships
+from v2 import (
+    find_v_ships, 
+    find_h_ships, 
+    check_overlapping_ships,
+    count_ships
+)
 
 logging.basicConfig(format=logging.BASIC_FORMAT, level='DEBUG')
 logger = logging.getLogger(__name__)
@@ -53,6 +58,8 @@ def validate_battlefield(field):
     check_overlapping_ships(hships, vships)
     all_ships = hships + vships
     print_ships(all_ships)
+
+    print(count_ships(all_ships))
 
     print(matrix_formatter(field))
 def main():
