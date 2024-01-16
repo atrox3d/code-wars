@@ -49,28 +49,29 @@ def print_ships(ships, prefix=''):
     print()
 
 def validate_battlefield(field):
-    # write your magic here
-    # hships = find_h_ships(field)
-    # print_ships(hships, 'hship')
-
-    # vships = find_v_ships(field)
-    # print_ships(vships, 'vship')
-
     hships, vships = find_ships(field)
     print_ships(hships, 'hship')
     print_ships(vships, 'vship')
 
     check_overlapping_ships_and_normalize(hships, vships)
+
+    print_ships(hships, 'hship')
+    print_ships(vships, 'vship')
+
     all_ships = hships + vships
     print_ships(all_ships, 'all')
 
     ship_count = count_ships(all_ships)
     print(f'{ship_count = }')
+    # print(matrix_formatter(field))
+    
     REQUIRED_SHIPS = {1: 4, 2: 3, 3: 2, 4: 1}
     if ship_count != REQUIRED_SHIPS:
         return False
 
-    print(matrix_formatter(field))
+    return True
+
+
 def main():
     import sys
     sys.path.insert(0, '.')

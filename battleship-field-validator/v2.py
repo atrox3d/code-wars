@@ -19,12 +19,17 @@ def _find_ships(field: list[list],outer_range, inner_range, direction):
         is_ship = False
         ship = []
         for col in inner_range:
-            current = field[row][col] if direction=='v' else field[col][row]
+            if direction=='h':
+                current = field[row][col]
+                coord = row, col 
+            else:
+                current = field[col][row]
+                coord = col, row
             if current and not is_ship:
                 is_ship = True
-                ship.append((row, col))
+                ship.append(coord)
             elif current and is_ship:
-                ship.append((row, col))
+                ship.append(coord)
             elif not current and is_ship:
                 ships.append(ship)
                 is_ship = False
