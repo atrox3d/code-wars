@@ -33,6 +33,15 @@ def format_maze_border(maze, join=' '):
     rows = [f'|{join.join(map(str, row))}|' for row in maze]
     return top + rows + bottom
 
+def format_maze_grid(maze, join='|'):
+    width = len(maze[0])
+    top = bottom = '+' + '-' * (2*width-1) + '+'
+    rows = [top]
+    for row in maze:
+        rows.append(f'{join}{join.join(map(str, row))}{join}')
+        rows.append(bottom)
+    return rows
+
 def print_maze(maze: list[list]):
     for row in maze:    
         print(row)
@@ -50,7 +59,7 @@ maze = load_maze()
 maze = convert_maze_to_type(maze, convert_type=int)
 maze = replace_maze_items(maze, {1: '#', 0: ' '})
 # maze = format_maze_join(maze, ' ')
-maze = format_maze_border(maze)
+maze = format_maze_grid(maze)
 
 print_maze(maze)
 # print_maze(maze)
