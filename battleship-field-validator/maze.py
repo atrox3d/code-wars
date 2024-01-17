@@ -29,7 +29,7 @@ def format_maze_join(maze, join):
 
 def format_maze_border(maze, join=' '):
     width = len(maze[0])
-    top = bottom = ['+' + '-+' * width]
+    top = bottom = ['+' + '-' * (2*width-1) + '+']
     rows = [f'|{join.join(map(str, row))}|' for row in maze]
     return top + rows + bottom
 
