@@ -29,8 +29,6 @@ If you're interested in more information about the game, visit this link.
 import logging
 
 from v3 import (
-    find_v_ships, 
-    find_h_ships, 
     check_overlapping_ships_and_normalize,
     count_ships,
     find_ships
