@@ -10,27 +10,25 @@
 # maze.append([0, 0, 0, 0, 0, 0, 0, 1, 0, 0])
 # maze.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
-def read_maze(filename='maze.txt', convert_type=None):
+def load_maze(filename='maze.txt'):
     from pathlib import Path
     
     filepath = Path(__file__).parent / filename
     with open(filepath) as file:
         maze = [line.rstrip().split() for line in file]
-        if convert_type:
-            print(f'{type = }')
-            maze = [list(map(convert_type, line)) for line in maze]
     return maze
 
-def print_maze(maze: list[list], charmap=None, join=None):
-    row : list
-    for row in maze:
-        if charmap:
-            row = [charmap.get(c, c) for c in row]
-        if join:
-            row = join.join(map(str, row))
+def convert_maze_to_type(maze, convert_type):
+    return [list(map(convert_type, row)) for row in maze]
+
+def replace_maze_items(maze, charmap):
+    return [[charmap.get(c, c) for c in row] for row in maze]
+
+def print_maze(maze: list[list]):
+    for row in maze:    
         print(row)
 
-def _print_maze(maze, path=""):
+def bfs(maze, path=""):
     for x, pos in enumerate(maze[0]):
         print(f'{x, pos = }')
         if pos == 'O':
@@ -39,6 +37,8 @@ def _print_maze(maze, path=""):
     else:
         raise ValueError('coulf not find "O" in the first row')
 
-maze = read_maze(convert_type=int)
-print_maze(maze, join=' ', charmap={1: 'X', 0: ' '})
+maze = load_maze()
+maze = convert_maze_to_type(maze, convert_type=int)
+maze = replace_maze_items(maze, {1: 'X', 0: ' '})
+print_maze(maze)
 # print_maze(maze)
