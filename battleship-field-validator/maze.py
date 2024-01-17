@@ -35,11 +35,11 @@ def format_maze_border(maze, join=' '):
 
 def format_maze_grid(maze, join='|'):
     width = len(maze[0])
-    top = bottom = '+' + '-' * (2*width-1) + '+'
+    top = bottom = middle = '+' + '-+' * width
     rows = [top]
     for row in maze:
         rows.append(f'{join}{join.join(map(str, row))}{join}')
-        rows.append(bottom)
+        rows.append(middle)
     return rows
 
 def print_maze(maze: list[list]):
