@@ -1,4 +1,4 @@
-def load_matrix(filename='matrix.txt', split=' '):
+def load_matrix(filename: str = 'matrix.txt', split: str = ' ') -> list[list[str]]:
     from pathlib import Path
     
     filepath = Path(__file__).parent / filename
@@ -6,22 +6,22 @@ def load_matrix(filename='matrix.txt', split=' '):
         matrix = [line.rstrip().split(split) for line in file]
     return matrix
 
-def convert_matrix_to_type(matrix, convert_type):
+def convert_matrix_to_type(matrix: list[list[str]], convert_type) -> list[list]:
     return [list(map(convert_type, row)) for row in matrix]
 
-def replace_matrix_items(matrix, charmap):
+def replace_matrix_items(matrix: list[list], charmap: dict) -> list[list]:
     return [[charmap.get(c, c) for c in row] for row in matrix]
 
-def format_matrix_join(matrix, join):
+def format_matrix_join(matrix: list[list], join: str) -> list[str]:
     return [join.join(map(str, row)) for row in matrix]
 
-def format_matrix_border(matrix, join=' '):
+def format_matrix_border(matrix: list[list], join: str = ' ') -> list[str]:
     width = len(matrix[0])
     top = bottom = ['+' + '-' * (2*width-1) + '+']
     rows = [f'|{join.join(map(str, row))}|' for row in matrix]
     return top + rows + bottom
 
-def format_matrix_grid(matrix, join='|'):
+def format_matrix_grid(matrix: list[list], join: str = '|') -> list[str]:
     width = len(matrix[0])
     top = bottom = middle = '+' + '-+' * width
     rows = [top]
