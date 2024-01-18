@@ -81,6 +81,7 @@ def solve_maze(maze, exit_char='E', obstacle_char='#'):
                 continue
             else:
                 queue.appendleft((new_row, new_col, dist+1))
+                print(f'{queue = }')
     raise ExitNotFoundException(f'could not find exit')
 
 def main():
