@@ -3,7 +3,10 @@ def load(filename: str = 'matrix.txt', split: str = ' ') -> list[list[str]]:
     
     filepath = Path(__file__).parent / filename
     with open(filepath) as file:
-        matrix = [line.rstrip().split(split) for line in file]
+        if split:
+            matrix = [line.rstrip().split(split) for line in file]
+        else:
+            matrix = [list(line.rstrip()) for line in file]
     return matrix
 
 def convert_to_type(matrix: list[list[str]], convert_type) -> list[list]:
