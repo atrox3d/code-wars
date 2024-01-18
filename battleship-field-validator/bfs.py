@@ -28,6 +28,13 @@ def find_maze_start(maze, start_char='S'):
 class ExitNotFoundException(Exception):
     pass
 
+def format_maze(maze, visited, visited_char='.'):
+    R, C = len(maze), len(maze[0])
+    top = bottom = f'+{"-".join("-" for _ in maze[0])}+'
+    updated_maze = [[visited_char if visited[row][col] and maze[row][col] != 'S' else maze[row][col] for col in range(C)] for row in range(R)]
+    rows = [f'|{" ".join(map(str, row))}|' for row in updated_maze]
+    return [top] + rows + [bottom]
+
 
 def solve_maze(maze, exit_char='E', obstacle_char='#'):
     from collections import deque
@@ -36,7 +43,7 @@ def solve_maze(maze, exit_char='E', obstacle_char='#'):
     start = find_maze_start(maze)
     queue = deque()
     queue.append((*start, 0))   # 0 = distance
-    print(queue)
+    # print(queue)
 
     left, right, up, down = (0, -1), (0, 1), (-1, 0), (1, 0)
     directions = (right, left, down, up)
@@ -62,6 +69,7 @@ def solve_maze(maze, exit_char='E', obstacle_char='#'):
                 continue
             queue.appendleft((new_row, new_col, dist+1))
             print(queue)
+        mx.print_matrix(format_maze(maze, visited))
     raise ExitNotFoundException(f'could not find exit')
 
 def main():
