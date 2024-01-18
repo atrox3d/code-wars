@@ -23,7 +23,7 @@ def format_matrix_border(matrix: list[list], join: str = ' ') -> list[str]:
 
 def format_matrix_grid(matrix: list[list], join: str='|', spacing: int=0) -> list[str]:
     width = len(matrix[0])
-    top = middle = '+' + '-+' * width
+    top = middle = f'+{"-+" * width}'
     rows = [top]
     for row in matrix:
         rows.append(f'{join}{join.join(map(str, row))}{join}')
