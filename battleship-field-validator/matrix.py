@@ -1,4 +1,4 @@
-def load_matrix(filename: str = 'matrix.txt', split: str = ' ') -> list[list[str]]:
+def load(filename: str = 'matrix.txt', split: str = ' ') -> list[list[str]]:
     from pathlib import Path
     
     filepath = Path(__file__).parent / filename
@@ -6,21 +6,21 @@ def load_matrix(filename: str = 'matrix.txt', split: str = ' ') -> list[list[str
         matrix = [line.rstrip().split(split) for line in file]
     return matrix
 
-def convert_matrix_to_type(matrix: list[list[str]], convert_type) -> list[list]:
+def convert_to_type(matrix: list[list[str]], convert_type) -> list[list]:
     return [list(map(convert_type, row)) for row in matrix]
 
-def replace_matrix_items(matrix: list[list], charmap: dict) -> list[list]:
+def replace_items(matrix: list[list], charmap: dict) -> list[list]:
     return [[charmap.get(c, c) for c in row] for row in matrix]
 
-def format_matrix_join(matrix: list[list], join: str) -> list[str]:
+def format_join(matrix: list[list], join: str) -> list[str]:
     return [join.join(map(str, row)) for row in matrix]
 
-def format_matrix_border(matrix: list[list], join: str = ' ') -> list[str]:
+def format_border(matrix: list[list], join: str = ' ') -> list[str]:
     top = bottom = f'+{"-".join("-" for _ in matrix[0])}+'
     rows = [f'|{join.join(map(str, row))}|' for row in matrix]
     return [top] + rows + [bottom]
 
-def format_matrix_grid(matrix: list[list], join: str='|') -> list[str]:
+def format_grid(matrix: list[list], join: str='|') -> list[str]:
     top = middle = f'+{"+".join("-" for _ in matrix[0])}+'
     rows = [top]
     for row in matrix:
@@ -33,13 +33,13 @@ def print_matrix(matrix: list[list]):
         print(row)
 
 def main():
-    matrix = load_matrix()
-    matrix = convert_matrix_to_type(matrix, convert_type=int)
-    matrix = replace_matrix_items(matrix, {1: '#', 0: ' '})
+    matrix = load()
+    matrix = convert_to_type(matrix, convert_type=int)
+    matrix = replace_items(matrix, {1: '#', 0: ' '})
 
-    joined_matrix = format_matrix_join(matrix, ' ')
-    bordered_matrix = format_matrix_border(matrix, ' ')
-    grid_matrix = format_matrix_grid(matrix)
+    joined_matrix = format_join(matrix, ' ')
+    bordered_matrix = format_border(matrix, ' ')
+    grid_matrix = format_grid(matrix)
 
     print_matrix(bordered_matrix)
 
