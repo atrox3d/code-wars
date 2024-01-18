@@ -17,13 +17,13 @@ def format_matrix_join(matrix: list[list], join: str) -> list[str]:
 
 def format_matrix_border(matrix: list[list], join: str = ' ') -> list[str]:
     width = len(matrix[0])
-    top = bottom = f'+{"-" * (2*width-1)}+'
+    top = bottom = f'+{"-".join("-" for _ in matrix[0])}+'
     rows = [f'|{join.join(map(str, row))}|' for row in matrix]
     return [top] + rows + [bottom]
 
 def format_matrix_grid(matrix: list[list], join: str='|', spacing: int=0) -> list[str]:
     width = len(matrix[0])
-    top = middle = f'+{"-+" * width}'
+    top = middle = f'+{"".join("-+" for _ in matrix[0])}'
     rows = [top]
     for row in matrix:
         rows.append(f'{join}{join.join(map(str, row))}{join}')
@@ -46,8 +46,9 @@ def bfs(maze, path=""):
 maze = load_matrix()
 maze = convert_matrix_to_type(maze, convert_type=int)
 maze = replace_matrix_items(maze, {1: '#', 0: ' '})
-# maze = format_maze_join(maze, ' ')
-maze = format_matrix_grid(maze)
+# maze = format_matrix_join(maze, ' ')
+maze = format_matrix_border(maze, ' ')
+# maze = format_matrix_grid(maze)
 
 print_matrix(maze)
 # print_maze(maze)
