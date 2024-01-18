@@ -35,41 +35,48 @@ def format_maze(maze, visited, visited_char='.'):
     rows = [f'|{" ".join(map(str, row))}|' for row in updated_maze]
     return [top] + rows + [bottom]
 
+def print_status(maze, visited, coord, queue):
+        mx.print_matrix(format_maze(maze, visited))
+        print(f'{coord = }')
+        print(f'{queue = }')
+        input()
+
+def valid_direction(new_row, new_col, maze, visited, obstacle_char) -> bool:
+    R, C = len(maze), len(maze[0])
+    return (
+            new_row >= 0 and new_row < R 
+            and new_col >= 0 and new_col < C
+            and maze[new_row][new_col] != obstacle_char
+            and not visited[new_row][new_col]
+    )
 
 def solve_maze(maze, exit_char='E', obstacle_char='#'):
     from collections import deque
+    
     R, C = len(maze), len(maze[0])
-
+    LEFT, RIGHT, UP, DOWN = (0, -1), (0, 1), (-1, 0), (1, 0)
+    DIRECTIONS = (RIGHT, LEFT, DOWN, UP)
+   
+    visited = [[False] * C for _ in range(R)]
     start = find_maze_start(maze)
     queue = deque()
     queue.append((*start, 0))   # 0 = distance
-    # print(queue)
-
-    left, right, up, down = (0, -1), (0, 1), (-1, 0), (1, 0)
-    directions = (right, left, down, up)
-    visited = [[False] * C for _ in range(R)]
 
     while len(queue) != 0:
         coord = queue.pop() # value from the right
-        print(f'{coord, queue = }')
-
         row, col, dist = coord
         visited[row][col] = True
+        print_status(maze, visited, coord, queue)
+        
         if maze[row][col] == exit_char:
             return dist
         
-        for dir_row, dir_col in directions:
+        for dir_row, dir_col in DIRECTIONS:
             new_row, new_col = row + dir_row, col + dir_col
-            if (
-                new_row < 0 or new_row >= R 
-                or new_col < 0 or new_col >= C
-                or maze[new_row][new_col] == obstacle_char
-                or visited[new_row][new_col]
-            ):
+            if not valid_direction(new_row, new_col, maze, visited, obstacle_char):
                 continue
-            queue.appendleft((new_row, new_col, dist+1))
-            print(queue)
-        mx.print_matrix(format_maze(maze, visited))
+            else:
+                queue.appendleft((new_row, new_col, dist+1))
     raise ExitNotFoundException(f'could not find exit')
 
 def main():
