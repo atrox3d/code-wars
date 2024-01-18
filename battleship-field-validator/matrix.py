@@ -32,12 +32,16 @@ def print_matrix(matrix: list[list]):
     for row in matrix:    
         print(row)
 
-matrix = load_matrix()
-matrix = convert_matrix_to_type(matrix, convert_type=int)
-matrix = replace_matrix_items(matrix, {1: '#', 0: ' '})
+def main():
+    matrix = load_matrix()
+    matrix = convert_matrix_to_type(matrix, convert_type=int)
+    matrix = replace_matrix_items(matrix, {1: '#', 0: ' '})
 
-joined_matrix = format_matrix_join(matrix, ' ')
-bordered_matrix = format_matrix_border(matrix, ' ')
-grid_matrix = format_matrix_grid(matrix)
+    joined_matrix = format_matrix_join(matrix, ' ')
+    bordered_matrix = format_matrix_border(matrix, ' ')
+    grid_matrix = format_matrix_grid(matrix)
 
-print_matrix(bordered_matrix)
+    print_matrix(bordered_matrix)
+
+if __name__ == '__main__':
+    main()

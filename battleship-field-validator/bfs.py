@@ -1,3 +1,5 @@
+from matrix import load_matrix
+
 def bfs(maze, path=""):
     for x, pos in enumerate(maze[0]):
         print(f'{x, pos = }')
