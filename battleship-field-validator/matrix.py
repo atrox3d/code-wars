@@ -32,15 +32,6 @@ def print_matrix(matrix: list[list]):
     for row in matrix:    
         print(row)
 
-def bfs(maze, path=""):
-    for x, pos in enumerate(maze[0]):
-        print(f'{x, pos = }')
-        if pos == 'O':
-            start = x
-            break
-    else:
-        raise ValueError('coulf not find "O" in the first row')
-
 matrix = load_matrix()
 matrix = convert_matrix_to_type(matrix, convert_type=int)
 matrix = replace_matrix_items(matrix, {1: '#', 0: ' '})
@@ -49,4 +40,4 @@ joined_matrix = format_matrix_join(matrix, ' ')
 bordered_matrix = format_matrix_border(matrix, ' ')
 grid_matrix = format_matrix_grid(matrix)
 
-print_matrix(matrix)
+print_matrix(bordered_matrix)
