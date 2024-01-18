@@ -41,12 +41,12 @@ def bfs(maze, path=""):
     else:
         raise ValueError('coulf not find "O" in the first row')
 
-maze = load_matrix()
-maze = convert_matrix_to_type(maze, convert_type=int)
-maze = replace_matrix_items(maze, {1: '#', 0: ' '})
-# maze = format_matrix_join(maze, ' ')
-# maze = format_matrix_border(maze, ' ')
-maze = format_matrix_grid(maze)
+matrix = load_matrix()
+matrix = convert_matrix_to_type(matrix, convert_type=int)
+matrix = replace_matrix_items(matrix, {1: '#', 0: ' '})
 
-print_matrix(maze)
-# print_maze(maze)
+joined_matrix = format_matrix_join(matrix, ' ')
+bordered_matrix = format_matrix_border(matrix, ' ')
+grid_matrix = format_matrix_grid(matrix)
+
+print_matrix(matrix)
