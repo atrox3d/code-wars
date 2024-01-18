@@ -28,10 +28,14 @@ def find_maze_start(maze, start_char='S'):
 class ExitNotFoundException(Exception):
     pass
 
-def format_maze(maze, visited, visited_char='.'):
+def format_maze(maze, visited, visited_char='.', start_char='S'):
     R, C = len(maze), len(maze[0])
     top = bottom = f'+{"-".join("-" for _ in maze[0])}+'
-    updated_maze = [[visited_char if visited[row][col] and maze[row][col] != 'S' else maze[row][col] for col in range(C)] for row in range(R)]
+    updated_maze = [
+            [visited_char if visited[row][col] and maze[row][col] != start_char 
+            else maze[row][col] for col in range(C)] 
+         for row in range(R)
+    ]
     rows = [f'|{" ".join(map(str, row))}|' for row in updated_maze]
     return [top] + rows + [bottom]
 
