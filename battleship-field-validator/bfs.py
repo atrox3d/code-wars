@@ -25,6 +25,10 @@ def find_maze_start(maze, start_char='S'):
         return None     # never found S, never break loop
     return start
 
+class ExitNotFoundException(Exception):
+    pass
+
+
 def solve_maze(maze, exit_char='E', obstacle_char='#'):
     from collections import deque
     R, C = len(maze), len(maze[0])
@@ -41,9 +45,9 @@ def solve_maze(maze, exit_char='E', obstacle_char='#'):
     while len(queue) != 0:
         coord = queue.pop() # value from the right
         print(f'{coord, queue = }')
+
         row, col, dist = coord
         visited[row][col] = True
-
         if maze[row][col] == exit_char:
             return dist
         
@@ -58,13 +62,14 @@ def solve_maze(maze, exit_char='E', obstacle_char='#'):
                 continue
             queue.appendleft((new_row, new_col, dist+1))
             print(queue)
+    raise ExitNotFoundException(f'could not find exit')
 
 def main():
     matrix = mx.load(filename='maze.txt', split=None)
     bordered_matrix = mx.format_border(matrix, ' ')
     mx.print_matrix(bordered_matrix)
 
-    solve_maze(matrix)
+    print(solve_maze(matrix))
 
 if __name__ == '__main__':
     main()
