@@ -17,13 +17,13 @@ def format_matrix_join(matrix: list[list], join: str) -> list[str]:
 
 def format_matrix_border(matrix: list[list], join: str = ' ') -> list[str]:
     width = len(matrix[0])
-    top = bottom = ['+' + '-' * (2*width-1) + '+']
+    top = bottom = f'+{"-" * (2*width-1)}+'
     rows = [f'|{join.join(map(str, row))}|' for row in matrix]
-    return top + rows + bottom
+    return [top] + rows + [bottom]
 
-def format_matrix_grid(matrix: list[list], join: str = '|') -> list[str]:
+def format_matrix_grid(matrix: list[list], join: str='|', spacing: int=0) -> list[str]:
     width = len(matrix[0])
-    top = bottom = middle = '+' + '-+' * width
+    top = middle = '+' + '-+' * width
     rows = [top]
     for row in matrix:
         rows.append(f'{join}{join.join(map(str, row))}{join}')
