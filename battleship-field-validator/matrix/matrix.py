@@ -1,12 +1,14 @@
-def load(filename: str = 'matrix.txt', split: str = ' ') -> list[list[str]]:
+def load(filename: str, split: str = ' ') -> list[list[str]]:
     from pathlib import Path
+    import os
     
-    filepath = Path(__file__).parent / filename
-    with open(filepath) as file:
+    # filepath = Path(__file__).parent / filename
+    # print(f'{os.getcwd() = }')
+    with open(filename) as file:
         if split:
-            matrix = [line.rstrip().split(split) for line in file]
+            matrix = [line.rstrip('\n').split(split) for line in file]
         else:
-            matrix = [list(line.rstrip()) for line in file]
+            matrix = [list(line.rstrip('\n')) for line in file]
     return matrix
 
 def convert_to_type(matrix: list[list[str]], convert_type) -> list[list]:
@@ -36,7 +38,8 @@ def display(matrix: list[list]):
         print(row)
 
 def main():
-    matrix = load()
+    import os
+    matrix = load(os.path.join(os.path.dirname(__file__), 'matrix.txt'))
     matrix = convert_to_type(matrix, convert_type=int)
     matrix = replace_items(matrix, {1: '#', 0: ' '})
 
