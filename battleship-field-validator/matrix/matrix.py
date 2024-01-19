@@ -31,7 +31,7 @@ def format_grid(matrix: list[list], join: str='|') -> list[str]:
         rows.append(middle)
     return rows
 
-def print_matrix(matrix: list[list]):
+def display(matrix: list[list]):
     for row in matrix:    
         print(row)
 
@@ -44,7 +44,7 @@ def main():
     bordered_matrix = format_border(matrix, ' ')
     grid_matrix = format_grid(matrix)
 
-    print_matrix(bordered_matrix)
+    display(bordered_matrix)
 
 if __name__ == '__main__':
     main()

@@ -40,7 +40,7 @@ def format_maze(maze, visited, visited_char='.', start_char='S'):
     return [top] + rows + [bottom]
 
 def print_status(maze, visited, coord, queue):
-        mx.print_matrix(format_maze(maze, visited))
+        mx.display(format_maze(maze, visited))
         print(f'{coord = }')
         print(f'{queue = }')
         input()
@@ -87,7 +87,7 @@ def solve_maze(maze, exit_char='E', obstacle_char='#'):
 def main():
     matrix = mx.load(filename='maze.txt', split=None)
     bordered_matrix = mx.format_border(matrix, ' ')
-    mx.print_matrix(bordered_matrix)
+    mx.display(bordered_matrix)
 
     print(solve_maze(matrix))
 
