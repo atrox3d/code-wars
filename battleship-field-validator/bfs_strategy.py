@@ -1,13 +1,5 @@
 import matrix as mx
-
-def _bfs(maze, path=""):
-    for x, pos in enumerate(maze[0]):
-        print(f'{x, pos = }')
-        if pos == 'O':
-            start = x
-            break
-    else:
-        raise ValueError('coulf not find "O" in the first row')
+from strategies import BFSStrategy, Fifo, Lifo
 
 def find_maze_start(maze, start_char='S'):
     R, C = len(maze), len(maze[0])
@@ -54,7 +46,7 @@ def valid_direction(new_row, new_col, maze, visited, obstacle_char) -> bool:
             and not visited[new_row][new_col]
     )
 
-def solve_maze(maze, exit_char='E', obstacle_char='#'):
+def solve_maze(maze, exit_char='E', obstacle_char='#', strategy: BFSStrategy=Fifo()):
     from collections import deque
     
     R, C = len(maze), len(maze[0])
@@ -63,11 +55,11 @@ def solve_maze(maze, exit_char='E', obstacle_char='#'):
    
     visited = [[False] * C for _ in range(R)]
     start = find_maze_start(maze)
-    queue = deque()
-    queue.append((*start, 0))   # 0 = distance
+    queue = strategy
+    queue.put((*start, 0))   # 0 = distance
 
     while len(queue) != 0:
-        coord = queue.pop() # value from the right
+        coord = queue.get() # value from the right
         row, col, dist = coord
         visited[row][col] = True
         print_status(maze, visited, coord, queue)
@@ -80,7 +72,7 @@ def solve_maze(maze, exit_char='E', obstacle_char='#'):
             if not valid_direction(new_row, new_col, maze, visited, obstacle_char):
                 continue
             else:
-                queue.appendleft((new_row, new_col, dist+1))
+                queue.put((new_row, new_col, dist+1))
                 print(f'{queue = }')
     raise ExitNotFoundException(f'could not find exit')
 
