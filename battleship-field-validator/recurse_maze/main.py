@@ -6,12 +6,12 @@ def load_csv_maze(filename: str):
         reader = csv.reader(file)
         return [line for line in reader]
 
-def display_maze(maze, path, wall='#', free=' '):
+def display_maze(maze, path, wall=chr(9608), free=' '):
     amazeing = maze[:]
     os.system('clear')
     print('\n'.join(
             [''.join(
-                [ str(item).replace('1', '#').replace('0', ' ') 
+                [ str(item).replace('1', wall).replace('0', free) 
                  for item in row]) 
                 for row in amazeing])
             )
