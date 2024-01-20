@@ -17,15 +17,17 @@ def convert_to_type(matrix: list[list[str]], convert_type) -> list[list]:
 def replace_items(matrix: list[list], charmap: dict) -> list[list]:
     return [[charmap.get(c, c) for c in row] for row in matrix]
 
-def format_join(matrix: list[list], join: str, coords=True) -> list[str]:
-    if coords:
-        horizontal = join.join([str(x)[-1] for x in range(len(matrix[0]))])
-        lines = [horizontal]
-        for y, row in enumerate(matrix):
-            lines.append( str(y)[-1] + join.join(map(str, [c for c in row])))
-        return lines
-    else:
-        return [join.join(map(str, row)) for row in matrix]
+def add_coordinates(matrix: list[list]) -> list[str]:
+    top = bottom = [' '] + [str(i)[-1] for i in range(len(matrix[0]))] + [' ']
+    out = [top]
+    for i, row in enumerate(matrix):
+        number = str(i)[-1]
+        out.append([number] + row + [number])
+    out.append(bottom)
+    return out
+
+def format_join(matrix: list[list], join: str='') -> list[str]:
+    return [join.join(map(str, row)) for row in matrix]
 
 def format_border(matrix: list[list], join: str = ' ') -> list[str]:
     top = bottom = f'+{"-".join("-" for _ in matrix[0])}+'
