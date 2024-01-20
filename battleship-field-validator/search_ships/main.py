@@ -42,11 +42,28 @@ def get_valid_directions(_map, y, x):
     return directions
         
 
+def check_ship(_map, coord):
+    y, x = coord
+    NW = (y-1, x-1)
+    N = (y-1, x)
+    NE = (y-1, x+1)
+    W = (y, x-1)
+    E = (y, x+1)
+    SW = (y+1, x-1)
+    S = (y+1, x)
+    SE = (y+1, x+1)
+
+    for diagonal in NW, NE, SW, SE:
+        dy, dx = diagonal
+        if _map[dy][dx] == '#':
+            raise ValueError(f'diagonal adjacency: {diagonal} - {coord}')
+    
+    for (y1, x1), (y2, x2) in (N, W), (N, E), (S, W), (S, E):
+        if _map[y1][x1] == '#' and _map[y2][x2] == '#':
+            raise ValueError(f'cross adjacency: {diagonal} - {coord}')
+    return True
+
 def search_ship(_map):
-    LEFT = (0, -1)
-    RIGHT = (0, 1)
-    UP = (-1, 0)
-    DOWN = (1, 0)
     ROWS = len(_map)
     COLS = len(_map[0])
 
@@ -64,7 +81,12 @@ def search_ship(_map):
                     if _map[newy][newx] == '#':
                         print(f'found # @{coord}')
                         print('checking ship...')
-                        
+                        try:
+                            check_ship(_map, coord)
+                        except ValueError as ve:
+                            print(f'invalid ship positioning @{coord}')
+                            sys.exit()
+
 
 def main():
     print(f'{os.getcwd() = }')
