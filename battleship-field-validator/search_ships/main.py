@@ -7,7 +7,7 @@ except:
     sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
     from matrix import matrix
 
-def check_direction(_map, y, x, direction):
+def check_coord(_map, y, x, direction):
     ROWS = len(_map)
     COLS = len(_map[0])
     newy, newx = tuple(map(lambda a, b: a+b, (y, x), direction))
@@ -16,14 +16,16 @@ def check_direction(_map, y, x, direction):
         return newy, newx
     return None
 
-def get_valid_coords(_map, y, x):
+def get_valid_coords(_map, y, x, visited):
     LEFT = (0, -1)
     RIGHT = (0, 1)
     UP = (-1, 0)
     DOWN = (1, 0)
 
     for direction in LEFT, UP, RIGHT, DOWN:
-        if (coord := check_direction(_map, y, x, direction)) is None:
+        if (coord := check_coord(_map, y, x, direction)) is None:
+            continue
+        if coord in visited:
             continue
         yield coord
         
@@ -56,12 +58,11 @@ def check_ships(_map):
     
     for y, row in enumerate(_map):
         for x, col in enumerate(row):
-            if col == '#' and  (y, x) in visited:
+            current = (y, x)
+            if col == '#' and current in visited:
                     continue
-            for coord in get_valid_coords(_map, y, x):
+            for coord in get_valid_coords(_map, y, x, visited):
                 newy, newx = coord
-                if coord in visited:
-                    continue
                 if _map[newy][newx] == '#':
                     check_ship(_map, coord)
                 visited.append(coord)
