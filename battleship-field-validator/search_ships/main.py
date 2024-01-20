@@ -72,20 +72,18 @@ def search_ship(_map):
     
     for y, row in enumerate(_map):
         for x, col in enumerate(row):
-            for coord in get_valid_directions(_map, y, x):
-                newy, newx = coord
-                if not is_visited(visited_matrix, visited, coord):
-                    visited_matrix[newy][newx] = True
-                    visited.append(coord)
-                    
-                    if _map[newy][newx] == '#':
-                        print(f'found # @{coord}')
-                        print('checking ship...')
+            if col == '#' and not is_visited(visited_matrix, visited, (y, x)):
+                for coord in get_valid_directions(_map, y, x):
+                    newy, newx = coord
+                    if _map[newy][newx] == '#' and not is_visited(visited_matrix, visited, coord):
+                        print(f'found "#" @{coord}')
                         try:
                             check_ship(_map, coord)
                         except ValueError as ve:
                             print(f'invalid ship positioning @{coord}')
                             sys.exit()
+                visited_matrix[newy][newx] = True
+                visited.append(coord)
 
 
 def main():
