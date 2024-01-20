@@ -36,3 +36,68 @@ def check_ships(_map):
                 if _map[newy][newx] == '#':
                     check_ship(_map, coord)
                 visited.append(coord)
+
+
+def find_ships(maze):
+    from collections import deque
+    import sys, os
+    try:
+        from matrix import matrix as mx
+    except:
+        sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+        from matrix import matrix
+
+    def print_status(maze, visited, coord, queue):
+            mx.display(format_maze(maze, visited))
+            print(f'{coord = }')
+            print(f'{queue = }')
+            input()
+
+    def format_maze(maze, visited, visited_char='.', start_char='S'):
+        R, C = len(maze), len(maze[0])
+        top = bottom = f'+{"-".join("-" for _ in maze[0])}+'
+        updated_maze = [
+                [visited_char if visited[row][col] and maze[row][col] != start_char 
+                else maze[row][col] for col in range(C)] 
+            for row in range(R)
+        ]
+        rows = [f'|{" ".join(map(str, row))}|' for row in updated_maze]
+        return [top] + rows + [bottom]
+
+    def valid_direction(new_row, new_col, maze, visited, obstacle_char) -> bool:
+        R, C = len(maze), len(maze[0])
+        return (
+                new_row >= 0 and new_row < R 
+                and new_col >= 0 and new_col < C
+                and maze[new_row][new_col] != obstacle_char
+                and not visited[new_row][new_col]
+        )
+
+    R, C = len(maze), len(maze[0])
+    LEFT, RIGHT, UP, DOWN = (0, -1), (0, 1), (-1, 0), (1, 0)
+    DIRECTIONS = (RIGHT, LEFT, DOWN, UP)
+   
+    visited = [[False] * C for _ in range(R)]
+    start = (0, 0)
+    queue = deque()
+    queue.append((*start, 0))   # 0 = distance
+
+    ships = []
+    ship = []
+    while len(queue) != 0:
+        coord = queue.pop() # value from the right
+        row, col, dist = coord
+        visited[row][col] = True
+        print_status(maze, visited, coord, queue)
+        
+        if maze[row][col] == '#':
+            ship.append(coord)
+        
+        for dir_row, dir_col in DIRECTIONS:
+            new_row, new_col = row + dir_row, col + dir_col
+            if not valid_direction(new_row, new_col, maze, visited, '#'):
+                continue
+            else:
+                queue.appendleft((new_row, new_col, dist+1))
+                print(f'{queue = }')
+    raise Exception(f'could not find exit')

@@ -10,7 +10,6 @@ except:
 import ship
 
 def main():
-    print(f'{os.getcwd() = }')
     map_file = os.path.join(os.path.dirname(__file__), 'map.txt')
     map = matrix.load(map_file, split=None)
     matrix.display(matrix.format_border(matrix.add_coordinates(map)))
