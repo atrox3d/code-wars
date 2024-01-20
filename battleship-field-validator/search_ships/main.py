@@ -34,12 +34,10 @@ def get_valid_coords(_map, y, x):
     UP = (-1, 0)
     DOWN = (1, 0)
 
-    directions = []
     for direction in LEFT, UP, RIGHT, DOWN:
         if (coord := check_direction(_map, y, x, direction)) is None:
             continue
-        directions.append(coord)
-    return directions
+        yield coord
         
 
 def check_ship(_map, coord):
@@ -72,20 +70,16 @@ def check_ships(_map):
     
     for y, row in enumerate(_map):
         for x, col in enumerate(row):
-            if col == '#':
-                if is_visited(visited_matrix, visited, (y, x)):
+            if col == '#' and  is_visited(visited_matrix, visited, (y, x)):
                     continue
-                for coord in get_valid_coords(_map, y, x):
-                    newy, newx = coord
-                    if _map[newy][newx] == '#':
-                        if is_visited(visited_matrix, visited, coord):
-                            continue
-                        try:
-                            check_ship(_map, coord)
-                        except ValueError as ve:
-                            raise
-                    visited_matrix[newy][newx] = True
-                    visited.append(coord)
+            for coord in get_valid_coords(_map, y, x):
+                newy, newx = coord
+                if is_visited(visited_matrix, visited, coord):
+                    continue
+                if _map[newy][newx] == '#':
+                    check_ship(_map, coord)
+                visited_matrix[newy][newx] = True
+                visited.append(coord)
 
 
 def main():
