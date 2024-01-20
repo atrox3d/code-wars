@@ -16,18 +16,6 @@ def check_direction(_map, y, x, direction):
         return newy, newx
     return None
 
-def is_visited(visited_matrix, visited, coord):
-    newy, newx = coord
-    if visited_matrix[newy][newx]:
-        if not coord in visited:
-            print(f'{visited_matrix[newy][newx] = }')
-            print(f'{visited = }')
-            raise ValueError(f'visited discrepancy {coord}')
-        return True
-    else:
-        return False
-    
-
 def get_valid_coords(_map, y, x):
     LEFT = (0, -1)
     RIGHT = (0, 1)
@@ -64,21 +52,18 @@ def check_ship(_map, coord):
 def check_ships(_map):
     ROWS = len(_map)
     COLS = len(_map[0])
-
-    visited_matrix = [[False for c in range(COLS)] for r in range(ROWS)]
     visited = []
     
     for y, row in enumerate(_map):
         for x, col in enumerate(row):
-            if col == '#' and  is_visited(visited_matrix, visited, (y, x)):
+            if col == '#' and  (y, x) in visited:
                     continue
             for coord in get_valid_coords(_map, y, x):
                 newy, newx = coord
-                if is_visited(visited_matrix, visited, coord):
+                if coord in visited:
                     continue
                 if _map[newy][newx] == '#':
                     check_ship(_map, coord)
-                visited_matrix[newy][newx] = True
                 visited.append(coord)
 
 
