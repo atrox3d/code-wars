@@ -28,7 +28,7 @@ def is_visited(visited_matrix, visited, coord):
         return False
     
 
-def get_valid_directions(_map, y, x):
+def get_valid_coords(_map, y, x):
     LEFT = (0, -1)
     RIGHT = (0, 1)
     UP = (-1, 0)
@@ -75,7 +75,7 @@ def check_ships(_map):
             if col == '#':
                 if is_visited(visited_matrix, visited, (y, x)):
                     continue
-                for coord in get_valid_directions(_map, y, x):
+                for coord in get_valid_coords(_map, y, x):
                     newy, newx = coord
                     if _map[newy][newx] == '#':
                         if is_visited(visited_matrix, visited, coord):
