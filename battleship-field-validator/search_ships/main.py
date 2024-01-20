@@ -70,20 +70,35 @@ def search_ship(_map):
     visited_matrix = [[False for c in range(COLS)] for r in range(ROWS)]
     visited = []
     
+    ships = []
     for y, row in enumerate(_map):
         for x, col in enumerate(row):
-            if col == '#' and not is_visited(visited_matrix, visited, (y, x)):
+            if col == '#':
+                print(f'found "#" @{y, x}: ', end='')
+                if is_visited(visited_matrix, visited, (y, x)):
+                    print('VISITED')
+                    continue
+                print('CHECKING')
+                ship = [(y, x)]
                 for coord in get_valid_directions(_map, y, x):
                     newy, newx = coord
-                    if _map[newy][newx] == '#' and not is_visited(visited_matrix, visited, coord):
-                        print(f'found "#" @{coord}')
+                    if _map[newy][newx] == '#':
+                        print(f'    found adjacent "#" @{coord}: ', end='')
+                        if is_visited(visited_matrix, visited, coord):
+                            print('VISITED')
+                            continue
                         try:
                             check_ship(_map, coord)
+                            print('OK')
+                            ship.append(coord)
                         except ValueError as ve:
-                            print(f'invalid ship positioning @{coord}')
+                            print('invalid')
                             sys.exit()
-                visited_matrix[newy][newx] = True
-                visited.append(coord)
+                    visited_matrix[newy][newx] = True
+                    visited.append(coord)
+                if ship:
+                    ships.append(ship)
+    return ships
 
 
 def main():
@@ -92,7 +107,9 @@ def main():
     map = matrix.load(map_file, split=None)
     matrix.display(matrix.format_border(matrix.add_coordinates(map)))
 
-    search_ship(map)
+    ships = search_ship(map)
+    for ship in ships:
+        print(ship)
 
 if __name__ == '__main__':
     sys.exit(main())
