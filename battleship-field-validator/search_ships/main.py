@@ -7,7 +7,7 @@ except:
     sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
     from matrix import matrix
 
-def check_coord(_map, y, x, direction):
+def get_newcoord(_map, y, x, direction):
     ROWS = len(_map)
     COLS = len(_map[0])
     newy, newx = tuple(map(lambda a, b: a+b, (y, x), direction))
@@ -23,7 +23,7 @@ def get_valid_coords(_map, y, x, visited):
     DOWN = (1, 0)
 
     for direction in LEFT, UP, RIGHT, DOWN:
-        if (coord := check_coord(_map, y, x, direction)) is None:
+        if (coord := get_newcoord(_map, y, x, direction)) is None:
             continue
         if coord in visited:
             continue
