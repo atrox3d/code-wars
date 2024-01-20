@@ -73,23 +73,16 @@ def check_ships(_map):
     for y, row in enumerate(_map):
         for x, col in enumerate(row):
             if col == '#':
-                # print(f'found "#" @{y, x}: ', end='')
                 if is_visited(visited_matrix, visited, (y, x)):
-                    # print('VISITED')
                     continue
-                # print('CHECKING')
                 for coord in get_valid_directions(_map, y, x):
                     newy, newx = coord
                     if _map[newy][newx] == '#':
-                        # print(f'    found adjacent "#" @{coord}: ', end='')
                         if is_visited(visited_matrix, visited, coord):
-                            # print('VISITED')
                             continue
                         try:
                             check_ship(_map, coord)
-                            # print('OK')
                         except ValueError as ve:
-                            # print('invalid')
                             raise
                     visited_matrix[newy][newx] = True
                     visited.append(coord)
