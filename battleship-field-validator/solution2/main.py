@@ -25,7 +25,7 @@ def display(battlefield, path, wall=chr(9608), free=' ', print_path=True, sleep=
         print(f'{path = }')
 
 def get_coords(battlefield, current, FREE, SHIP):
-    ROWS = len(battlefield), 
+    ROWS = len(battlefield) 
     COLS = len(battlefield[0])
     LEFT = UP = -1
     RIGHT = DOWN = 1
