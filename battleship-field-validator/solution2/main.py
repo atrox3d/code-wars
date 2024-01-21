@@ -8,11 +8,10 @@ def load_csv_battlefield(filename: str):
         return battlefield
 
 def display(battlefield, path, wall=chr(9608), free=' ', print_path=True, sleep=0.2):
-    bf = battlefield[:]
-    if sleep:
-        time.sleep(sleep)
+    time.sleep(sleep)
     os.system('clear')
 
+    bf = battlefield[:]
     for y, x in path:
         bf[y][x] = '.'
     bf[y][x] = 'M'
@@ -26,7 +25,7 @@ def display(battlefield, path, wall=chr(9608), free=' ', print_path=True, sleep=
         print(f'{path = }')
 
 def get_coords(battlefield, current, FREE, SHIP):
-    ROWS = len(battlefield)
+    ROWS = len(battlefield), 
     COLS = len(battlefield[0])
     LEFT = UP = -1
     RIGHT = DOWN = 1
@@ -35,7 +34,6 @@ def get_coords(battlefield, current, FREE, SHIP):
     new_coords = [(y+dy, x+dx) for dy, dx in DIRECTIONS for y, x in (current,)]
     legal_coords = [(y, x) for y, x in new_coords if 0 <= y < ROWS and 0 <= x < COLS]
     coords = [(y, x) for y, x in legal_coords if battlefield[y][x] in [FREE, SHIP]]
-
     return coords
    
 def explore(battlefield, path, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sleep=0.2):
