@@ -25,20 +25,25 @@ def display_maze(maze, path, wall=chr(9608), free=' ', print_path=True, sleep=0.
     if print_path:
         print(f'{path = }')
 
-    
-def move(maze, path, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sleep=0.2):
+def get_coords(maze, current, FREE, SHIP):
     ROWS = len(maze)
     COLS = len(maze[0])
     LEFT = UP = -1
     RIGHT = DOWN = 1
     DIRECTIONS = ((0, RIGHT), (DOWN, 0), (0, LEFT), (UP, 0))
+    
+    new_coords = [(y+dy, x+dx) for dy, dx in DIRECTIONS for y, x in (current,)]
+    legal_coords = [(y, x) for y, x in new_coords if 0 <= y < ROWS and 0 <= x < COLS]
+    coords = [(y, x) for y, x in legal_coords if maze[y][x] in [FREE, SHIP]]
+
+    return coords
+   
+def move(maze, path, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sleep=0.2):
 
     current = path[-1]
     display_maze(maze, path, sleep=sleep)
 
-    new_coords = [(y+dy, x+dx) for dy, dx in DIRECTIONS for y, x in (current,)]
-    legal_coords = [(y, x) for y, x in new_coords if 0 <= y < ROWS and 0 <= x < COLS]
-    coords = [(y, x) for y, x in legal_coords if maze[y][x] in [FREE, SHIP]]
+    coords = get_coords(maze, current, FREE, SHIP)
     for coord in [yx for yx in coords if yx not in path]:
         y, x = coord
         if maze[y][x] == SHIP:
@@ -54,7 +59,7 @@ def move(maze, path, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sleep=0.2):
 
 def main():
     maze = load_csv_maze(Path(__file__).parent / 'battlefield.txt')
-    move(maze, ((0, 0),), sleep=0.2)
+    move(maze, ((0, 0),), sleep=0.0)
     print('exit NOT FOUND!')
 
 if __name__ == '__main__':
