@@ -26,7 +26,7 @@ def display_maze(maze, path, wall=chr(9608), free=' ', print_path=True, sleep=0.
         print(f'{path = }')
 
     
-def move(maze, path, START='A', END='B', FREE=0, WALL=1, VISITED=2, sleep=0.2):
+def move(maze, path, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sleep=0.2):
     ROWS = len(maze)
     COLS = len(maze[0])
     LEFT = UP = -1
@@ -37,21 +37,18 @@ def move(maze, path, START='A', END='B', FREE=0, WALL=1, VISITED=2, sleep=0.2):
     display_maze(maze, path, sleep=sleep)
 
     new_coords = [(y+dy, x+dx) for dy, dx in DIRECTIONS for y, x in (current,)]
-    print(f'{new_coords = }')
     legal_coords = [(y, x) for y, x in new_coords if 0 <= y < ROWS and 0 <= x < COLS]
-    print(f'{legal_coords = }')
-    coords = [(y, x) for y, x in legal_coords if maze[y][x] in [FREE]]
-    print(f'{coords = }')
+    coords = [(y, x) for y, x in legal_coords if maze[y][x] in [FREE, SHIP]]
     for coord in [yx for yx in coords if yx not in path]:
         y, x = coord
-        if maze[y][x] == 'B':
+        if maze[y][x] == SHIP:
             newpath = path + (coord,)
             display_maze(maze, path)
-            print('solution found')
-            sys.exit()
+            print('ship found')
+            #sys.exit()
         else:
             newpath = path + (coord,)
-            move(maze, newpath, START, END, FREE, WALL)
+            move(maze, newpath, START, END, FREE, SHIP)
             maze[y][x] = VISITED
             display_maze(maze, path)
 
