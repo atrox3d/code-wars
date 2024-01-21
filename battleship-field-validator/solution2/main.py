@@ -40,9 +40,8 @@ def move(maze, path, START='A', END='B', FREE=0, WALL=1, VISITED=2, sleep=0.2):
     print(f'{new_coords = }')
     legal_coords = [(y, x) for y, x in new_coords if 0 <= y < ROWS and 0 <= x < COLS]
     print(f'{legal_coords = }')
-    coords = [(y, x) for y, x in legal_coords if maze[y][x] in (START, END, FREE)]
+    coords = [(y, x) for y, x in legal_coords if maze[y][x] in [FREE]]
     print(f'{coords = }')
-    exit()
     for coord in [yx for yx in coords if yx not in path]:
         y, x = coord
         if maze[y][x] == 'B':
