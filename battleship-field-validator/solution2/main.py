@@ -1,65 +1,62 @@
 import csv, os, time
 from pathlib import Path
 
-def load_csv_maze(filename: str):
+def load_csv_battlefield(filename: str):
     with open(filename, newline='') as file:
         reader = csv.reader(file)
-        grid =  [[int(char.strip()) if char.strip() in '01' else char for char in line] for line in reader ]
-        return grid
+        battlefield =  [[int(char.strip()) if char.strip() in '01' else char for char in line] for line in reader ]
+        return battlefield
 
-def display_maze(maze, path, wall=chr(9608), free=' ', print_path=True, sleep=0.2):
-    m2 = maze[:]
+def display(battlefield, path, wall=chr(9608), free=' ', print_path=True, sleep=0.2):
+    bf = battlefield[:]
     if sleep:
         time.sleep(sleep)
     os.system('clear')
 
     for y, x in path:
-        m2[y][x] = '.'
-    m2[y][x] = 'M'
+        bf[y][x] = '.'
+    bf[y][x] = 'M'
 
-    print('+' + '-' * len(maze[0]) + '+')
+    print('+' + '-' * len(battlefield[0]) + '+')
     print('\n'.join(['|' + ''.join(
-                [ str(item).replace('1', wall).replace('0', free).replace('2', free)
-                 for item in row]) + '|' for row in m2]))
-    print('+' + '-' * len(maze[0]) + '+')
+                [str(item).replace('1', wall).replace('0', free).replace('2', free)
+                 for item in row]) + '|' for row in bf]))
+    print('+' + '-' * len(battlefield[0]) + '+')
     if print_path:
         print(f'{path = }')
 
-def get_coords(maze, current, FREE, SHIP):
-    ROWS = len(maze)
-    COLS = len(maze[0])
+def get_coords(battlefield, current, FREE, SHIP):
+    ROWS = len(battlefield)
+    COLS = len(battlefield[0])
     LEFT = UP = -1
     RIGHT = DOWN = 1
     DIRECTIONS = ((0, RIGHT), (DOWN, 0), (0, LEFT), (UP, 0))
     
     new_coords = [(y+dy, x+dx) for dy, dx in DIRECTIONS for y, x in (current,)]
     legal_coords = [(y, x) for y, x in new_coords if 0 <= y < ROWS and 0 <= x < COLS]
-    coords = [(y, x) for y, x in legal_coords if maze[y][x] in [FREE, SHIP]]
+    coords = [(y, x) for y, x in legal_coords if battlefield[y][x] in [FREE, SHIP]]
 
     return coords
    
-def move(maze, path, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sleep=0.2):
-
+def explore(battlefield, path, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sleep=0.2):
     current = path[-1]
-    display_maze(maze, path, sleep=sleep)
-
-    coords = get_coords(maze, current, FREE, SHIP)
+    display(battlefield, path, sleep=sleep)
+    coords = get_coords(battlefield, current, FREE, SHIP)
     for coord in [yx for yx in coords if yx not in path]:
         y, x = coord
-        if maze[y][x] == SHIP:
+        if battlefield[y][x] == SHIP:
             newpath = path + (coord,)
-            display_maze(maze, path)
+            display(battlefield, path)
             print('ship found')
-            #sys.exit()
         else:
             newpath = path + (coord,)
-            move(maze, newpath, START, END, FREE, SHIP)
-            maze[y][x] = VISITED
-            display_maze(maze, path)
+            explore(battlefield, newpath, START, END, FREE, SHIP)
+            battlefield[y][x] = VISITED
+            display(battlefield, path)
 
 def main():
-    maze = load_csv_maze(Path(__file__).parent / 'battlefield.txt')
-    move(maze, ((0, 0),), sleep=0.0)
+    battlefield = load_csv_battlefield(Path(__file__).parent / 'battlefield.txt')
+    explore(battlefield, ((0, 0),), sleep=0.0)
     print('exit NOT FOUND!')
 
 if __name__ == '__main__':
