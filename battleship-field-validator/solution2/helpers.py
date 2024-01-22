@@ -9,6 +9,16 @@ def load_csv_battlefield(filename: str):
         battlefield =  [[int(char.strip()) if char.strip() in '01' else char for char in line] for line in reader ]
         return battlefield
 
+
+def add_coordinates(matrix: list[list]) -> list[str]:
+    top = bottom = [' '] + [str(i)[-1] for i in range(len(matrix[0]))] + [' ']
+    out = [top]
+    for i, row in enumerate(matrix):
+        number = str(i)[-1]
+        out.append([number] + row + [number])
+    out.append(bottom)
+    return out
+
 def display(battlefield, path, ships, SCANNED='#', SHIP=chr(9608), FREE=' ', PATH='.', HEAD='M', print_matrix=True, print_path=True, sleep=0.2):
     time.sleep(sleep)
     os.system('clear')
