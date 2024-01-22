@@ -21,6 +21,7 @@ def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
     coords = get_coords(battlefield, (y, x), FREE, SHIP)
     for coord in [(y, x) for y, x in coords if (y, x) not in path and battlefield[y][x] == SHIP]:
         y, x = coord
+        battlefield[y][x] = SCANNED
         ship.append(coord)
     
     return ship
@@ -32,20 +33,20 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
     
     current = path[-1]
     ships = ships if ships is not None else []
-    display(battlefield, path, sleep=sleep)
+    display(battlefield, path, ships, sleep=sleep)
     coords = get_coords(battlefield, current, FREE, SHIP)
     for coord in [yx for yx in coords if yx not in path]:
         y, x = coord
         if battlefield[y][x] == SHIP:
             newpath = path + (coord,)
-            ships.append(scan_ship(battlefield, path, y, x))
-            display(battlefield, path)
+            ships.append(scan_ship(battlefield, newpath, y, x))
+            display(battlefield, path, ships)
             print('ship found')
         else:
             newpath = path + (coord,)
             explore(battlefield, newpath, ships, START, END, FREE, SHIP)
             battlefield[y][x] = VISITED
-            display(battlefield, path)
+            display(battlefield, path, ships)
     helpers.RECURSION_LEVEL -= 1
     assert len(set(path)) == len(path), "you have duplicate coordinates"
 
