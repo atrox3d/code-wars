@@ -17,13 +17,22 @@ def get_coords(battlefield, current, FREE, SHIP):
 def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
     battlefield[y][x] = SCANNED
     ship = [(y, x)]
-    
+
+    print(f'scan_ship start: {ship = }')
+
     coords = get_coords(battlefield, (y, x), FREE, SHIP)
     for coord in [(y, x) for y, x in coords if (y, x) not in path and battlefield[y][x] == SHIP]:
+        ship.append(coord)
+        print(f'scan_ship for: {ship = }')
         y, x = coord
         battlefield[y][x] = SCANNED
-        ship.append(coord)
-    
+
+        temp = scan_ship(battlefield, path, y, x)
+        print(f'scan_ship: {temp = }')
+        assert temp not in ship, 'duplicate ship'
+        ship.append(temp)
+
+    print(f'scan_ship end: {ship = }')
     return ship
         
 
@@ -39,7 +48,9 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
         y, x = coord
         if battlefield[y][x] == SHIP:
             newpath = path + (coord,)
-            ships.append(scan_ship(battlefield, newpath, y, x))
+            ship = scan_ship(battlefield, path, y, x)
+            print(f'explore: {ship = }')
+            input()
             display(battlefield, path, ships)
             print('ship found')
         else:
