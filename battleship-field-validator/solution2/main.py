@@ -14,11 +14,12 @@ def get_coords(battlefield, current, FREE, SHIP):
     coords = [(y, x) for y, x in legal_coords if battlefield[y][x] in [FREE, SHIP]]
     return coords
 
-def explore(battlefield, path, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sleep=0.2):
+def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sleep=0.2):
     helpers.MAX_RECURSION_LEVEL += 1
     helpers.RECURSION_LEVEL += 1
     
     current = path[-1]
+    ships = ships if ships is not None else []
     display(battlefield, path, sleep=sleep)
     coords = get_coords(battlefield, current, FREE, SHIP)
     for coord in [yx for yx in coords if yx not in path]:
@@ -29,7 +30,7 @@ def explore(battlefield, path, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sl
             print('ship found')
         else:
             newpath = path + (coord,)
-            explore(battlefield, newpath, START, END, FREE, SHIP)
+            explore(battlefield, newpath, ships, START, END, FREE, SHIP)
             battlefield[y][x] = VISITED
             display(battlefield, path)
     helpers.RECURSION_LEVEL -= 1
@@ -37,7 +38,7 @@ def explore(battlefield, path, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sl
 
 def main():
     battlefield = load_csv_battlefield(Path(__file__).parent / 'battlefield.txt')
-    explore(battlefield, ((0, 0),), sleep=0.0)
+    explore(battlefield, ((0, 0),), None, sleep=0.0)
     print('exit NOT FOUND!')
 
 if __name__ == '__main__':
