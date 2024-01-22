@@ -9,7 +9,7 @@ def load_csv_battlefield(filename: str):
         battlefield =  [[int(char.strip()) if char.strip() in '01' else char for char in line] for line in reader ]
         return battlefield
 
-def display(battlefield, path, wall=chr(9608), free=' ', print_path=True, sleep=0.2):
+def display(battlefield, path, SHIP=chr(9608), FREE=' ', PATH='.', HEAD='M', print_path=True, sleep=0.2):
     time.sleep(sleep)
     os.system('clear')
 
@@ -17,12 +17,12 @@ def display(battlefield, path, wall=chr(9608), free=' ', print_path=True, sleep=
     print(f'{RECURSION_LEVEL = }')
     bf = battlefield[:]
     for y, x in path:
-        bf[y][x] = '.'
-    bf[y][x] = 'M'
+        bf[y][x] = PATH
+    bf[y][x] = HEAD
 
     print('+' + '-' * len(battlefield[0]) + '+')
     print('\n'.join(['|' + ''.join(
-                [str(item).replace('1', wall).replace('0', free).replace('2', free)
+                [str(item).replace('1', SHIP).replace('0', FREE).replace('2', FREE)
                  for item in row]) + '|' for row in bf]))
     print('+' + '-' * len(battlefield[0]) + '+')
     if print_path:

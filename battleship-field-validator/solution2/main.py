@@ -17,6 +17,7 @@ def get_coords(battlefield, current, FREE, SHIP):
 def explore(battlefield, path, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sleep=0.2):
     helpers.MAX_RECURSION_LEVEL += 1
     helpers.RECURSION_LEVEL += 1
+    
     current = path[-1]
     display(battlefield, path, sleep=sleep)
     coords = get_coords(battlefield, current, FREE, SHIP)
@@ -32,6 +33,7 @@ def explore(battlefield, path, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sl
             battlefield[y][x] = VISITED
             display(battlefield, path)
     helpers.RECURSION_LEVEL -= 1
+    assert len(set(path)) == len(path), "you have duplicate coordinates"
 
 def main():
     battlefield = load_csv_battlefield(Path(__file__).parent / 'battlefield.txt')
