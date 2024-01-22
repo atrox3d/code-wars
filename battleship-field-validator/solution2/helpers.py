@@ -12,10 +12,12 @@ def load_csv_battlefield(filename: str):
 
 def add_coordinates(matrix: list[list]) -> list[str]:
     top = bottom = [' '] + [str(i)[-1] for i in range(len(matrix[0]))] + [' ']
-    out = [top]
+    h_border = [' +'] + ['-' for _ in matrix[0]] + ['+']
+    out = [top, h_border]
     for i, row in enumerate(matrix):
         number = str(i)[-1]
-        out.append([number] + row + [number])
+        out.append([number, '|'] + row + ['|', number])
+    out.append(h_border)
     out.append(bottom)
     return out
 
@@ -30,15 +32,21 @@ def display(battlefield, path, ships, SCANNED='#', SHIP=chr(9608), FREE=' ', PAT
         bf[y][x] = PATH
     bf[y][x] = HEAD
 
+    matrix = add_coordinates(battlefield[:])
     if print_matrix:
-        for row in battlefield:
+        for row in matrix:
             print(''.join(map(str, row)))
+    # print('+' + '-' * len(battlefield[0]) + '+')
+    # print('\n'.join(['|' + ''.join([str(item).replace('1', SHIP).replace('0', FREE).replace('2', FREE).replace('3', SCANNED)for item in row]) + '|' for row in bf])
+    # print('+' + '-' * len(battlefield[0]) + '+')
+    bf = [[str(item).replace('1', SHIP)
+          .replace('0', FREE)
+          .replace('2', FREE)
+          .replace('3', SCANNED) for item in row] for row in bf]
+    bf = add_coordinates(bf)
+    for row in bf:
+        print(''.join(map(str, row)))
 
-    print('+' + '-' * len(battlefield[0]) + '+')
-    print('\n'.join(['|' + ''.join(
-                [str(item).replace('1', SHIP).replace('0', FREE).replace('2', FREE).replace('3', SCANNED)
-                 for item in row]) + '|' for row in bf]))
-    print('+' + '-' * len(battlefield[0]) + '+')
     for ship in ships:
         print(f'{ship = }')
     if print_path:
