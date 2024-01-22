@@ -14,6 +14,18 @@ def get_coords(battlefield, current, FREE, SHIP):
     coords = [(y, x) for y, x in legal_coords if battlefield[y][x] in [FREE, SHIP]]
     return coords
 
+def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
+    battlefield[y][x] = SCANNED
+    ship = [(y, x)]
+    
+    coords = get_coords(battlefield, (y, x), FREE, SHIP)
+    for coord in [(y, x) for y, x in coords if (y, x) not in path and battlefield[y][x] == SHIP]:
+        y, x = coord
+        ship.append(coord)
+    
+    return ship
+        
+
 def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sleep=0.2):
     helpers.MAX_RECURSION_LEVEL += 1
     helpers.RECURSION_LEVEL += 1
