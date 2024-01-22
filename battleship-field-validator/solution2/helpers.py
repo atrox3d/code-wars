@@ -9,7 +9,7 @@ def load_csv_battlefield(filename: str):
         battlefield =  [[int(char.strip()) if char.strip() in '01' else char for char in line] for line in reader ]
         return battlefield
 
-def display(battlefield, path, ships, SCANNED='#', SHIP=chr(9608), FREE=' ', PATH='.', HEAD='M', print_path=True, sleep=0.2):
+def display(battlefield, path, ships, SCANNED='#', SHIP=chr(9608), FREE=' ', PATH='.', HEAD='M', print_matrix=True, print_path=True, sleep=0.2):
     time.sleep(sleep)
     os.system('clear')
 
@@ -19,6 +19,10 @@ def display(battlefield, path, ships, SCANNED='#', SHIP=chr(9608), FREE=' ', PAT
     for y, x in path:
         bf[y][x] = PATH
     bf[y][x] = HEAD
+
+    if print_matrix:
+        for row in battlefield:
+            print(''.join(map(str, row)))
 
     print('+' + '-' * len(battlefield[0]) + '+')
     print('\n'.join(['|' + ''.join(
