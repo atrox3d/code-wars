@@ -1,5 +1,6 @@
 from pathlib import Path
-from helpers import display, load_csv_battlefield
+from helpers import display, load_csv_battlefield, MAX_RECURSION_LEVEL
+import helpers
 
 def get_coords(battlefield, current, FREE, SHIP):
     ROWS = len(battlefield) 
@@ -12,8 +13,10 @@ def get_coords(battlefield, current, FREE, SHIP):
     legal_coords = [(y, x) for y, x in new_coords if 0 <= y < ROWS and 0 <= x < COLS]
     coords = [(y, x) for y, x in legal_coords if battlefield[y][x] in [FREE, SHIP]]
     return coords
-   
+
 def explore(battlefield, path, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sleep=0.2):
+    helpers.MAX_RECURSION_LEVEL += 1
+    helpers.RECURSION_LEVEL += 1
     current = path[-1]
     display(battlefield, path, sleep=sleep)
     coords = get_coords(battlefield, current, FREE, SHIP)
@@ -28,6 +31,7 @@ def explore(battlefield, path, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sl
             explore(battlefield, newpath, START, END, FREE, SHIP)
             battlefield[y][x] = VISITED
             display(battlefield, path)
+    helpers.RECURSION_LEVEL -= 1
 
 def main():
     battlefield = load_csv_battlefield(Path(__file__).parent / 'battlefield.txt')

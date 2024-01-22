@@ -1,5 +1,8 @@
 import csv, os, time
 
+MAX_RECURSION_LEVEL = RECURSION_LEVEL = 0
+
+
 def load_csv_battlefield(filename: str):
     with open(filename, newline='') as file:
         reader = csv.reader(file)
@@ -10,6 +13,8 @@ def display(battlefield, path, wall=chr(9608), free=' ', print_path=True, sleep=
     time.sleep(sleep)
     os.system('clear')
 
+    print(f'{MAX_RECURSION_LEVEL = }')
+    print(f'{RECURSION_LEVEL = }')
     bf = battlefield[:]
     for y, x in path:
         bf[y][x] = '.'
