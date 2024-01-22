@@ -38,6 +38,7 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
         y, x = coord
         if battlefield[y][x] == SHIP:
             newpath = path + (coord,)
+            ships.append(scan_ship(battlefield, path, y, x))
             display(battlefield, path)
             print('ship found')
         else:
