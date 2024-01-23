@@ -64,7 +64,7 @@ def display(
     for i, row in enumerate(bf):
         print(''.join(map(str, row)), ''.join(map(str, matrix[i])) if print_matrix else '')
 
-    for ship in ships:
+    for ship in sorted(ships, key=len):
         print(f'{ship = }')
 
     if print_path:
