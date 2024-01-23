@@ -1,6 +1,11 @@
 from pathlib import Path
-from helpers import display, load_csv_battlefield, MAX_RECURSION_LEVEL
+import logging
+
+from helpers import display, load_csv_battlefield
 import helpers
+
+logging.basicConfig(level='DEBUG', format='%(levelname)s:%(funcName)-10.10s:%(message)s')
+log = logging.getLogger(__name__)
 
 def get_coords(battlefield, current, FREE, SHIP):
     ROWS = len(battlefield) 
@@ -18,21 +23,24 @@ def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
     battlefield[y][x] = SCANNED
     ship = [(y, x)]
 
-    print(f'scan_ship start: {ship = }')
+    log.debug(f'ENTER: {ship = }')
+    log.debug(f'ENTER: {path = }')
 
     coords = get_coords(battlefield, (y, x), FREE, SHIP)
     for coord in [(y, x) for y, x in coords if (y, x) not in path and battlefield[y][x] == SHIP]:
-        ship.append(coord)
-        print(f'scan_ship for: {ship = }')
+        # ship.append(coord)
+        log.debug(f'for loop: {coord =} {ship = }')
         y, x = coord
         battlefield[y][x] = SCANNED
+        path = path + (coord, )
+        log.debug(f'RECURSE {coord = }')
+        log.debug(f'RECURSE {path = }')
+        block = scan_ship(battlefield, path, y, x)
+        assert not any(block in ship for block in block), 'duplicate ship'
+        ship.extend(block)
 
-        temp = scan_ship(battlefield, path, y, x)
-        print(f'scan_ship: {temp = }')
-        assert temp not in ship, 'duplicate ship'
-        ship.append(temp)
-
-    print(f'scan_ship end: {ship = }')
+    log.debug(f'EXIT: {ship = }')
+    input('press ENTER')
     return ship
         
 
@@ -47,12 +55,12 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
     for coord in [yx for yx in coords if yx not in path]:
         y, x = coord
         if battlefield[y][x] == SHIP:
+            log.debug(f'ship found {coord = }')
             newpath = path + (coord,)
-            ship = scan_ship(battlefield, path, y, x)
-            print(f'explore: {ship = }')
-            input()
+            ship = scan_ship(battlefield, newpath, y, x)
+            log.debug(f'{ship = }')
+            ships.append(ship)
             display(battlefield, path, ships)
-            print('ship found')
         else:
             newpath = path + (coord,)
             explore(battlefield, newpath, ships, START, END, FREE, SHIP)
