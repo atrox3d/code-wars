@@ -1,7 +1,7 @@
 from pathlib import Path
 import logging
 
-from helpers import display, load_csv_battlefield, load_ascii_battlefield, battlefield_to_int
+from helpers import display, load_csv_battlefield, load_ascii_battlefield, convert_battlefield
 import helpers
 
 logging.basicConfig(level='WARN', format='%(levelname)s:%(funcName)-10.10s:%(message)s')
@@ -90,7 +90,7 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
 
 def main():
     battlefield = load_ascii_battlefield(Path(__file__).parent / 'battlefield.ascii.txt')
-    battlefield = battlefield_to_int(battlefield)
+    battlefield = convert_battlefield(battlefield)
     explore(battlefield, ((0, 0),), None, sleep=0.0)
     print('exit NOT FOUND!')
 

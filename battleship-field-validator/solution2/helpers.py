@@ -10,11 +10,16 @@ def load_csv_battlefield(filename: str):
 
 def load_ascii_battlefield(filename: str):
     with open(filename) as fp:
-        battlefield = [[cell for cell in line.rstrip()] for line in fp]
+        battlefield = [[cell for cell in list(line.rstrip('\n'))] for line in fp]
     return battlefield
 
 def battlefield_to_int(battlefield):
     return [[int(char) for char in row] for row in battlefield]
+
+def convert_battlefield(battlefield, sea=' ', ship='#'):
+    battlefield = [[char.replace(sea, '0').replace(ship, '1') for char in row] for row in battlefield]
+    battlefield = battlefield_to_int(battlefield)
+    return battlefield
 
 def add_coordinates(matrix: list[list]) -> list[str]:
     top = bottom = ['  '] + [str(i)[-1] for i in range(len(matrix[0]))] + [' ']
