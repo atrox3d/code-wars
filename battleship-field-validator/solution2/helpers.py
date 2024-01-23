@@ -13,9 +13,6 @@ def load_ascii_battlefield(filename: str):
         battlefield = [[cell for cell in line.rstrip()] for line in fp]
     return battlefield
 
-from pathlib import Path
-load_ascii_battlefield(Path(__file__).parent / 'battlefield.ascii.txt')
-
 def add_coordinates(matrix: list[list]) -> list[str]:
     top = bottom = ['  '] + [str(i)[-1] for i in range(len(matrix[0]))] + [' ']
     h_border = [' +'] + ['-' for _ in matrix[0]] + ['+']
