@@ -17,6 +17,10 @@ def get_coords(battlefield, current, FREE, SHIP):
     new_coords = [(y+dy, x+dx) for dy, dx in DIRECTIONS for y, x in (current,)]
     legal_coords = [(y, x) for y, x in new_coords if 0 <= y < ROWS and 0 <= x < COLS]
     coords = [(y, x) for y, x in legal_coords if battlefield[y][x] in [FREE, SHIP]]
+
+    for item in [battlefield[y][x] for y, x in coords]:
+        assert item in [FREE, SHIP], f'get_coords: {item = }'
+        assert item <= SHIP, f'get_coords: {item = }'
     return coords
 
 def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
@@ -47,7 +51,7 @@ def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
     return ship
         
 
-def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, VISITED=2, sleep=0.2):
+def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, VISITED=2, SCANNED=3, sleep=0.2):
     helpers.MAX_RECURSION_LEVEL += 1 # DELETE
     helpers.RECURSION_LEVEL += 1 # DELETE
     
@@ -59,6 +63,9 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
     coords = get_coords(battlefield, current, FREE, SHIP)
     for coord in [yx for yx in coords if yx not in path]:
         y, x = coord
+        item = battlefield[y][x]
+        # assert item in [FREE, SHIP], f'explore: {item = }'
+        # assert item <= SHIP, f'explore: {item = }'
         if battlefield[y][x] == SHIP:
     
             log.debug(f'ship found {coord = }') # DELETE
@@ -68,14 +75,15 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
             ships.append(ship)
     
             log.debug(f'{ship = }') # DELETE
-            display(battlefield, path, ships) # DELETE
     
-        else:
+        elif battlefield[y][x] == FREE:
             newpath = path + (coord,)
             explore(battlefield, newpath, ships, START, END, FREE, SHIP)
             battlefield[y][x] = VISITED
-    
-            display(battlefield, path, ships) # DELETE
+        # else:
+            # raise ValueError(f'{y, x = } -> {battlefield[y][x]}')
+            # continue
+        display(battlefield, path, ships) # DELETE
     
     helpers.RECURSION_LEVEL -= 1 # DELETE
     assert len(set(path)) == len(path), "you have duplicate coordinates"
