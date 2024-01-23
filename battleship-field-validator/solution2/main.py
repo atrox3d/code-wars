@@ -4,7 +4,7 @@ import logging
 from helpers import display, load_csv_battlefield
 import helpers
 
-logging.basicConfig(level='DEBUG', format='%(levelname)s:%(funcName)-10.10s:%(message)s')
+logging.basicConfig(level='WARN', format='%(levelname)s:%(funcName)-10.10s:%(message)s')
 log = logging.getLogger(__name__)
 
 def get_coords(battlefield, current, FREE, SHIP):
@@ -28,7 +28,6 @@ def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
 
     coords = get_coords(battlefield, (y, x), FREE, SHIP)
     for coord in [(y, x) for y, x in coords if (y, x) not in path and battlefield[y][x] == SHIP]:
-        # ship.append(coord)
         log.debug(f'for loop: {coord =} {ship = }')
         y, x = coord
         battlefield[y][x] = SCANNED
@@ -40,7 +39,6 @@ def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
         ship.extend(block)
 
     log.debug(f'EXIT: {ship = }')
-    input('press ENTER')
     return ship
         
 
