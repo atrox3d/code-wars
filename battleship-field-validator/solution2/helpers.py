@@ -22,7 +22,7 @@ def add_coordinates(matrix: list[list]) -> list[str]:
 def display(
             battlefield, path, ships, 
             SCANNED='#', SHIP=chr(9608), FREE=' ', PATH='.', HEAD='M', 
-            print_matrix=False, 
+            print_matrix=True, 
             print_path=False, 
             sleep=0.2
             ):
@@ -37,11 +37,6 @@ def display(
         bf[y][x] = PATH
     bf[y][x] = HEAD
 
-    matrix = add_coordinates(battlefield[:])
-    if print_matrix:
-        for row in matrix:
-            print(''.join(map(str, row)))
-    
     # print('+' + '-' * len(battlefield[0]) + '+')
     # print('\n'.join(['|' + ''.join([str(item).replace('1', SHIP).replace('0', FREE).replace('2', FREE).replace('3', SCANNED)for item in row]) + '|' for row in bf])
     # print('+' + '-' * len(battlefield[0]) + '+')
@@ -50,9 +45,11 @@ def display(
           .replace('0', FREE)
           .replace('2', FREE)
           .replace('3', SCANNED) for item in row] for row in bf]
+    
     bf = add_coordinates(bf)
-    for row in bf:
-        print(''.join(map(str, row)))
+    matrix = add_coordinates(battlefield[:])
+    for i, row in enumerate(bf):
+        print(''.join(map(str, row)), ''.join(map(str, matrix[i])) if print_matrix else '')
 
     for ship in ships:
         print(f'{ship = }')
