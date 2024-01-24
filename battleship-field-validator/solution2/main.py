@@ -117,6 +117,7 @@ def check_ship(ship, battlefield):
         pass
 
 def analyze(battlefield):
+    bf = [row[:] for row in battlefield]
     ships = explore(battlefield, ((0, 0),), None, sleep=0.0)
     print(f'{ships = }')
     count = {}
@@ -125,6 +126,12 @@ def analyze(battlefield):
     print(f'{count = }')
     correct = {1: 4, 2: 3, 3: 3}
     print(f'{count == correct = }')
+
+    for row in bf:
+        print(row)
+
+    for ship in ships:
+        check_ship(bf, ship)
 
 def main():
     battlefield = load_ascii_battlefield(Path(__file__).parent / 'battlefield.ascii.txt')
