@@ -82,25 +82,10 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
     return ships
 
 def check_ship(battlefield, ship):
-    # shipp = sorted(ship)
-    # print(f'{shipp = }')
-    # print(list(zip(*shipp)))
-    # y, x = list(zip(*shipp))
-    # print(y, x) 
-# 
-    # if len(shipp) > 1:
-        # straights = [len(set(x)) == 1 for x in zip(*shipp)]
-        # print(f'{straights = }')
-        # straight = straights.count(True) == 1
-        # print(f'{straight = }')
-        # if not straight:
-            # raise ValueError('! straight')
-
     for by, bx in ship:
         for y, x in [(y, x) for y in (-1, 1) for x in (-1, 1)]:
             if battlefield[by+y][bx+x]:
                 raise ValueError('diagonal')
-    print()
 
 def analyze(battlefield):
     bf = [row[:] for row in battlefield]
@@ -112,15 +97,13 @@ def analyze(battlefield):
     print(f'{count = }')
     correct = {1: 4, 2: 3, 3: 3}
     print(f'{count == correct = }')
-
-    for row in bf:
-        print(row)
-
     try:
         for ship in ships:
             check_ship(bf, ship)
     except ValueError as ve:
         print(repr(ve))
+    else:
+        print('ok')
 
 def main():
     for file in [file  for spec in ['*.ascii', '*.csv'] for file in Path.cwd().glob(spec)]:
@@ -128,7 +111,6 @@ def main():
         battlefield = get_loader(file)(file)
         battlefield = convert_battlefield(battlefield)
         analyze(battlefield)
-        print('exit NOT FOUND!')
 
 if __name__ == '__main__':
     import sys
