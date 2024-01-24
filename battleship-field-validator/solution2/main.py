@@ -1,11 +1,6 @@
 from pathlib import Path
-import logging
 
 from helpers import display, get_loader, convert_battlefield
-import helpers
-
-logging.basicConfig(level='WARN', format='%(levelname)s:%(funcName)-10.10s:%(message)s')
-log = logging.getLogger(__name__)
 
 def get_coords(battlefield, current, FREE, SHIP):
     ROWS = len(battlefield) 
@@ -26,59 +21,30 @@ def get_coords(battlefield, current, FREE, SHIP):
 def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
     battlefield[y][x] = SCANNED
     ship = [(y, x)]
-
-    log.debug(f'ENTER: {ship = }')
-    log.debug(f'ENTER: {path = }')
-
     coords = get_coords(battlefield, (y, x), FREE, SHIP)
     for coord in [(y, x) for y, x in coords if (y, x) not in path and battlefield[y][x] == SHIP]:
-
-        log.debug(f'for loop: {coord =} {ship = }') # DELETE
-
         y, x = coord
         battlefield[y][x] = SCANNED
         path = path + (coord, )
-
-        log.debug(f'RECURSE {coord = }') # DELETE
-        log.debug(f'RECURSE {path = }') # DELETE
-
         block = scan_ship(battlefield, path, y, x)
-        assert not any(block in ship for block in block), 'duplicate ship'
         ship.extend(block)
-
-    log.debug(f'EXIT: {ship = }')
     return ship
 
 def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, VISITED=2, SCANNED=3, sleep=0.2):
-    helpers.MAX_RECURSION_LEVEL += 1 # DELETE
-    helpers.RECURSION_LEVEL += 1 # DELETE
-    
     current = path[-1]
     ships = ships if ships is not None else []
-    
-    # display(battlefield, path, ships, sleep=sleep) # DELETE
-
     coords = get_coords(battlefield, current, FREE, SHIP)
     for coord in [yx for yx in coords if yx not in path]:
         y, x = coord
         item = battlefield[y][x]
         if battlefield[y][x] == SHIP:
-    
-            log.debug(f'ship found {coord = }') # DELETE
-    
             newpath = path + (coord,)
             ship = scan_ship(battlefield, newpath, y, x)
             ships.append(ship)
-    
-            log.debug(f'{ship = }') # DELETE
-    
         elif battlefield[y][x] == FREE:
             newpath = path + (coord,)
             explore(battlefield, newpath, ships, START, END, FREE, SHIP)
             battlefield[y][x] = VISITED
-        
-        # display(battlefield, path, ships) # DELETE
-    helpers.RECURSION_LEVEL -= 1 # DELETE
     return ships
 
 def check_ship(battlefield, ship):
@@ -90,27 +56,28 @@ def check_ship(battlefield, ship):
 def analyze(battlefield):
     bf = [row[:] for row in battlefield]
     ships = explore(battlefield, ((0, 0),), None, sleep=0.0)
-    print(f'{ships = }')
+
     count = {}
+    correct = {1: 4, 2: 3, 3: 3}
     for ship in sorted(ships, key=len):
         count[len(ship)] = count.get(len(ship), 0) + 1
-    print(f'{count = }')
-    correct = {1: 4, 2: 3, 3: 3}
-    print(f'{count == correct = }')
+    if count != correct:
+        return False
+
     try:
         for ship in ships:
             check_ship(bf, ship)
     except ValueError as ve:
-        print(repr(ve))
-    else:
-        print('ok')
+        return False
+    
+    return True
 
 def main():
     for file in [file  for spec in ['*.ascii', '*.csv'] for file in Path.cwd().glob(spec)]:
-        print(file)
         battlefield = get_loader(file)(file)
         battlefield = convert_battlefield(battlefield)
-        analyze(battlefield)
+        result = analyze(battlefield)
+        print(f'{file.name} -> {result}')
 
 if __name__ == '__main__':
     import sys
