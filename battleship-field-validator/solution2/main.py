@@ -1,7 +1,7 @@
 from pathlib import Path
 import logging
 
-from helpers import display, load_csv_battlefield, load_ascii_battlefield, convert_battlefield
+from helpers import display, get_loader, convert_battlefield
 import helpers
 
 logging.basicConfig(level='WARN', format='%(levelname)s:%(funcName)-10.10s:%(message)s')
@@ -82,21 +82,21 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
     return ships
 
 def check_ship(battlefield, ship):
-    shipp = sorted(ship)
-    print(f'{shipp = }')
-    print(list(zip(*shipp)))
-    y, x = list(zip(*shipp))
-    print(y, x) 
+    # shipp = sorted(ship)
+    # print(f'{shipp = }')
+    # print(list(zip(*shipp)))
+    # y, x = list(zip(*shipp))
+    # print(y, x) 
+# 
+    # if len(shipp) > 1:
+        # straights = [len(set(x)) == 1 for x in zip(*shipp)]
+        # print(f'{straights = }')
+        # straight = straights.count(True) == 1
+        # print(f'{straight = }')
+        # if not straight:
+            # raise ValueError('! straight')
 
-    if len(shipp) > 1:
-        straights = [len(set(x)) == 1 for x in zip(*shipp)]
-        print(f'{straights = }')
-        straight = straights.count(True) == 1
-        print(f'{straight = }')
-        if not straight:
-            raise ValueError('! straight')
-
-    for by, bx in shipp:
+    for by, bx in ship:
         for y, x in [(y, x) for y in (-1, 1) for x in (-1, 1)]:
             if battlefield[by+y][bx+x]:
                 raise ValueError('diagonal')
@@ -120,10 +120,12 @@ def analyze(battlefield):
         check_ship(bf, ship)
 
 def main():
-    battlefield = load_ascii_battlefield(Path(__file__).parent / 'battlefield.ascii.txt')
-    battlefield = convert_battlefield(battlefield)
-    analyze(battlefield)
-    print('exit NOT FOUND!')
+    for file in [file  for spec in ['*.ascii', '*.csv'] for file in Path.cwd().glob(spec)]:
+        print(file)
+        battlefield = get_loader(file)(file)
+        battlefield = convert_battlefield(battlefield)
+        analyze(battlefield)
+        print('exit NOT FOUND!')
 
 if __name__ == '__main__':
     import sys

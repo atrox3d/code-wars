@@ -1,6 +1,15 @@
 import csv, os, time
+from pathlib import Path
 
 MAX_RECURSION_LEVEL = RECURSION_LEVEL = 0
+
+def get_loader(file):
+    if Path(file).suffix == '.ascii':
+        return load_ascii_battlefield
+    elif Path(file).suffix == '.csv':
+        return load_csv_battlefield
+    else:
+        raise NotImplementedError(f'unknown extension {Path(file).suffix}')
 
 def load_csv_battlefield(filename: str):
     with open(filename, newline='') as file:
