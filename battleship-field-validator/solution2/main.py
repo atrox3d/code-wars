@@ -81,40 +81,26 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
     helpers.RECURSION_LEVEL -= 1 # DELETE
     return ships
 
-def check_ship(ship, battlefield):
-    """
-    0123456789    0123456789
-    +----------+  +----------+
-    0|M    ##   |0 0|M222233222|0
-    1|# #     # |1 1|3232222232|1
-    2|# # ### # |2 2|3232333232|2
-    3|#         |3 3|3222222222|3
-    4|        # |4 4|2222222232|4
-    5|    ###   |5 5|2222333222|5
-    6|        # |6 6|2222222232|6
-    7|   #      |7 7|2223222222|7
-    8|       #  |8 8|2222222322|8
-    9|          |9 9|2222222222|9
-    +----------+  +----------+
-    0123456789    0123456789
+def check_ship(battlefield, ship):
+    shipp = sorted(ship)
+    print(f'{shipp = }')
+    print(list(zip(*shipp)))
+    y, x = list(zip(*shipp))
+    print(y, x) 
 
-    ships = [
-                [(4, 8)],
-                [(6, 8)],
-                [(7, 3)],
-                [(8, 7)], 
-                [(0, 5), (0, 6)],
-                [(1, 8), (2, 8)],
-                [(2, 2), (1, 2)],
-                [(2, 4), (2, 5), (2, 6)]
-                [(3, 0), (2, 0), (1, 0)],
-                [(5, 4), (5, 5), (5, 6)],
-            ]
-    count = {1: 4, 2: 3, 3: 3}
-    """
+    if len(shipp) > 1:
+        straights = [len(set(x)) == 1 for x in zip(*shipp)]
+        print(f'{straights = }')
+        straight = straights.count(True) == 1
+        print(f'{straight = }')
+        if not straight:
+            raise ValueError('! straight')
 
-    for block in ship:
-        pass
+    for by, bx in shipp:
+        for y, x in [(y, x) for y in (-1, 1) for x in (-1, 1)]:
+            if battlefield[by+y][bx+x]:
+                raise ValueError('diagonal')
+    print()
 
 def analyze(battlefield):
     bf = [row[:] for row in battlefield]
