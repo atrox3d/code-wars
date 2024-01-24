@@ -12,10 +12,6 @@ def get_coords(battlefield, current, FREE, SHIP):
     new_coords = [(y+dy, x+dx) for dy, dx in DIRECTIONS for y, x in (current,)]
     legal_coords = [(y, x) for y, x in new_coords if 0 <= y < ROWS and 0 <= x < COLS]
     coords = [(y, x) for y, x in legal_coords if battlefield[y][x] in [FREE, SHIP]]
-
-    for item in [battlefield[y][x] for y, x in coords]:
-        assert item in [FREE, SHIP], f'get_coords: {item = }'
-        assert item <= SHIP, f'get_coords: {item = }'
     return coords
 
 def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
@@ -30,7 +26,7 @@ def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
         ship.extend(block)
     return ship
 
-def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, VISITED=2, SCANNED=3, sleep=0.2):
+def explore(battlefield, path, ships=None, FREE=0, SHIP=1, VISITED=2):
     current = path[-1]
     ships = ships if ships is not None else []
     coords = get_coords(battlefield, current, FREE, SHIP)
@@ -43,7 +39,7 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
             ships.append(ship)
         elif battlefield[y][x] == FREE:
             newpath = path + (coord,)
-            explore(battlefield, newpath, ships, START, END, FREE, SHIP)
+            explore(battlefield, newpath, ships, FREE, SHIP)
             battlefield[y][x] = VISITED
     return ships
 
@@ -55,7 +51,7 @@ def check_ship(battlefield, ship):
 
 def analyze(battlefield):
     bf = [row[:] for row in battlefield]
-    ships = explore(battlefield, ((0, 0),), None, sleep=0.0)
+    ships = explore(battlefield, ((0, 0),), None)
 
     count = {}
     correct = {1: 4, 2: 3, 3: 3}
