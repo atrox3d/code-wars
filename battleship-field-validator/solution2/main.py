@@ -64,8 +64,6 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
     for coord in [yx for yx in coords if yx not in path]:
         y, x = coord
         item = battlefield[y][x]
-        # assert item in [FREE, SHIP], f'explore: {item = }'
-        # assert item <= SHIP, f'explore: {item = }'
         if battlefield[y][x] == SHIP:
     
             log.debug(f'ship found {coord = }') # DELETE
@@ -80,13 +78,9 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
             newpath = path + (coord,)
             explore(battlefield, newpath, ships, START, END, FREE, SHIP)
             battlefield[y][x] = VISITED
-        # else:
-            # raise ValueError(f'{y, x = } -> {battlefield[y][x]}')
-            # continue
+        
         display(battlefield, path, ships) # DELETE
-    
     helpers.RECURSION_LEVEL -= 1 # DELETE
-    assert len(set(path)) == len(path), "you have duplicate coordinates"
 
 def main():
     battlefield = load_ascii_battlefield(Path(__file__).parent / 'battlefield.ascii.txt')
