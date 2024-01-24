@@ -81,6 +81,10 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
     helpers.RECURSION_LEVEL -= 1 # DELETE
     return ships
 
+def check_ship(ship, battlefield):
+    for block in ship:
+        pass
+
 def analyze(battlefield):
     ships = explore(battlefield, ((0, 0),), None, sleep=0.0)
     print(f'{ships = }')
