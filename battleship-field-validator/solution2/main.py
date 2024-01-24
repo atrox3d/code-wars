@@ -47,9 +47,7 @@ def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
         ship.extend(block)
 
     log.debug(f'EXIT: {ship = }')
-
     return ship
-        
 
 def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, VISITED=2, SCANNED=3, sleep=0.2):
     helpers.MAX_RECURSION_LEVEL += 1 # DELETE
@@ -81,11 +79,22 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
         
         display(battlefield, path, ships) # DELETE
     helpers.RECURSION_LEVEL -= 1 # DELETE
+    return ships
+
+def analyze(battlefield):
+    ships = explore(battlefield, ((0, 0),), None, sleep=0.0)
+    print(f'{ships = }')
+    count = {}
+    for ship in sorted(ships, key=len):
+        count[len(ship)] = count.get(len(ship), 0) + 1
+    print(f'{count = }')
+    correct = {1: 4, 2: 3, 3: 3}
+    print(f'{count == correct = }')
 
 def main():
     battlefield = load_ascii_battlefield(Path(__file__).parent / 'battlefield.ascii.txt')
     battlefield = convert_battlefield(battlefield)
-    explore(battlefield, ((0, 0),), None, sleep=0.0)
+    analyze(battlefield)
     print('exit NOT FOUND!')
 
 if __name__ == '__main__':
