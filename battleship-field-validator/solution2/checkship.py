@@ -10,7 +10,7 @@ def check_ship(battlefield, ship):
     if len(shipp) > 1:
         straights = [len(set(x)) == 1 for x in zip(*shipp)]
         print(f'{straights = }')
-        straight = not all(straights)
+        straight = straights.count(True) == 1
         print(f'{straight = }')
         if not straight:
             raise ValueError('! straight')
