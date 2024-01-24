@@ -56,7 +56,7 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
     current = path[-1]
     ships = ships if ships is not None else []
     
-    display(battlefield, path, ships, sleep=sleep) # DELETE
+    # display(battlefield, path, ships, sleep=sleep) # DELETE
 
     coords = get_coords(battlefield, current, FREE, SHIP)
     for coord in [yx for yx in coords if yx not in path]:
@@ -77,7 +77,7 @@ def explore(battlefield, path, ships=None, START='A', END='B', FREE=0, SHIP=1, V
             explore(battlefield, newpath, ships, START, END, FREE, SHIP)
             battlefield[y][x] = VISITED
         
-        display(battlefield, path, ships) # DELETE
+        # display(battlefield, path, ships) # DELETE
     helpers.RECURSION_LEVEL -= 1 # DELETE
     return ships
 
@@ -116,8 +116,11 @@ def analyze(battlefield):
     for row in bf:
         print(row)
 
-    for ship in ships:
-        check_ship(bf, ship)
+    try:
+        for ship in ships:
+            check_ship(bf, ship)
+    except ValueError as ve:
+        print(repr(ve))
 
 def main():
     for file in [file  for spec in ['*.ascii', '*.csv'] for file in Path.cwd().glob(spec)]:
