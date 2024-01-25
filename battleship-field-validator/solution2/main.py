@@ -34,10 +34,17 @@ def explore(battlefield, path, ships=None, FREE=0, SHIP=1, VISITED=2):
     return ships
 
 def check_ship(battlefield, ship):
+    ROWS = len(battlefield) 
+    COLS = len(battlefield[0])
     for by, bx in ship:
         for y, x in [(y, x) for y in (-1, 1) for x in (-1, 1)]:
-            if battlefield[by+y][bx+x]:
-                return False
+            by += y
+            bx += x
+            if 0 <= by < ROWS and 0 <= bx < COLS:
+                if battlefield[by][bx]:
+                    return False
+            else:
+                continue
     return True
 
 def count_ships(ships):
@@ -56,6 +63,7 @@ def validate_battlefield(battlefield):
     START = 0, 0
     PATH = (START, )
     ships = None
+    helpers.display(battlefield, PATH, ships)
     ships = explore(battlefield, PATH, ships)
 
     for ship in ships:

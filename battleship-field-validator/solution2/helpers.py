@@ -71,6 +71,8 @@ def display(
 
     print(f'{MAX_RECURSION_LEVEL = }')
     print(f'{RECURSION_LEVEL = }')
+
+    ships = ships if ships is not None else []
     
     bf = battlefield[:]
     for y, x in path:
