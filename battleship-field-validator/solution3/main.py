@@ -1,9 +1,13 @@
+from pathlib import Path
+
 import helpers
 
 def main(solution):
+    DATA_PATH = Path(__file__).parent / 'data'
+
     JSON = True
     if JSON:
-        for file in helpers.get_files(__file__, '*.json'):
+        for file in helpers.get_files(DATA_PATH, '*.json'):
             tests = helpers.load_file(file)
             for test in tests:
                 name = test['name']
@@ -13,7 +17,7 @@ def main(solution):
                 result = solution(battlefield)
                 print(f'{name} -> {result = } -> {expected = }')
     else:
-        for file in helpers.get_files(__file__, '*.ascii', '*.csv'):
+        for file in helpers.get_files(DATA_PATH, '*.ascii', '*.csv'):
             battlefield = helpers.load_file(file)
             battlefield = helpers.convert_battlefield(battlefield)
             result = solution(battlefield)

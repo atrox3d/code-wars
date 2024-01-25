@@ -1,4 +1,3 @@
-import helpers
 import main
 
 def get_coords(battlefield, y, x, FREE, SHIP):
