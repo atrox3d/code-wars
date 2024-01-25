@@ -18,8 +18,16 @@ def get_loader(file):
         return load_ascii_battlefield
     elif Path(file).suffix == '.csv':
         return load_csv_battlefield
+    elif Path(file).suffix == '.json':
+        return load_json_battlefields
     else:
         raise NotImplementedError(f'unknown extension {Path(file).suffix}')
+
+def load_json_battlefields(filename):
+    import json
+    with open(filename, 'r') as fp:
+        tests = json.load(fp)
+        return tests
 
 def load_csv_battlefield(filename: str):
     with open(filename, newline='') as file:

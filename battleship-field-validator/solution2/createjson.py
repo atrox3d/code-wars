@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-tests = {
+tests = [{
     'name': '01',
     'data': [
                 [0, 1, 0, 0, 0, 1, 0, 0, 1, 0],
@@ -15,7 +15,7 @@ tests = {
                 [0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
     ]
-}
+}]
 
 path = Path(__file__).parent / 'tests.json'
 
