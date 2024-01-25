@@ -16,10 +16,9 @@ def get_coords(battlefield, current, FREE, SHIP):
 def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
     battlefield[y][x] = SCANNED
     ship = [(y, x)]
-    for coord in [(y, x) for y, x in get_coords(battlefield, (y, x), FREE, SHIP) if (y, x) not in path and battlefield[y][x] == SHIP]:
-        y, x = coord
+    for y, x in [(y, x) for y, x in get_coords(battlefield, (y, x), FREE, SHIP) if (y, x) not in path and battlefield[y][x] == SHIP]:
         battlefield[y][x] = SCANNED
-        path = path + (coord, )
+        path = path + (y, x)
         block = scan_ship(battlefield, path, y, x)
         ship.extend(block)
     return ship
