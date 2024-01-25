@@ -26,9 +26,8 @@ def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
 def explore(battlefield, path, ships=None, FREE=0, SHIP=1, VISITED=2):
     current = path[-1]
     ships = ships if ships is not None else []
-    for coord in [yx for yx in get_coords(battlefield, current, FREE, SHIP) if yx not in path]:
-        y, x = coord
-        item = battlefield[y][x]
+    for y, x in [yx for yx in get_coords(battlefield, current, FREE, SHIP) if yx not in path]:
+        coord = y, x
         if battlefield[y][x] == SHIP:
             newpath = path + (coord,)
             ship = scan_ship(battlefield, newpath, y, x)
