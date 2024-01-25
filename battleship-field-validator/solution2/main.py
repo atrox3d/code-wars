@@ -39,26 +39,32 @@ def check_ship(battlefield, ship):
     for by, bx in ship:
         for y, x in [(y, x) for y in (-1, 1) for x in (-1, 1)]:
             if battlefield[by+y][bx+x]:
-                raise ValueError('diagonal')
+                return False
+    return True
+
+def count_ships(ships):
+    count = {}
+    COUNT = {1: 4, 2: 3, 3: 3}
+
+    for ship in sorted(ships, key=len):
+        count[len(ship)] = count.get(len(ship), 0) + 1
+    if count != COUNT:
+        return False
+    return True
 
 def analyze(battlefield):
     bf = [row[:] for row in battlefield]
-    ships = explore(battlefield, ((0, 0),), None)
+    START = 0, 0
+    PATH = (START, )
+    ships = None
+    ships = explore(battlefield, PATH, ships)
 
-    count = {}
-    correct = {1: 4, 2: 3, 3: 3}
-    for ship in sorted(ships, key=len):
-        count[len(ship)] = count.get(len(ship), 0) + 1
-    if count != correct:
-        return False
+    for ship in ships:
+        if not check_ship(bf, ship):
+            return False
+        
+    return count_ships(ships)
 
-    try:
-        for ship in ships:
-            check_ship(bf, ship)
-    except ValueError as ve:
-        return False
-    
-    return True
 
 def main():
     for file in helpers.get_files(__file__, '*.ascii', '*.csv'):
