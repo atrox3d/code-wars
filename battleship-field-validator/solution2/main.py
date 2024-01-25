@@ -8,9 +8,6 @@ def get_coords(battlefield, current, FREE, SHIP):
     LEFT = UP = -1
     RIGHT = DOWN = 1
     DIRECTIONS = ((0, RIGHT), (DOWN, 0), (0, LEFT), (UP, 0))
-    DIRECTIONS = [(y, x) for y in range(-1, 2) for x in range(-1, 2) 
-          if y!=x and 0 in (y, x)]
-    
     new_coords = [(y+dy, x+dx) for dy, dx in DIRECTIONS for y, x in (current,)]
     legal_coords = [(y, x) for y, x in new_coords if 0 <= y < ROWS and 0 <= x < COLS]
     coords = [(y, x) for y, x in legal_coords if battlefield[y][x] in [FREE, SHIP]]
