@@ -5,6 +5,8 @@ MAX_RECURSION_LEVEL = RECURSION_LEVEL = 0
 
 
 def get_files(path, *wildcards):
+    path = Path(path)
+    path = path if path.is_dir() else path.parent
     return [file  for wildcard in [*wildcards] for file in Path(path).glob(wildcard)]
 
 def load_file(file):
