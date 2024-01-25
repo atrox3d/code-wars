@@ -58,13 +58,11 @@ def count_ships(ships):
     return True
 
 
-def validate_battlefield(battlefield, show=False):
+def validate_battlefield(battlefield):
     bf = [row[:] for row in battlefield]
     START = 0, 0
     PATH = (START, )
     ships = None
-    if show:
-        helpers.display(battlefield, PATH, ships)
     ships = explore(battlefield, PATH, ships)
 
     for ship in ships:
@@ -85,7 +83,8 @@ def main():
                 name = test['name']
                 battlefield = test['data']
                 expected = test['expected']
-                result = validate_battlefield(battlefield, show=True)
+                helpers.display(battlefield)
+                result = validate_battlefield(battlefield)
                 print(f'{name} -> {result = } -> {expected = }')
     else:
         for file in helpers.get_files(__file__, '*.ascii', '*.csv'):

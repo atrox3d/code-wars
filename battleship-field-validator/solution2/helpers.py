@@ -60,7 +60,9 @@ def add_coordinates(matrix: list[list]) -> list[str]:
     return out
 
 def display(
-            battlefield, path, ships, 
+            battlefield, 
+            path=None, 
+            ships=None, 
             SCANNED='#', SHIP=chr(9608), FREE=' ', PATH='.', HEAD='M', 
             print_matrix=True, 
             print_path=False, 
@@ -73,11 +75,13 @@ def display(
     print(f'{RECURSION_LEVEL = }')
 
     ships = ships if ships is not None else []
+    path = path if path is not None else []
     
     bf = battlefield[:]
-    for y, x in path:
-        bf[y][x] = PATH
-    bf[y][x] = HEAD
+    if path:
+        for y, x in path:
+            bf[y][x] = PATH
+        bf[y][x] = HEAD
 
     bf = [[str(item).replace('1', SHIP)
           .replace('0', FREE)
