@@ -8,6 +8,8 @@ def get_coords(battlefield, current, FREE, SHIP):
     LEFT = UP = -1
     RIGHT = DOWN = 1
     DIRECTIONS = ((0, RIGHT), (DOWN, 0), (0, LEFT), (UP, 0))
+    DIRECTIONS = [(y, x) for y in range(-1, 2) for x in range(-1, 2) 
+          if y!=x and 0 in (y, x)]
     
     new_coords = [(y+dy, x+dx) for dy, dx in DIRECTIONS for y, x in (current,)]
     legal_coords = [(y, x) for y, x in new_coords if 0 <= y < ROWS and 0 <= x < COLS]
@@ -69,7 +71,8 @@ def analyze(battlefield):
     return True
 
 def main():
-    for file in [file  for spec in ['*.ascii', '*.csv'] for file in Path.cwd().glob(spec)]:
+    for file in [file  for spec in ['*.ascii', '*.csv'] 
+                 for file in Path(__file__).parent.glob(spec)]:
         battlefield = get_loader(file)(file)
         battlefield = convert_battlefield(battlefield)
         result = analyze(battlefield)
