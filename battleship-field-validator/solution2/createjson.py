@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 tests = {
-    'name': 'exception01',
+    'name': '01',
     'data': [
                 [0, 1, 0, 0, 0, 1, 0, 0, 1, 0],
                 [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
