@@ -66,11 +66,15 @@ def validate_battlefield(battlefield):
 
 
 def main():
-    for file in helpers.get_files(__file__, '*.ascii', '*.csv'):
-        battlefield = helpers.load_file(file)
-        battlefield = helpers.convert_battlefield(battlefield)
-        result = validate_battlefield(battlefield)
-        print(f'{file.name} -> {result}')
+    JSON = True
+    if JSON:
+        raise NotImplementedError('TODO implement json tests')
+    else:
+        for file in helpers.get_files(__file__, '*.ascii', '*.csv'):
+            battlefield = helpers.load_file(file)
+            battlefield = helpers.convert_battlefield(battlefield)
+            result = validate_battlefield(battlefield)
+            print(f'{file.name} -> {result}')
 
 if __name__ == '__main__':
     import sys
