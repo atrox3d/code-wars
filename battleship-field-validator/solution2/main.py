@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from helpers import display, get_loader, convert_battlefield
+from helpers import display, load_file, get_files,  convert_battlefield
 
 def get_coords(battlefield, current, FREE, SHIP):
     ROWS = len(battlefield) 
@@ -71,9 +71,8 @@ def analyze(battlefield):
     return True
 
 def main():
-    for file in [file  for spec in ['*.ascii', '*.csv'] 
-                 for file in Path(__file__).parent.glob(spec)]:
-        battlefield = get_loader(file)(file)
+    for file in get_files(Path(__file__).parent, '*.ascii', '*.csv'):
+        battlefield = load_file(file)
         battlefield = convert_battlefield(battlefield)
         result = analyze(battlefield)
         print(f'{file.name} -> {result}')

@@ -3,6 +3,14 @@ from pathlib import Path
 
 MAX_RECURSION_LEVEL = RECURSION_LEVEL = 0
 
+
+def get_files(path, *wildcards):
+    return [file  for wildcard in [*wildcards] for file in Path(path).glob(wildcard)]
+
+def load_file(file):
+    loader = get_loader(file)
+    return loader(file)
+
 def get_loader(file):
     if Path(file).suffix == '.ascii':
         return load_ascii_battlefield
