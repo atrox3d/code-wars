@@ -38,10 +38,8 @@ def check_ship(battlefield, ship):
     COLS = len(battlefield[0])
     for by, bx in ship:
         for y, x in [(y, x) for y in (-1, 1) for x in (-1, 1)]:
-            by += y
-            bx += x
-            if 0 <= by < ROWS and 0 <= bx < COLS:
-                if battlefield[by][bx]:
+            if 0 <= by+y < ROWS and 0 <= bx+x < COLS:
+                if battlefield[by+y][bx+x]:
                     return False
             else:
                 continue
@@ -49,25 +47,30 @@ def check_ship(battlefield, ship):
 
 def count_ships(ships):
     count = {}
-    COUNT = {1: 4, 2: 3, 3: 3}
+    COUNT = {1: 4, 2: 3, 3: 2, 4: 1}
 
     for ship in sorted(ships, key=len):
         count[len(ship)] = count.get(len(ship), 0) + 1
     if count != COUNT:
+        print(f'{COUNT = }')
+        print(f'{count = }')
         return False
     return True
 
 
-def validate_battlefield(battlefield):
+def validate_battlefield(battlefield, show=False):
     bf = [row[:] for row in battlefield]
     START = 0, 0
     PATH = (START, )
     ships = None
-    helpers.display(battlefield, PATH, ships)
+    if show:
+        helpers.display(battlefield, PATH, ships)
     ships = explore(battlefield, PATH, ships)
 
     for ship in ships:
-        if not check_ship(bf, ship):
+        check = check_ship(bf, ship)
+        print(f'{check = }')
+        if not check:
             return False
         
     return count_ships(ships)
@@ -81,8 +84,9 @@ def main():
             for test in tests:
                 name = test['name']
                 battlefield = test['data']
-                result = validate_battlefield(battlefield)
-                print(f'{name} -> {result}')
+                expected = test['expected']
+                result = validate_battlefield(battlefield, show=True)
+                print(f'{name} -> {result = } -> {expected = }')
     else:
         for file in helpers.get_files(__file__, '*.ascii', '*.csv'):
             battlefield = helpers.load_file(file)

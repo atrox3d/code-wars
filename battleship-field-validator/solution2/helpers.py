@@ -67,7 +67,7 @@ def display(
             sleep=0.2
             ):
     time.sleep(sleep)
-    os.system('clear')
+    # os.system('clear')
 
     print(f'{MAX_RECURSION_LEVEL = }')
     print(f'{RECURSION_LEVEL = }')
