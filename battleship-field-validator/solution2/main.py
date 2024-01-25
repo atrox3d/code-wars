@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import helpers
 
 def get_coords(battlefield, y, x, FREE, SHIP):
@@ -52,7 +50,8 @@ def count_ships(ships):
         return False
     return True
 
-def analyze(battlefield):
+
+def validate_battlefield(battlefield):
     bf = [row[:] for row in battlefield]
     START = 0, 0
     PATH = (START, )
@@ -70,7 +69,7 @@ def main():
     for file in helpers.get_files(__file__, '*.ascii', '*.csv'):
         battlefield = helpers.load_file(file)
         battlefield = helpers.convert_battlefield(battlefield)
-        result = analyze(battlefield)
+        result = validate_battlefield(battlefield)
         print(f'{file.name} -> {result}')
 
 if __name__ == '__main__':
