@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import helpers.files as files
+import helpers.loader as loader
 import helpers.matrix as matrix
 
 def main(solution):
@@ -8,8 +8,8 @@ def main(solution):
 
     JSON = True
     if JSON:
-        for file in files.get_files(DATA_PATH, '*.json'):
-            tests = files.load_file(file)
+        for file in loader.get_files(DATA_PATH, '*.json'):
+            tests = loader.load_file(file)
             for test in tests:
                 name = test['name']
                 battlefield = test['data']
@@ -18,8 +18,8 @@ def main(solution):
                 result = solution(battlefield)
                 print(f'{name} -> {result = } -> {expected = }')
     else:
-        for file in files.get_files(DATA_PATH, '*.ascii', '*.csv'):
-            battlefield = files.load_file(file)
+        for file in loader.get_files(DATA_PATH, '*.ascii', '*.csv'):
+            battlefield = loader.load_file(file)
             battlefield = matrix.convert_battlefield(battlefield)
             result = solution(battlefield)
             print(f'{file.name} -> {result}')

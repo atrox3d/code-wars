@@ -1,8 +1,6 @@
-import csv, os, time
+import json
+import csv
 from pathlib import Path
-
-MAX_RECURSION_LEVEL = RECURSION_LEVEL = 0
-
 
 def get_files(path, *wildcards):
     path = Path(path)
@@ -23,7 +21,6 @@ def get_loader(file):
         raise NotImplementedError(f'unknown extension {Path(file).suffix}')
 
 def load_json_battlefields(filename):
-    import json
     with open(filename, 'r') as fp:
         tests = json.load(fp)
         return tests
