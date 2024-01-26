@@ -15,21 +15,21 @@ def get_files(*wildcards: tuple[str], extensions: str=None, path: str|Path=DATA_
 
     return [file  for wildcard in [*wildcards] for file in Path(path).glob(wildcard)]
 
-def load_battlefield(file_path: str|Path):
+def battlefield(file_path: str|Path):
     loader = get_loader(file_path)
     return loader(file_path)
 
 def get_loader(file_path: str|Path):
     if Path(file_path).suffix == '.ascii':
-        return load_ascii_battlefield
+        return ascii_battlefield
     elif Path(file_path).suffix == '.csv':
-        return load_csv_battlefield
+        return csv_battlefield
     elif Path(file_path).suffix == '.json':
-        return load_json_battlefields
+        return json_battlefields
     else:
         raise NotImplementedError(f'unknown extension {Path(file_path).suffix}')
 
-def load_json_battlefields(file_path: str|Path):
+def json_battlefields(file_path: str|Path):
     with open(file_path, 'r') as fp:
         tests = json.load(fp)
         return tests
@@ -45,14 +45,14 @@ def non_json_adapter(func):
     return wrapper
 
 @non_json_adapter
-def load_csv_battlefield(file_path: str|Path):
+def csv_battlefield(file_path: str|Path):
     with open(file_path, newline='') as file:
         reader = csv.reader(file)
         battlefield =  [[char.strip() if char.strip() in '01' else char for char in line] for line in reader ]
         return battlefield
 
 @non_json_adapter
-def load_ascii_battlefield(file_path: str|Path):
+def ascii_battlefield(file_path: str|Path):
     with open(file_path) as fp:
         battlefield = [[cell for cell in list(line.rstrip('\n'))] for line in fp]
     return battlefield

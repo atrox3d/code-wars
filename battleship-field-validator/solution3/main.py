@@ -1,12 +1,12 @@
 from pathlib import Path
 
-import helpers.loader as loader
+import helpers.load as load
 import helpers.matrix as matrix
 
 def main(solution):
 
-    for file_path in loader.get_files(extensions='json, ascii, csv'):
-        tests = loader.load_battlefield(file_path)
+    for file_path in load.get_files(extensions='json, ascii, csv'):
+        tests = load.battlefield(file_path)
         for test in tests:
             name = test['name']
             battlefield = test['data']
