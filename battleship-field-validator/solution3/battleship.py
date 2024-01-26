@@ -1,3 +1,7 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
 def get_coords(battlefield, y, x, FREE, SHIP):
     ROWS = len(battlefield) 
     COLS = len(battlefield[0])
@@ -21,6 +25,7 @@ def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
 
 def explore(battlefield, path, ships=None, FREE=0, SHIP=1, VISITED=2):
     y, x = path[-1]
+    logger.debug(f'{y, x = }')
     ships = ships if ships is not None else []
     for y, x in [yx for yx in get_coords(battlefield, y, x, FREE, SHIP) if yx not in path]:
         newpath = path + ((y, x),)
@@ -50,8 +55,8 @@ def count_ships(ships):
     for ship in sorted(ships, key=len):
         count[len(ship)] = count.get(len(ship), 0) + 1
     if count != COUNT:
-        print(f'{COUNT = }')
-        print(f'{count = }')
+        logger.debug(f'{COUNT = }')
+        logger.debug(f'{count = }')
         return False
     return True
 
@@ -61,7 +66,10 @@ def validate_battlefield(battlefield):
     START = 0, 0
     PATH = (START, )
     ships = None
+    logger.debug(f'start explore')
     ships = explore(battlefield, PATH, ships)
+    logger.debug(f'end explore')
+    logger.debug(f'{ships = }')
 
     for ship in ships:
         check = check_ship(bf, ship)

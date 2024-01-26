@@ -1,6 +1,7 @@
-import os, time
+import os, time, logging
 
 MAX_RECURSION_LEVEL = RECURSION_LEVEL = 0
+logger = logging.getLogger(__name__)
 
 def battlefield_to_int(battlefield):
     return [[int(char) for char in row] for row in battlefield]
@@ -31,12 +32,14 @@ def display(
             clear_screen=False,
             sleep=0.2
             ):
+    logger.debug(f'{sleep = }')
     time.sleep(sleep)
     if clear_screen:
         os.system('clear')
+        logger.info(f'screen cleared')
 
-    print(f'{MAX_RECURSION_LEVEL = }')
-    print(f'{RECURSION_LEVEL = }')
+    # print(f'{MAX_RECURSION_LEVEL = }')
+    # print(f'{RECURSION_LEVEL = }')
 
     ships = ships if ships is not None else []
     path = path if path is not None else []
