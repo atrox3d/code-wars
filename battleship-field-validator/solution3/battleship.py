@@ -1,5 +1,3 @@
-import main
-
 def get_coords(battlefield, y, x, FREE, SHIP):
     ROWS = len(battlefield) 
     COLS = len(battlefield[0])
@@ -72,7 +70,3 @@ def validate_battlefield(battlefield):
             return False
         
     return count_ships(ships)
-
-if __name__ == '__main__':
-    import sys
-    sys.exit(main.main(solution=validate_battlefield))

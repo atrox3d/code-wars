@@ -27,7 +27,7 @@ def display(
             ships=None, 
             SCANNED='#', SHIP=chr(9608), FREE=' ', PATH='.', HEAD='M', 
             print_matrix=True, 
-            print_path=False, 
+            print_path=False,
             sleep=0.2
             ):
     time.sleep(sleep)
