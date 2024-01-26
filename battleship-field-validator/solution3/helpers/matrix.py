@@ -28,10 +28,12 @@ def display(
             SCANNED='#', SHIP=chr(9608), FREE=' ', PATH='.', HEAD='M', 
             print_matrix=True, 
             print_path=False,
+            clear_screen=False,
             sleep=0.2
             ):
     time.sleep(sleep)
-    # os.system('clear')
+    if clear_screen:
+        os.system('clear')
 
     print(f'{MAX_RECURSION_LEVEL = }')
     print(f'{RECURSION_LEVEL = }')
