@@ -2,11 +2,13 @@ import json
 import csv
 from pathlib import Path
 
-def get_files(path, *wildcards):
+DATA_PATH = Path(__file__).parent.parent / 'data'
+
+def get_files(*wildcards, path=DATA_PATH):
     path = Path(path)
     return [file  for wildcard in [*wildcards] for file in Path(path).glob(wildcard)]
 
-def load_file(file):
+def load_battlefield(file):
     loader = get_loader(file)
     return loader(file)
 
@@ -25,12 +27,24 @@ def load_json_battlefields(filename):
         tests = json.load(fp)
         return tests
 
+def non_json_adapter(func):
+    def wrapper(filename):
+        battlefield = func(filename)
+        return [{
+                'name': filename,
+                'data': battlefield,
+                'expected': 'unknown'
+            }]
+    return wrapper
+
+@non_json_adapter
 def load_csv_battlefield(filename: str):
     with open(filename, newline='') as file:
         reader = csv.reader(file)
         battlefield =  [[char.strip() if char.strip() in '01' else char for char in line] for line in reader ]
         return battlefield
 
+@non_json_adapter
 def load_ascii_battlefield(filename: str):
     with open(filename) as fp:
         battlefield = [[cell for cell in list(line.rstrip('\n'))] for line in fp]
