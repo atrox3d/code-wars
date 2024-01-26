@@ -4,10 +4,10 @@ from pathlib import Path
 
 DATA_PATH = Path(__file__).parent.parent / 'data'
 
-def parse_extensions(ext_str:str, separator=', '):
+def parse_extensions(ext_str:str, separator: str=', '):
     return tuple([f'*.{ext}' for ext in ext_str.split(sep=separator)])
 
-def get_files(*wildcards, extensions=None, path=DATA_PATH):
+def get_files(*wildcards: tuple[str], extensions: str=None, path: str|Path=DATA_PATH):
     path = Path(path)
 
     if extensions is not None:
@@ -15,22 +15,22 @@ def get_files(*wildcards, extensions=None, path=DATA_PATH):
 
     return [file  for wildcard in [*wildcards] for file in Path(path).glob(wildcard)]
 
-def load_battlefield(file):
-    loader = get_loader(file)
-    return loader(file)
+def load_battlefield(file_path: str|Path):
+    loader = get_loader(file_path)
+    return loader(file_path)
 
-def get_loader(file):
-    if Path(file).suffix == '.ascii':
+def get_loader(file_path: str|Path):
+    if Path(file_path).suffix == '.ascii':
         return load_ascii_battlefield
-    elif Path(file).suffix == '.csv':
+    elif Path(file_path).suffix == '.csv':
         return load_csv_battlefield
-    elif Path(file).suffix == '.json':
+    elif Path(file_path).suffix == '.json':
         return load_json_battlefields
     else:
-        raise NotImplementedError(f'unknown extension {Path(file).suffix}')
+        raise NotImplementedError(f'unknown extension {Path(file_path).suffix}')
 
-def load_json_battlefields(filename):
-    with open(filename, 'r') as fp:
+def load_json_battlefields(file_path: str|Path):
+    with open(file_path, 'r') as fp:
         tests = json.load(fp)
         return tests
 
@@ -45,14 +45,14 @@ def non_json_adapter(func):
     return wrapper
 
 @non_json_adapter
-def load_csv_battlefield(filename: str):
-    with open(filename, newline='') as file:
+def load_csv_battlefield(file_path: str|Path):
+    with open(file_path, newline='') as file:
         reader = csv.reader(file)
         battlefield =  [[char.strip() if char.strip() in '01' else char for char in line] for line in reader ]
         return battlefield
 
 @non_json_adapter
-def load_ascii_battlefield(filename: str):
-    with open(filename) as fp:
+def load_ascii_battlefield(file_path: str|Path):
+    with open(file_path) as fp:
         battlefield = [[cell for cell in list(line.rstrip('\n'))] for line in fp]
     return battlefield

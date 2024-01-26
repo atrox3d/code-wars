@@ -5,9 +5,8 @@ import helpers.matrix as matrix
 
 def main(solution):
 
-    # for file in loader.get_files('*.json', '*.ascii', '*.csv'):
-    for file in loader.get_files(extensions='json, ascii, csv'):
-        tests = loader.load_battlefield(file)
+    for file_path in loader.get_files(extensions='json, ascii, csv'):
+        tests = loader.load_battlefield(file_path)
         for test in tests:
             name = test['name']
             battlefield = test['data']
