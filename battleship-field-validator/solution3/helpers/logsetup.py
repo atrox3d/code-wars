@@ -13,7 +13,7 @@ def override(nested: dict, path: str, value, sep='.'):
         target = target[key]
     target[path[-1]] = value
 
-def find_path(nested: dict, key: str, path: list=None, sep=None):
+def find_path(nested: dict, key: str, path: list=None, sep='.'):
     path = path or []
     found = None    
     for k in nested:
@@ -27,13 +27,14 @@ def find_path(nested: dict, key: str, path: list=None, sep=None):
         if not path: # root of dict, path is []
             raise KeyError(f'key {key!r} not found')
 
-    if found:
+    if found and not path: # root of dict, path is []
         if sep: 
             # return 'sep' separated string
+            print(f'{found}')
             return sep.join(found)
-        # return list
-        return found 
-    
+    # return list
+    return found
+
 
 def setup(**kwargs):
     config_file = pathlib.Path(__file__).parent / 'logger.json'
@@ -53,7 +54,7 @@ def setup(**kwargs):
 
 if __name__ == '__main__':
     config = setup()
-    path = find_path(config, 'level', sep='.')
+    path = find_path(config, 'level')
     print(f'path to level = {path}')
     override(config, path, 'INFO')
     print(json.dumps(config, indent=1 ))
