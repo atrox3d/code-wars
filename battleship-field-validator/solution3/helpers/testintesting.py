@@ -84,5 +84,9 @@ if __name__ == '__main__':
     print(keys)
 
     for key in keys:
-        path = path_to_key(config, key)
-        print(f'{path = }')
+        try:
+            path = path_to_key(config, key, 'handlers')
+            print(f'{path = }')
+        except NestedKeyError as ne:
+            print(repr(ne))
+        print()
