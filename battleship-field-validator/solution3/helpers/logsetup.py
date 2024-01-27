@@ -1,7 +1,7 @@
-import atexit
+# import atexit
 import json
 import logging.config
-import logging.handlers
+# import logging.handlers
 import pathlib
 
 logger = logging.getLogger(__name__)  # __name__ is a common choice
@@ -15,17 +15,24 @@ def override(nested: dict, path: str, value, sep='.'):
 
 def find_path(nested: dict, key: str, path: list=None, sep=None):
     path = path or []
-
-    if key in nested:
-        path.append(key)
-        return path
-    
+    found = None    
     for k in nested:
-        if isinstance(nested[k], dict):
+        if key == k:
+            found = path + [k]
+            break
+        elif isinstance(nested[k], dict):
             if found := find_path(nested[k], key, path + [k]):
-                if sep:
-                    return sep.join(found)
-                return found
+                break
+    else:
+        if not path: # root of dict, path is []
+            raise KeyError(f'key {key!r} not found')
+
+    if found:
+        if sep: 
+            # return 'sep' separated string
+            return sep.join(found)
+        # return list
+        return found 
     
 
 def setup(**kwargs):
@@ -33,7 +40,10 @@ def setup(**kwargs):
     with open(config_file) as f_in:
         config = json.load(f_in)
 
-
+    for key, value in kwargs.items():
+        path = find_path(config, key)
+        override(config, path, value)
+    
     logging.config.dictConfig(config)
     # queue_handler = logging.getHandlerByName("queue_handler")
     # if queue_handler is not None:
@@ -43,8 +53,7 @@ def setup(**kwargs):
 
 if __name__ == '__main__':
     config = setup()
-    print(json.dumps(config, indent=4))
     path = find_path(config, 'level', sep='.')
     print(f'path to level = {path}')
     override(config, path, 'INFO')
-    print(json.dumps(config, indent=4))
+    print(json.dumps(config, indent=1 ))
