@@ -1,7 +1,5 @@
-# import atexit
 import json
 import logging.config
-# import logging.handlers
 import pathlib
 
 logger = logging.getLogger(__name__)  # __name__ is a common choice
@@ -11,7 +9,8 @@ class NestedKeyError(KeyError):
 
 def update_config_value(config, key, value):
     def set_nested_value(nested: dict, path: str, value, sep='.'):
-        path = path.split(sep)
+        if isinstance(path, str):
+            path = path.split(sep)
         target = nested
         for key in path[:-1]:
             target = target[key]
@@ -37,6 +36,7 @@ def update_config_value(config, key, value):
                 return sep.join(found)
         # return list
         return found
+    
     path = path_to_key(config, key)
     set_nested_value(config, path, value)
 
@@ -57,7 +57,4 @@ def setup(**kwargs):
 
 if __name__ == '__main__':
     config = setup(level='INFO')
-    # path = find_path(config, 'level')
-    # print(f'path to level = {path}')
-    # override(config, path, 'INFO')
     print(json.dumps(config, indent=1 ))
