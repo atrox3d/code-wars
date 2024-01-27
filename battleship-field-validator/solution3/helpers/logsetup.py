@@ -30,7 +30,6 @@ def find_path(nested: dict, key: str, path: list=None, sep='.'):
     if found and not path: # root of dict, path is []
         if sep: 
             # return 'sep' separated string
-            print(f'{found}')
             return sep.join(found)
     # return list
     return found
@@ -53,8 +52,8 @@ def setup(**kwargs):
     return config
 
 if __name__ == '__main__':
-    config = setup()
-    path = find_path(config, 'level')
-    print(f'path to level = {path}')
-    override(config, path, 'INFO')
+    config = setup(level='INFO')
+    # path = find_path(config, 'level')
+    # print(f'path to level = {path}')
+    # override(config, path, 'INFO')
     print(json.dumps(config, indent=1 ))
