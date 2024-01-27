@@ -17,16 +17,19 @@ def set_nested_value(nested: dict, path: str, value, sep='.'):
 
 def path_to_key(nested: dict, key: str, path: list=None, sep='.'):
     path = path or []
-    if sep in key:
-        *path, key= key.split(sep)
+    if isinstance(path, str):
+        path = path.split(sep)
+        # *path, key= key.split(sep)
         start = nested
         for node in path:
             start = start[node]
         
         print(f'{start = }, {path = }, {key = }')
-        return path_to_key(start, key, path)
-    elif isinstance(path, str):
-        path = path.split(sep)
+        found =  path_to_key(start, key, path)
+        if not found:
+            raise NestedKeyError(f'key {key!r} not found {path = }')
+        else:
+            return found
     
     found = None
     for k in nested:
@@ -38,7 +41,7 @@ def path_to_key(nested: dict, key: str, path: list=None, sep='.'):
                 break
     else:
         if not path: # root of dict, path is []
-            raise NestedKeyError(f'key {key!r} not found')
+            raise NestedKeyError(f'key {key!r} not found {path = }')
 
     if found and not path: # root of dict, path is []
         if sep: 
@@ -62,8 +65,24 @@ def setup(**kwargs):
     logging.config.dictConfig(config)
     return config
 
+def traverse(d, keys=None):
+    keys = keys or []
+    for k, v in d.items():
+        # print(f'{k, v = }')
+        keys.append(k)
+        print(k)
+        if isinstance(v, dict):
+            # print(f'traversing {v}')
+            traverse(v, keys)
+    # print(path)
+    return keys
+
 if __name__ == '__main__':
     config = setup()
     print(json.dumps(config, indent=1))
-    path = path_to_key(config, 'loggers.root.handlers')
-    print(f'{path = }')
+    keys = traverse(config)
+    print(keys)
+
+    for key in keys:
+        path = path_to_key(config, key)
+        print(f'{path = }')
