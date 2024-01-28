@@ -39,7 +39,6 @@ def find_keys(d, key):
     return keys
 
 def find_key(d: dict, key: str, start: list|str|type(None)=None, sep: str='.'):
-    # start = start or ''
     if not isinstance(start, str|list|type(None)):
         raise TypeError(f'start must be list|str|None')
     elif isinstance(start, list):
@@ -59,7 +58,7 @@ def find_key(d: dict, key: str, start: list|str|type(None)=None, sep: str='.'):
         raise NestedKeyError(f'key {key} not found, {start = }')
 
     if len(results) > 1:
-        raise NestedKeyError(f'too much results ({len(results)}): {results}')
+        raise NestedKeyError(f'too many results ({len(results)}): {results}')
     return results
 
 def main():
@@ -72,7 +71,7 @@ def main():
     config = __getconfig()
     print(json.dumps(config, indent=2))
     try:
-        print(find_key(config, 'handlers', start='formatters'))
+        print(find_key(config, 'handlers'))
     except NestedKeyError as nke:
         print(repr(nke))
 
