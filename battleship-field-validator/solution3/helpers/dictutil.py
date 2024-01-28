@@ -45,6 +45,10 @@ def find_keys(d, key):
             pass
     return keys
 
-config = __getconfig()
-print(json.dumps(config, indent=2))
-print(find_keys(config, 'handlers'))
+def main():
+    config = __getconfig()
+    print(json.dumps(config, indent=2))
+    print(find_keys(config, 'handlers'))
+
+if __name__ == '__main__':
+    main()
