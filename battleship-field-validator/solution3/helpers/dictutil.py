@@ -38,48 +38,29 @@ def find_keys(d, key):
             pass
     return keys
 
-def find_key(d: dict, key: str, start: list|str|None=None, sep: str='.'):
+def find_key(d: dict, key: str, start: list|str|type(None)=None, sep: str='.'):
+    # start = start or ''
+    if not isinstance(start, str|list|type(None)):
+        raise TypeError(f'start must be list|str|None')
+    elif isinstance(start, list):
+        nodes = start[:]
+        path = sep.join(start)
+    else:
+        nodes = sep.split(start)
+        path = start
+    
     results = find_keys(d, key)
+    
+    if start:
+        for result in results:
+            full = sep.join(result)
+            if full.startswith(path):
+                return result
+        raise NestedKeyError(f'key {key} not found, {start = }')
 
     if len(results) > 1:
         raise NestedKeyError(f'too much results ({len(results)}): {results}')
     return results
-
-def __find_key(d, key, start=None, sep='.'):
-    str_path = ''
-    list_path = []
-    if start:
-        if isinstance(start, str):
-            str_path =  start
-            list_path = start.split(sep)
-        elif isinstance(start, list):
-            str_path = sep.join(start)
-            list_path = start
-        elif start is not None:
-            raise ValueError(f'start must be None|str|list: {start=}')
-
-        for node in list_path:
-            try:
-                d = d[node]
-                print(f'starting from {node = }: {d =}')
-                paths = find_keys(d, key)
-                for path in paths:
-                    print(f'{list_path + path = }')
-                    path = list_path + path
-            except KeyError:
-                raise NestedKeyError(f'invalid start {start}')
-    else:    
-        paths = find_keys(d, key)
-    print(f'{paths = }')
-    print(f'{list_path = }')
-    if list_path:
-        for path in paths:
-            print(f'{path = }')
-            print(f'{path[:len(list_path)] = }')
-            if path[:len(list_path)] == list_path:
-                return path
-        raise NestedKeyError(f'key {key!r} not found')
-    return paths
 
 def main():
     def __getconfig():
@@ -91,7 +72,7 @@ def main():
     config = __getconfig()
     print(json.dumps(config, indent=2))
     try:
-        print(find_key(config, 'handlers'))
+        print(find_key(config, 'handlers', start='formatters'))
     except NestedKeyError as nke:
         print(repr(nke))
 
