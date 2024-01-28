@@ -1,6 +1,9 @@
+import logging
 import json
 import csv
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 DATA_PATH = Path(__file__).parent.parent / 'data'
 

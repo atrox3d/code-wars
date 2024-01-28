@@ -15,4 +15,3 @@ def setup(change=nested_dict.set_value, *args, **kwargs):
 
     logging.config.dictConfig(config)
     return config
-        

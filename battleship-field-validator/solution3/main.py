@@ -8,7 +8,7 @@ import battleship
 
 
 loggersetup.setup(level='INFO')
-logger = logging.getLogger(__name__)  # __name__ is a common choice
+logger = logging.getLogger(__name__)
 
 def main(solution):
     logger.info(f'START main: {logger.getEffectiveLevel() = }')
