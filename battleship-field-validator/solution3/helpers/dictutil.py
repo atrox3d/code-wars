@@ -24,7 +24,7 @@ def find_nested_key(d: dict, key: str, keys: list=None):
         return []
     raise NestedKeyError(f'find: key {key!r} not found {keys = }')
 
-def find_keys(d, key):
+def find_any_key(d, key):
     keys = []
     for k, v in d.items():
         if k == key:
@@ -38,7 +38,7 @@ def find_keys(d, key):
             pass
     return keys
 
-def find_key(d: dict, key: str, start: list|str|type(None)=None, sep: str='.'):
+def find_key(d: dict, key: str, start: list|str|None=None, sep: str='.'):
     if not isinstance(start, str|list|type(None)):
         raise TypeError(f'start must be list|str|None')
     elif isinstance(start, list):
@@ -48,7 +48,7 @@ def find_key(d: dict, key: str, start: list|str|type(None)=None, sep: str='.'):
         nodes = sep.split(start)
         path = start
     
-    results = find_keys(d, key)
+    results = find_any_key(d, key)
     
     if start:
         for result in results:
@@ -60,6 +60,15 @@ def find_key(d: dict, key: str, start: list|str|type(None)=None, sep: str='.'):
     if len(results) > 1:
         raise NestedKeyError(f'too many results ({len(results)}): {results}')
     return results
+
+
+def set_nested_value(d: dict, key,  value, start: str|list|None, sep='.'):
+    if isinstance(start, str):
+        start = start.split(sep)
+    target = d
+    for key in start[:-1]:
+        target = target[key]
+    target[start[-1]] = value
 
 def main():
     def __getconfig():
