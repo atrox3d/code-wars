@@ -1,6 +1,15 @@
-
 class NestedKeyError(KeyError):
     pass
+
+def get_all_keys(d, keys=None):
+    keys = keys or []
+    for k, v in d.items():
+        keys.append(k)
+        # print(k)
+        if isinstance(v, dict):
+            get_all_keys(v, keys)
+    return keys
+
 
 def find(d, key, keys=None):
     root = keys is None
