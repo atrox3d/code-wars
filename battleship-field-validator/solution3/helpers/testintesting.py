@@ -87,15 +87,18 @@ def traverse(d, keys=None):
 if __name__ == '__main__':
     config = setup()
     print(json.dumps(config, indent=1))
-    # keys = traverse(config)
-    # print(keys)
-    print(find(config, 'root'))
+    keys = traverse(config)
+    print(keys)
+    # print(find(config, 'stream'))
+    # print(path_to_key(config, 'stream'))
 
-    exit()
+    # exit()
     for key in keys:
         try:
-            path = path_to_key(config, key, 'handlers')
-            print(f'{path = }')
+            pathtokey = path_to_key(config, key)
+            print(f'{pathtokey = }')
+            found = find(config, key)
+            print(f'{found = }')
         except NestedKeyError as ne:
             print(repr(ne))
         print()
