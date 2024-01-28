@@ -61,7 +61,7 @@ def count_ships(ships):
     return True
 
 
-def validate_battlefield(battlefield):
+def validate(battlefield):
     bf = [row[:] for row in battlefield]
     START = 0, 0
     PATH = (START, )

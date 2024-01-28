@@ -7,7 +7,7 @@ import helpers.logger.loggersetup as loggersetup
 import battleship
 
 
-loggersetup.setup(level='INFO')
+loggersetup.setup(level='DEBUG')
 logger = logging.getLogger(__name__)
 
 def main(solution):
@@ -30,4 +30,4 @@ def main(solution):
 
 if __name__ == '__main__':
     import sys
-    sys.exit(main(solution=battleship.validate_battlefield))
+    sys.exit(main(solution=battleship.validate))
