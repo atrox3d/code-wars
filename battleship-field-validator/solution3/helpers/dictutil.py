@@ -59,16 +59,16 @@ def find_key(d: dict, key: str, start: list|str|None=None, sep: str='.'):
 
     if len(results) > 1:
         raise NestedKeyError(f'too many results ({len(results)}): {results}')
-    return results
+    return results[0]
 
 
-def set_nested_value(d: dict, key,  value, start: str|list|None, sep='.'):
-    if isinstance(start, str):
-        start = start.split(sep)
+def set_nested_value(d: dict, key,  value, start: str|list|None=None, sep='.'):
+
+    path = find_key(d, key, start, sep)
     target = d
-    for key in start[:-1]:
+    for key in path[:-1]:
         target = target[key]
-    target[start[-1]] = value
+    target[path[-1]] = value
 
 def main():
     def __getconfig():
@@ -80,7 +80,8 @@ def main():
     config = __getconfig()
     print(json.dumps(config, indent=2))
     try:
-        print(find_key(config, 'handlers'))
+        set_nested_value(config, 'handlers', 'INFO', start='loggers')
+        print(json.dumps(config, indent=2))
     except NestedKeyError as nke:
         print(repr(nke))
 
