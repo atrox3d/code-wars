@@ -62,7 +62,7 @@ def find_key(d: dict, key: str, start: list|str|None=None, sep: str='.'):
     return results[0]
 
 
-def set_nested_value(d: dict, key,  value, start: str|list|None=None, sep='.'):
+def set_value(d: dict, key,  value, start: str|list|None=None, sep='.'):
 
     path = find_key(d, key, start, sep)
     target = d
@@ -80,7 +80,7 @@ def main():
     config = __getconfig()
     print(json.dumps(config, indent=2))
     try:
-        set_nested_value(config, 'handlers', 'INFO', start='loggers')
+        set_value(config, 'handlers', 'INFO', start='loggers')
         print(json.dumps(config, indent=2))
     except NestedKeyError as nke:
         print(repr(nke))

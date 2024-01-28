@@ -2,9 +2,9 @@ import logging
 import json
 import pathlib
 
-import nested
+import dictutil
 
-def setup(change=nested.update_config_value, *args, **kwargs):
+def setup(change=dictutil.set_value, *args, **kwargs):
     config_file = pathlib.Path(__file__).parent / 'logger.json'
     with open(config_file) as f_in:
         config = json.load(f_in)
