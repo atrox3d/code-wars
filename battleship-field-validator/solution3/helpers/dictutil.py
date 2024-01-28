@@ -1,5 +1,13 @@
+import pathlib, json
 class NestedKeyError(KeyError):
     pass
+
+def __getconfig():
+    config_file = pathlib.Path(__file__).parent / 'logger.json'
+    with open(config_file) as f_in:
+        config = json.load(f_in)
+    return config
+
 
 def get_all_keys(d, keys=None):
     keys = keys or []
@@ -22,3 +30,6 @@ def find_nested_key(d, key, keys=None):
     if not root:
         return []
     raise NestedKeyError(f'find: key {key!r} not found {keys = }')
+
+config = __getconfig()
+print(json.dumps(config, indent=2))
