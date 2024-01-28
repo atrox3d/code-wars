@@ -10,15 +10,14 @@ def get_all_keys(d, keys=None):
             get_all_keys(v, keys)
     return keys
 
-
-def find(d, key, keys=None):
+def find_nested_key(d, key, keys=None):
     root = keys is None
     keys = keys or []
     for k, v in d.items():
         if k == key:
             return keys + [k]
         elif isinstance(v, dict):
-            if keys := find(v, key, keys + [k]):
+            if keys := find_nested_key(v, key, keys + [k]):
                 return keys
     if not root:
         return []
