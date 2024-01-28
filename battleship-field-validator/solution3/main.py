@@ -3,11 +3,11 @@ import logging
 
 import helpers.load as load
 import helpers.matrix as matrix
-import helpers.logsetup as logsetup
+import helpers.logger.loggersetup as loggersetup
 import battleship
 
 
-logsetup.setup(level='INFO')
+loggersetup.setup(level='INFO')
 logger = logging.getLogger(__name__)  # __name__ is a common choice
 
 def main(solution):
