@@ -31,6 +31,20 @@ def find_nested_key(d: dict, key: str, keys: list=None):
         return []
     raise NestedKeyError(f'find: key {key!r} not found {keys = }')
 
+def find_keys(d, key):
+    keys = []
+    for k, v in d.items():
+        if k == key:
+            keys.append([k])
+        try:
+            if found := find_nested_key(v, key):
+                keys.append([k] + found)
+        except AttributeError:
+            pass
+        except NestedKeyError:
+            pass
+    return keys
+
 config = __getconfig()
 print(json.dumps(config, indent=2))
-print(find_nested_key(config, 'handlers'))
+print(find_keys(config, 'handlers'))
