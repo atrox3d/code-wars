@@ -40,6 +40,9 @@ def find_keys(d, key):
 
 def find_key(d: dict, key: str, start: list|str|None=None, sep: str='.'):
     results = find_keys(d, key)
+
+    if len(results) > 1:
+        raise NestedKeyError(f'too much results ({len(results)}): {results}')
     return results
 
 def __find_key(d, key, start=None, sep='.'):
@@ -87,7 +90,10 @@ def main():
 
     config = __getconfig()
     print(json.dumps(config, indent=2))
-    print(find_key(config, 'handlers'))
+    try:
+        print(find_key(config, 'handlers'))
+    except NestedKeyError as nke:
+        print(repr(nke))
 
 if __name__ == '__main__':
     main()
