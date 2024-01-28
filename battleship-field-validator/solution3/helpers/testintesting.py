@@ -50,6 +50,16 @@ def path_to_key(nested: dict, key: str, path: list=None, sep='.'):
     # return list
     return found
 
+def find(d, key, keys=None):
+    keys = keys or []
+    for k, v in d.items():
+        if k == key:
+            return keys + [k]
+        elif isinstance(v, dict):
+            if keys := find(v, key, keys + [k]):
+                return keys
+    return []
+
 def update_config_value(config, key, value):
     path = path_to_key(config, key)
     set_nested_value(config, path, value)
@@ -68,21 +78,20 @@ def setup(**kwargs):
 def traverse(d, keys=None):
     keys = keys or []
     for k, v in d.items():
-        # print(f'{k, v = }')
         keys.append(k)
         print(k)
         if isinstance(v, dict):
-            # print(f'traversing {v}')
             traverse(v, keys)
-    # print(path)
     return keys
-
+        
 if __name__ == '__main__':
     config = setup()
     print(json.dumps(config, indent=1))
-    keys = traverse(config)
-    print(keys)
+    # keys = traverse(config)
+    # print(keys)
+    print(find(config, 'root'))
 
+    exit()
     for key in keys:
         try:
             path = path_to_key(config, key, 'handlers')
