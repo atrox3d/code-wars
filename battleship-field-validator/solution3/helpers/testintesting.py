@@ -27,7 +27,7 @@ def path_to_key(nested: dict, key: str, path: list=None, sep='.'):
         print(f'{start = }, {path = }, {key = }')
         found =  path_to_key(start, key, path)
         if not found:
-            raise NestedKeyError(f'key {key!r} not found {path = }')
+            raise NestedKeyError(f'path_to_key: key {key!r} not found {path = }')
         else:
             return found
     
@@ -41,7 +41,7 @@ def path_to_key(nested: dict, key: str, path: list=None, sep='.'):
                 break
     else:
         if not path: # root of dict, path is []
-            raise NestedKeyError(f'key {key!r} not found {path = }')
+            raise NestedKeyError(f'path_to_key: key {key!r} not found {path = }')
 
     if found and not path: # root of dict, path is []
         if sep: 
@@ -51,6 +51,7 @@ def path_to_key(nested: dict, key: str, path: list=None, sep='.'):
     return found
 
 def find(d, key, keys=None):
+    root = keys is None
     keys = keys or []
     for k, v in d.items():
         if k == key:
@@ -58,7 +59,9 @@ def find(d, key, keys=None):
         elif isinstance(v, dict):
             if keys := find(v, key, keys + [k]):
                 return keys
-    return []
+    if not root:
+        return []
+    raise NestedKeyError(f'find: key {key!r} not found {keys = }')
 
 def update_config_value(config, key, value):
     path = path_to_key(config, key)
@@ -88,6 +91,7 @@ if __name__ == '__main__':
     config = setup()
     print(json.dumps(config, indent=1))
     keys = traverse(config)
+    keys.append('error man!')
     print(keys)
     # print(find(config, 'stream'))
     # print(path_to_key(config, 'stream'))
@@ -95,10 +99,13 @@ if __name__ == '__main__':
     # exit()
     for key in keys:
         try:
-            pathtokey = path_to_key(config, key)
-            print(f'{pathtokey = }')
             found = find(config, key)
             print(f'{found = }')
+        except NestedKeyError as ne:
+            print(repr(ne))
+        try:
+            pathtokey = path_to_key(config, key)
+            print(f'{pathtokey = }')
         except NestedKeyError as ne:
             print(repr(ne))
         print()
