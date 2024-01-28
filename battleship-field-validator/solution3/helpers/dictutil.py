@@ -9,7 +9,7 @@ def __getconfig():
     return config
 
 
-def get_all_keys(d, keys=None):
+def get_all_keys(d: dict, keys: list=None):
     keys = keys or []
     for k, v in d.items():
         keys.append(k)
@@ -18,7 +18,7 @@ def get_all_keys(d, keys=None):
             get_all_keys(v, keys)
     return keys
 
-def find_nested_key(d, key, keys=None):
+def find_nested_key(d: dict, key: str, keys: list=None):
     root = keys is None
     keys = keys or []
     for k, v in d.items():
@@ -33,3 +33,4 @@ def find_nested_key(d, key, keys=None):
 
 config = __getconfig()
 print(json.dumps(config, indent=2))
+print(find_nested_key(config, 'handlers'))
