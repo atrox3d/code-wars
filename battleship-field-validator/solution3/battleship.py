@@ -1,4 +1,5 @@
 import logging
+import matrix
 
 logger = logging.getLogger(__name__)
 
@@ -9,8 +10,11 @@ def get_coords(battlefield, y, x, FREE, SHIP):
     RIGHT = DOWN = 1
     DIRECTIONS = ((0, RIGHT), (DOWN, 0), (0, LEFT), (UP, 0))
     new_coords = [(cy+dy, cx+dx) for dy, dx in DIRECTIONS for cy, cx in ((y, x),)]
+    logger.debug(f'{new_coords = }')
     legal_coords = [(y, x) for y, x in new_coords if 0 <= y < ROWS and 0 <= x < COLS]
+    logger.debug(f'{legal_coords = }')
     coords = [(y, x) for y, x in legal_coords if battlefield[y][x] in [FREE, SHIP]]
+    logger.debug(f'{coords = }')
     return coords
 
 def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
@@ -66,9 +70,7 @@ def validate_battlefield(battlefield):
     START = 0, 0
     PATH = (START, )
     ships = None
-    logger.debug(f'start explore')
     ships = explore(battlefield, PATH, ships)
-    logger.debug(f'end explore')
     logger.debug(f'{ships = }')
 
     for ship in ships:

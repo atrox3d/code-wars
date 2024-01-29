@@ -29,13 +29,13 @@ def logdecorator(log=logger.debug, strargs=args2str, max_args_len=None):
     import functools
     def decorator(func):
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def run_function(*args, **kwargs):
             params = strargs(max_args_len, *args, **kwargs)
             log(f'{func.__name__}({params})')
             result = func(*args, **kwargs)
             log(f'{func.__name__}() returning {result}')
             return result
-        return wrapper
+        return run_function
     return decorator
 
 def decorate_module_functions(
