@@ -7,7 +7,7 @@ import helpers.logging.logsettings as logsettings
 import battleship
 
 
-logsettings.setup(level='DEBUG')
+logsettings.setup(level='DEBUG', handlers='test')
 logger = logging.getLogger(__name__)
 
 def main(solution):

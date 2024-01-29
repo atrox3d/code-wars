@@ -8,13 +8,12 @@ from . import nested_dict
 SETTINGS_DIR = pathlib.Path(__file__).parent
 JSON_PATH = SETTINGS_DIR / 'logger.json'
 
-def setup(change=nested_dict.set_value, *args, **kwargs):
-    config_file =  JSON_PATH
-    with open(config_file) as f_in:
+def setup(change_value=nested_dict.set_value, *args, **kwargs):
+    with open(JSON_PATH) as f_in:
         config = json.load(f_in)
 
     for key, value in kwargs.items():
-        change(config, key, value)
+        change_value(config, key, value)
 
     logging.config.dictConfig(config)
     return config
