@@ -32,11 +32,16 @@ def logdecorator(log=logger.debug, strargs=args2str):
         return wrapper
     return decorator
 
-def decorate_module_functions(module, decorator, *args, **kwargs):
+def decorate_module_functions(
+                        module, 
+                        decorator, 
+                        strargs=args2str, 
+                        *args, **kwargs
+    ):
     for name in dir(module):
         obj = getattr(module, name)
         if isinstance(obj, types.FunctionType):
             if args or kwargs:
-                setattr(module, name, decorator(*args, **kwargs)(obj))
+                setattr(module, name, decorator(strargs, *args, **kwargs)(obj))
             else:
                 setattr(module, name, decorator(obj))
