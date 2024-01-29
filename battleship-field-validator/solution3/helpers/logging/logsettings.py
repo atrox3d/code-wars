@@ -28,12 +28,14 @@ def setup(change_value=nested_dict.set_value, start=None, *args, **kwargs) -> di
     logging.config.dictConfig(config)
     return config
 
-def logdecorator(func):
+def logdecorator(log=logger.debug):
     import functools
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        logger.debug(f'calling {func}({args=}, {kwargs=})')
-        result = func(*args, **kwargs)
-        logger.debug(f'{func} returning {result}')
-        return result
-    return wrapper
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            log(f'{func.__name__}({args=}, {kwargs=})')
+            result = func(*args, **kwargs)
+            log(f'{func.__name__}() returning {result}')
+            return result
+        return wrapper
+    return decorator

@@ -9,6 +9,7 @@ import battleship
 config = logsettings.setup(level='DEBUG')
 logger = logging.getLogger(__name__)
 
+@logsettings.logdecorator()
 def main(solution):
     logger.info(f'START main: {logger.getEffectiveLevel() = }')
     extensions = 'json, ascii, csv'
