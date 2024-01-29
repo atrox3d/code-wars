@@ -16,6 +16,7 @@ def get_coords(battlefield, y, x, FREE, SHIP):
 def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
     battlefield[y][x] = SCANNED
     ship = [(y, x)]
+    logger.debug(f'{ship = }')
     for y, x in [(y, x) for y, x in get_coords(battlefield, y, x, FREE, SHIP) if (y, x) not in path and battlefield[y][x] == SHIP]:
         battlefield[y][x] = SCANNED
         path = path + (y, x)
@@ -27,11 +28,15 @@ def explore(battlefield, path, ships=None, FREE=0, SHIP=1, VISITED=2):
     y, x = path[-1]
     logger.debug(f'{y, x = }')
     ships = ships if ships is not None else []
+    logger.debug(f'{ships = }')
     for y, x in [yx for yx in get_coords(battlefield, y, x, FREE, SHIP) if yx not in path]:
+        logger.debug(f'for_loop: {y, x = }')
         newpath = path + ((y, x),)
         if battlefield[y][x] == SHIP:
+            logger.debug(f'call: scan_ship')
             ships.append(scan_ship(battlefield, newpath, y, x))
         elif battlefield[y][x] == FREE:
+            logger.debug(f'call: explore')
             explore(battlefield, newpath, ships, FREE, SHIP)
             battlefield[y][x] = VISITED
     return ships
