@@ -1,4 +1,8 @@
 import logging
+<<<<<<< Updated upstream
+=======
+import helpers.matrix as matrix
+>>>>>>> Stashed changes
 
 logger = logging.getLogger(__name__)
 
@@ -60,8 +64,8 @@ def count_ships(ships):
     for ship in sorted(ships, key=len):
         count[len(ship)] = count.get(len(ship), 0) + 1
     if count != COUNT:
-        logger.debug(f'{COUNT = }')
-        logger.debug(f'{count = }')
+        logger.info(f'{COUNT = }')
+        logger.info(f'{count = }')
         return False
     return True
 
@@ -73,13 +77,19 @@ def validate(battlefield):
     ships = None
     logger.debug(f'start explore')
     ships = explore(battlefield, PATH, ships)
+<<<<<<< Updated upstream
     logger.debug(f'end explore')
     logger.debug(f'{ships = }')
+=======
+    logger.info(f'{ships = }')
+>>>>>>> Stashed changes
 
     for ship in ships:
         check = check_ship(bf, ship)
-        print(f'{check = }')
+        logger.debug(f'{check = }')
         if not check:
             return False
-        
-    return count_ships(ships)
+    logger.info(f'check_ships: ok')
+    count =  count_ships(ships)
+    logger.info(f'{count = }')
+    return count
