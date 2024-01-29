@@ -13,7 +13,8 @@ logger = logging.getLogger(__name__)
 logdecorators.decorate_module_functions(
                                 module=battleship, 
                                 decorator=logdecorators.logdecorator, 
-                                log=logger.debug
+                                log=logger.debug,
+                                max_args_len=10
             )
 
 @logdecorators.logdecorator()
