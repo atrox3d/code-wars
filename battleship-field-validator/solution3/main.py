@@ -1,4 +1,3 @@
-from pathlib import Path
 import logging
 
 import helpers.load as load
@@ -7,7 +6,7 @@ import helpers.logging.logsettings as logsettings
 import battleship
 
 
-logsettings.setup(level='DEBUG', handlers='test')
+config = logsettings.setup(level='DEBUG')
 logger = logging.getLogger(__name__)
 
 def main(solution):

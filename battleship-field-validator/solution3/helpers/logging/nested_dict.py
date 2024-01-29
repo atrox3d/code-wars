@@ -63,8 +63,10 @@ def find_key(d: dict, key: str, start: list|str|None=None, sep: str='.'):
 
 
 def set_value(d: dict, key,  value, start: str|list|None=None, sep='.'):
-
     path = find_key(d, key, start, sep)
+
+    print(f'setting value: {key, value = }, {path = }')
+    
     target = d
     for key in path[:-1]:
         target = target[key]
