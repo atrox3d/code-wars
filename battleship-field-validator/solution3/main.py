@@ -10,7 +10,11 @@ import battleship
 config = logconfig.setup_logging(level='DEBUG')
 logger = logging.getLogger(__name__)
 
-logdecorators.decorate_module_functions(battleship, logdecorators.logdecorator, logger.debug)
+logdecorators.decorate_module_functions(
+                                module=battleship, 
+                                decorator=logdecorators.logdecorator, 
+                                log=logger.debug
+            )
 
 @logdecorators.logdecorator()
 def main(solution):
