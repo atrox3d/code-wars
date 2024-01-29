@@ -2,12 +2,12 @@ import logging
 
 import helpers.load as load
 import helpers.matrix as matrix
-import helpers.log.setup as logsetup
+import helpers.log.config as logconfig
 import helpers.log.decorators as logdecorators
 import battleship
 
 
-config = logsetup.setup_logging(level='DEBUG')
+config = logconfig.setup_logging(level='DEBUG')
 logger = logging.getLogger(__name__)
 
 @logdecorators.logdecorator()
