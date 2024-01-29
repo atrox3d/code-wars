@@ -2,16 +2,21 @@ import pathlib, json
 class NestedKeyError(KeyError):
     pass
 
-def get_all_keys(d: dict, keys: list=None):
+def get_all_keys(d: dict, keys: list=None) -> list[str]:
+    """
+    get list of all keys in d and nested dicts
+    """
     keys = keys or []
     for k, v in d.items():
         keys.append(k)
-        # print(k)
         if isinstance(v, dict):
             get_all_keys(v, keys)
     return keys
 
-def find_nested_key(d: dict, key: str, keys: list=None):
+def find_nested_key(d: dict, key: str, keys: list=None) -> list[str]:
+    """
+    finds nested key inside dict, return the path as a list of keys
+    """
     root = keys is None
     keys = keys or []
     for k, v in d.items():
@@ -24,7 +29,10 @@ def find_nested_key(d: dict, key: str, keys: list=None):
         return []
     raise NestedKeyError(f'find: key {key!r} not found {keys = }')
 
-def find_any_key(d, key):
+def find_any_key(d: dict, key: str) -> list[list[str]]:
+    """
+    return all matching keys and the paths to reach them
+    """
     keys = []
     for k, v in d.items():
         if k == key:
@@ -38,7 +46,17 @@ def find_any_key(d, key):
             pass
     return keys
 
-def find_key(d: dict, key: str, start: list|str|None=None, sep: str='.'):
+def find_key(d: dict, key: str, start: list|str|None=None, sep: str='.') -> list[str]:
+    """
+    find a matching key and returns its path inside dict
+
+    if dict contains more than one key matching, then uses start to choose which one
+    if start is not specified and more than one match is found, raises NestedKeyError
+
+    start, if specified, must be a string of 'sep' separated parent keys
+    or a list of parent keys
+
+    """
     if not isinstance(start, str|list|type(None)):
         raise TypeError(f'start must be list|str|None')
     elif isinstance(start, list):
@@ -62,9 +80,14 @@ def find_key(d: dict, key: str, start: list|str|None=None, sep: str='.'):
     return results[0]
 
 
-def set_value(d: dict, key,  value, start: str|list|None=None, sep='.'):
-
+def set_value(d: dict, key,  value, start: str|list|None=None, sep='.') -> None:
+    """
+    set value for nested key, using start to discriminate between multiple matches
+    """
     path = find_key(d, key, start, sep)
+
+    print(f'setting value: {key, value = }, {path = }')
+    
     target = d
     for key in path[:-1]:
         target = target[key]

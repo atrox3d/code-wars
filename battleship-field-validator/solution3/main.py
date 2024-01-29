@@ -1,7 +1,6 @@
-from pathlib import Path
 import logging
 
-import helpers.load as load
+import helpers.loader as loader
 import helpers.matrix as matrix
 import helpers.log.config as logconfig
 import helpers.log.decorators as logdecorators
@@ -35,10 +34,9 @@ def get_converter(filename):
 
 @logdecorators.logdecorator()
 def main(solution):
-    logger.info(f'START main: {logger.getEffectiveLevel() = }')
     extensions = 'json, ascii, csv'
-    for file_path in load.get_files('battlefield.ascii'):
-        tests = load.battlefield(file_path)
+    for file_path in loader.get_files('battlefield.ascii'):
+        tests = loader.battlefield(file_path)
         for test in tests:
             name = test['name']
             battlefield = test['data']
