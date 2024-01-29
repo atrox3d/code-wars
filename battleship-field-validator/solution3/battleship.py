@@ -1,8 +1,5 @@
 import logging
-<<<<<<< Updated upstream
-=======
 import helpers.matrix as matrix
->>>>>>> Stashed changes
 
 logger = logging.getLogger(__name__)
 
@@ -77,12 +74,7 @@ def validate(battlefield):
     ships = None
     logger.debug(f'start explore')
     ships = explore(battlefield, PATH, ships)
-<<<<<<< Updated upstream
-    logger.debug(f'end explore')
-    logger.debug(f'{ships = }')
-=======
     logger.info(f'{ships = }')
->>>>>>> Stashed changes
 
     for ship in ships:
         check = check_ship(bf, ship)

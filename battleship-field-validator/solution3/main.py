@@ -3,23 +3,13 @@ import logging
 
 import helpers.load as load
 import helpers.matrix as matrix
-<<<<<<< Updated upstream
-import helpers.logger.loggersetup as loggersetup
-=======
 import helpers.log.config as logconfig
 import helpers.log.decorators as logdecorators
 from pathlib import Path
 
->>>>>>> Stashed changes
 import battleship
 import helpers.matrix as matrix
 
-<<<<<<< Updated upstream
-
-loggersetup.setup(level='DEBUG')
-logger = logging.getLogger(__name__)
-
-=======
 config = logconfig.setup_logging(level='INFO')
 logger = logging.getLogger(__name__)
 
@@ -44,7 +34,6 @@ def get_converter(filename):
         raise NotImplementedError(f'extension {extension} is not implemented')
 
 @logdecorators.logdecorator()
->>>>>>> Stashed changes
 def main(solution):
     logger.info(f'START main: {logger.getEffectiveLevel() = }')
     extensions = 'json, ascii, csv'
