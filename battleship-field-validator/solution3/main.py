@@ -3,13 +3,14 @@ import logging
 import helpers.load as load
 import helpers.matrix as matrix
 import helpers.logging.logsettings as logsettings
+import helpers.logging.decorators as logdecorators
 import battleship
 
 
 config = logsettings.setup(level='DEBUG')
 logger = logging.getLogger(__name__)
 
-@logsettings.logdecorator()
+@logdecorators.logdecorator()
 def main(solution):
     logger.info(f'START main: {logger.getEffectiveLevel() = }')
     extensions = 'json, ascii, csv'
