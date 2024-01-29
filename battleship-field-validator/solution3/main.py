@@ -10,6 +10,8 @@ import battleship
 config = logconfig.setup_logging(level='DEBUG')
 logger = logging.getLogger(__name__)
 
+logdecorators.decorate_module_functions(battleship, logdecorators.logdecorator, logger.debug)
+
 @logdecorators.logdecorator()
 def main(solution):
     logger.info(f'START main: {logger.getEffectiveLevel() = }')

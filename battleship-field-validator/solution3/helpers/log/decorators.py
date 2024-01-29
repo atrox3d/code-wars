@@ -1,4 +1,5 @@
 import logging
+import types
 
 logger = logging.getLogger(__name__)
 
@@ -14,8 +15,11 @@ def logdecorator(log=logger.debug):
         return wrapper
     return decorator
 
-def decorate_all_in_module(module, decorator):
+def decorate_module_functions(module, decorator, *args, **kwargs):
     for name in dir(module):
         obj = getattr(module, name)
         if isinstance(obj, types.FunctionType):
-            setattr(module, name, decorator(obj))
+            if args or kwargs:
+                setattr(module, name, decorator(*args, **kwargs)(obj))
+            else:
+                setattr(module, name, decorator(obj))
