@@ -1,0 +1,19 @@
+#!/bin/bash
+
+[ ${#} -gt 0 ] && {
+    GIT_CMD="${*}"
+} || {
+        echo "syntax ${0} gitcommand options"
+        exit 1
+}
+
+BRANCH=$(git branch | grep '^*' | sed 's/* //' )
+echo "SAVING branch: ${BRANCH}"
+for branch in $(git branch | cut -c 3-)
+do
+    echo "SWITCH to branch: $branch"
+    git switch $branch
+    echo "RUN git ${GIT_CMD}"
+    git "${GIT_CMD}"
+done
+git switch $BRANCH
