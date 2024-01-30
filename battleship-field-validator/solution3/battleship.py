@@ -3,13 +3,13 @@ import helpers.matrix as matrix
 
 logger = logging.getLogger(__name__)
 
-def get_coords(battlefield, y, x, FREE, SHIP):
+def get_coords(battlefield: list[list[int]], r:int, c:int, FREE:int, SHIP:int) -> list[tuple]:
     ROWS = len(battlefield) 
     COLS = len(battlefield[0])
     LEFT = UP = -1
     RIGHT = DOWN = 1
     DIRECTIONS = ((0, RIGHT), (DOWN, 0), (0, LEFT), (UP, 0))
-    new_coords = [(cy+dy, cx+dx) for dy, dx in DIRECTIONS for cy, cx in ((y, x),)]
+    new_coords = [(cy+dy, cx+dx) for dy, dx in DIRECTIONS for cy, cx in ((r, c),)]
     logger.debug(f'{new_coords = }')
     legal_coords = [(y, x) for y, x in new_coords if 0 <= y < ROWS and 0 <= x < COLS]
     logger.debug(f'{legal_coords = }')
