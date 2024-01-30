@@ -47,8 +47,6 @@ def check_ship(battlefield: list[list[int]], ship: list[int]) -> bool:
             if inside_battlefield(battlefield, check_r, check_c):
                 if battlefield[check_r][check_c]:
                     return False
-            else:
-                continue
     return True
 
 def count_ships(ships: list[list[int]]) -> bool:
@@ -66,7 +64,7 @@ def validate_battlefield(battlefield: list[list[int]]) -> bool:
     bf = [row[:] for row in battlefield]
     START = 0, 0
     PATH = (START, )
-    
+
     ships: list[list[int]] = None
     ships = explore(battlefield, PATH, ships)
     for ship in ships:
