@@ -1,7 +1,3 @@
-import logging
-
-logger = logging.getLogger(__name__)
-
 def inside_battlefield(battlefield, r, c):
     ROWS = len(battlefield) 
     COLS = len(battlefield[0])
@@ -55,9 +51,7 @@ def count_ships(ships: list[list[int]]) -> bool:
 
     for ship in sorted(ships, key=len):
         count[len(ship)] = count.get(len(ship), 0) + 1
-    if count != COUNT:
-        return False
-    return True
+    return count == COUNT
 
 
 def validate_battlefield(battlefield: list[list[int]]) -> bool:
@@ -68,11 +62,8 @@ def validate_battlefield(battlefield: list[list[int]]) -> bool:
     ships: list[list[int]] = None
     ships = explore(battlefield, PATH, ships)
     for ship in ships:
-        checked_ship: bool = check_ship(bf, ship)
+        checked_ship = check_ship(bf, ship)
         if not checked_ship:
             return False
 
-    check_count: bool =  count_ships(ships)
-    if not check_count:
-        return False
-    return check_count
+    return count_ships(ships)
