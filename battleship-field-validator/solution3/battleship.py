@@ -3,6 +3,11 @@ import helpers.matrix as matrix
 
 logger = logging.getLogger(__name__)
 
+def inside_battlefield(battlefield, r, c):
+    ROWS = len(battlefield) 
+    COLS = len(battlefield[0])
+    return 0 <= r < ROWS and 0 <= c < COLS
+
 def get_coords(battlefield: list[list[int]], r:int, c:int, FREE:int, SHIP:int) -> list[tuple]:
     ROWS = len(battlefield) 
     COLS = len(battlefield[0])
@@ -13,7 +18,7 @@ def get_coords(battlefield: list[list[int]], r:int, c:int, FREE:int, SHIP:int) -
     new_coords = [(r+dr, c+dc) for dr, dc in DIRECTIONS]
     logger.debug(f'{new_coords = }')
     
-    legal_coords = [(r, c) for r, c in new_coords if 0 <= r < ROWS and 0 <= c < COLS]
+    legal_coords = [(r, c) for r, c in new_coords if inside_battlefield(battlefield, r, c)]
     logger.debug(f'{legal_coords = }')
     
     coords = [(r, c) for r, c in legal_coords if battlefield[r][c] in [FREE, SHIP]]
@@ -57,10 +62,10 @@ def explore(battlefield: list[list[int]], path:tuple[tuple], ships:list[list[int
 def check_ship(battlefield: list[list[int]], ship: list[int]) -> bool:
     ROWS = len(battlefield) 
     COLS = len(battlefield[0])
-    
+
     for ship_r, ship_c in ship:
         for check_r, check_c in [(ship_r+r, ship_c+c) for r in (-1, 1) for c in (-1, 1)]:
-            if 0 <= check_r < ROWS and 0 <= check_c < COLS:
+            if inside_battlefield(battlefield, check_r, check_c):
                 if value:= battlefield[check_r][check_c]:
                     logger.error(f'battlefield[{check_r}][{check_c}] = {value}')
                     logger.error(f'{ship_r, ship_c = } {check_r, check_c = }')
