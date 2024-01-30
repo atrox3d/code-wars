@@ -34,6 +34,7 @@ def get_converter(filename):
 @logdecorators.logdecorator()
 def main(solution):
     extensions = 'json, ascii, csv'
+    extensions = 'json'
     for file_path in loader.get_files(extensions=extensions):
         tests = loader.load_battlefield(file_path)
         for test in tests:
@@ -43,7 +44,8 @@ def main(solution):
             matrix.display(battlefield, clear_screen=False)
             
             result = solution(battlefield)
-            logger.info(f'{test["filename"]}::{test["name"]}: {result = } expected: {test["expected"]}')
+            logger.info(f'{test["filename"]}::{test["name"]}: {result   = }')
+            logger.info(f'{test["filename"]}::{test["name"]}: expected = {test["expected"]}')
             print()
             print()
 

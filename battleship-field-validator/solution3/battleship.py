@@ -80,9 +80,9 @@ def count_ships(ships: list[list[int]]) -> bool:
 
     for ship in sorted(ships, key=len):
         count[len(ship)] = count.get(len(ship), 0) + 1
+    logger.info(f'{COUNT = }')
+    logger.info(f'{count = }')
     if count != COUNT:
-        logger.info(f'{COUNT = }')
-        logger.info(f'{count = }')
         return False
     return True
 
