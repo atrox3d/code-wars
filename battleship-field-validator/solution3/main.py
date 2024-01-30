@@ -35,7 +35,7 @@ def get_converter(filename):
 @logdecorators.logdecorator()
 def main(solution):
     extensions = 'json, ascii, csv'
-    for file_path in loader.get_files('battlefield.ascii'):
+    for file_path in loader.get_files('*.ascii'):
         tests = loader.battlefield(file_path)
         for test in tests:
             name = test['name']

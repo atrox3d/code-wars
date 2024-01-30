@@ -48,10 +48,12 @@ def explore(battlefield, path, ships=None, FREE=0, SHIP=1, VISITED=2):
 def check_ship(battlefield, ship):
     ROWS = len(battlefield) 
     COLS = len(battlefield[0])
-    for by, bx in ship:
-        for y, x in [(y, x) for y in (-1, 1) for x in (-1, 1)]:
-            if 0 <= by+y < ROWS and 0 <= bx+x < COLS:
-                if battlefield[by+y][bx+x]:
+    for ship_r, ship_c in ship:
+        for check_r, check_c in [(ship_r+r, ship_c+c) for r in (-1, 1) for c in (-1, 1)]:
+            if 0 <= check_r < ROWS and 0 <= check_c < COLS:
+                if value:= battlefield[check_r][check_c]:
+                    logger.error(f'battlefield[{check_r}][{check_c}] = {value}')
+                    logger.error(f'{ship_r, ship_c = } {check_r, check_c = }')
                     return False
             else:
                 continue
@@ -79,9 +81,10 @@ def validate(battlefield):
     logger.info(f'{ships = }')
 
     for ship in ships:
-        check = check_ship(bf, ship)
-        logger.debug(f'{check = }')
-        if not check:
+        checked_ship = check_ship(bf, ship)
+        logger.debug(f'{checked_ship = }')
+        if not checked_ship:
+            logger.error(f'{checked_ship = }')
             return False
     logger.info(f'check_ships: ok')
     count =  count_ships(ships)
