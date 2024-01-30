@@ -86,7 +86,11 @@ def validate(battlefield):
         if not checked_ship:
             logger.error(f'{checked_ship = }')
             return False
-    logger.info(f'check_ships: ok')
-    count =  count_ships(ships)
-    logger.info(f'{count = }')
-    return count
+        else:
+            logger.info(f'check_ships: ok')
+    check_count =  count_ships(ships)
+    if not check_count:
+        logger.error(f'{check_count = }')
+    else:
+        logger.info(f'{check_count = }')
+    return check_count
