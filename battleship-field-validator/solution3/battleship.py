@@ -9,43 +9,46 @@ def get_coords(battlefield: list[list[int]], r:int, c:int, FREE:int, SHIP:int) -
     LEFT = UP = -1
     RIGHT = DOWN = 1
     DIRECTIONS = ((0, RIGHT), (DOWN, 0), (0, LEFT), (UP, 0))
-    new_coords = [(cy+dy, cx+dx) for dy, dx in DIRECTIONS for cy, cx in ((r, c),)]
+    logger.debug(f'{r, c = }')
+    new_coords = [(r+dr, c+dc) for dr, dc in DIRECTIONS]
     logger.debug(f'{new_coords = }')
-    legal_coords = [(y, x) for y, x in new_coords if 0 <= y < ROWS and 0 <= x < COLS]
+    
+    legal_coords = [(r, c) for r, c in new_coords if 0 <= r < ROWS and 0 <= c < COLS]
     logger.debug(f'{legal_coords = }')
-    coords = [(y, x) for y, x in legal_coords if battlefield[y][x] in [FREE, SHIP]]
+    
+    coords = [(r, c) for r, c in legal_coords if battlefield[r][c] in [FREE, SHIP]]
     logger.debug(f'{coords = }')
     return coords
 
-def scan_ship(battlefield, path, y, x, FREE=0, SHIP=1, SCANNED=3):
-    battlefield[y][x] = SCANNED
-    ship = [(y, x)]
+def scan_ship(battlefield: list[list[int]], path:tuple[tuple], r:int, c:int, FREE:int=0, SHIP:int=1, SCANNED:int=3) -> list[int]:
+    battlefield[r][c] = SCANNED
+    ship = [(r, c)]
     logger.debug(f'{ship = }')
-    for y, x in [(y, x) for y, x in get_coords(battlefield, y, x, FREE, SHIP) if (y, x) not in path and battlefield[y][x] == SHIP]:
-        battlefield[y][x] = SCANNED
-        path = path + (y, x)
-        block = scan_ship(battlefield, path, y, x)
+    for r, c in [(r, c) for r, c in get_coords(battlefield, r, c, FREE, SHIP) if (r, c) not in path and battlefield[r][c] == SHIP]:
+        battlefield[r][c] = SCANNED
+        path = path + (r, c)
+        block = scan_ship(battlefield, path, r, c)
         ship.extend(block)
     return ship
 
-def explore(battlefield, path, ships=None, FREE=0, SHIP=1, VISITED=2):
-    y, x = path[-1]
-    logger.debug(f'{y, x = }')
+def explore(battlefield: list[list[int]], path:tuple[tuple], ships:list[list[int]]=None, FREE:int=0, SHIP:int=1, VISITED:int=2) -> list[list[int]]:
+    r, c = path[-1]
+    logger.debug(f'{r, c = }')
     ships = ships if ships is not None else []
     logger.debug(f'{ships = }')
-    for y, x in [yx for yx in get_coords(battlefield, y, x, FREE, SHIP) if yx not in path]:
-        logger.debug(f'for_loop: {y, x = }')
-        newpath = path + ((y, x),)
-        if battlefield[y][x] == SHIP:
+    for r, c in [rc for rc in get_coords(battlefield, r, c, FREE, SHIP) if rc not in path]:
+        logger.debug(f'for_loop: {r, c = }')
+        newpath = path + ((r, c),)
+        if battlefield[r][c] == SHIP:
             logger.debug(f'call: scan_ship')
-            ships.append(scan_ship(battlefield, newpath, y, x))
-        elif battlefield[y][x] == FREE:
+            ships.append(scan_ship(battlefield, newpath, r, c))
+        elif battlefield[r][c] == FREE:
             logger.debug(f'call: explore')
             explore(battlefield, newpath, ships, FREE, SHIP)
-            battlefield[y][x] = VISITED
+            battlefield[r][c] = VISITED
     return ships
 
-def check_ship(battlefield, ship):
+def check_ship(battlefield: list[list[int]], ship: list[int]) -> bool:
     ROWS = len(battlefield) 
     COLS = len(battlefield[0])
     for ship_r, ship_c in ship:
@@ -59,7 +62,7 @@ def check_ship(battlefield, ship):
                 continue
     return True
 
-def count_ships(ships):
+def count_ships(ships: list[list[int]]) -> bool:
     count = {}
     COUNT = {1: 4, 2: 3, 3: 2, 4: 1}
 
@@ -72,22 +75,23 @@ def count_ships(ships):
     return True
 
 
-def validate(battlefield):
+def validate(battlefield: list[list[int]]) -> bool:
     bf = [row[:] for row in battlefield]
     START = 0, 0
     PATH = (START, )
-    ships = None
+    ships: list[list[int]] = None
     ships = explore(battlefield, PATH, ships)
     logger.info(f'{ships = }')
 
     for ship in ships:
-        checked_ship = check_ship(bf, ship)
+        checked_ship: bool = check_ship(bf, ship)
         logger.debug(f'{checked_ship = }')
         if not checked_ship:
             logger.error(f'{checked_ship = }')
             return False
     logger.info(f'check_ships: ok')
-    check_count =  count_ships(ships)
+
+    check_count: bool =  count_ships(ships)
     if not check_count:
         logger.error(f'{check_count = }')
         return False
