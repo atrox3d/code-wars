@@ -23,6 +23,8 @@ def get_converter(filename):
         return battlefield
     
     extension = Path(filename).suffix
+    logger.info(f'{filename = }')
+    logger.info(f'{extension = }')
     if extension == '.ascii':
         return matrix.ascii_to_int
     elif extension == '.csv':
@@ -35,17 +37,18 @@ def get_converter(filename):
 @logdecorators.logdecorator()
 def main(solution):
     extensions = 'json, ascii, csv'
-    for file_path in loader.get_files('*.ascii'):
+    for file_path in loader.get_files(extensions=extensions):
         tests = loader.battlefield(file_path)
         for test in tests:
+            filename = test['filename']
             name = test['name']
             battlefield = test['data']
             expected = test['expected']
 
-            battlefield = get_converter(name)(battlefield)
+            battlefield = get_converter(filename)(battlefield)
             matrix.display(battlefield, clear_screen=False)
             result = solution(battlefield)
-            logger.info(f'{name} -> {result = } -> {expected = }')
+            logger.info(f'{filename}: {name} -> {result = } -> {expected = }')
             
             print()
             print()

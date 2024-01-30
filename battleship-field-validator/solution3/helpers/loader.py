@@ -15,8 +15,10 @@ def get_files(*wildcards: tuple[str], extensions: str=None, path: str|Path=DATA_
 
     if extensions is not None:
         wildcards += parse_extensions(extensions)
-
-    return [file  for wildcard in [*wildcards] for file in Path(path).glob(wildcard)]
+    logger.debug(f'{wildcards = }')
+    files = [file  for wildcard in [*wildcards] for file in Path(path).glob(wildcard)]
+    logger.debug(f'{files = }')
+    return files
 
 def battlefield(file_path: str|Path):
     loader = get_loader(file_path)
@@ -35,13 +37,16 @@ def get_loader(file_path: str|Path):
 def json_battlefields(file_path: str|Path):
     with open(file_path, 'r') as fp:
         tests = json.load(fp)
+        for test in tests:
+            test['filename'] = Path(file_path).name
         return tests
 
 def non_json_adapter(func):
     def wrapper(filename):
         battlefield = func(filename)
         return [{
-                'name': Path(filename).name,
+                'filename': Path(filename).name,
+                'name': Path(filename).stem,
                 'data': battlefield,
                 'expected': 'unknown'
             }]
