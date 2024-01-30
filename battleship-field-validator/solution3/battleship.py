@@ -24,6 +24,7 @@ def scan_ship(battlefield: list[list[int]], path:tuple[tuple], r:int, c:int, FRE
     battlefield[r][c] = SCANNED
     ship = [(r, c)]
     logger.debug(f'{ship = }')
+
     for r, c in [(r, c) for r, c in get_coords(battlefield, r, c, FREE, SHIP) if (r, c) not in path and battlefield[r][c] == SHIP]:
         battlefield[r][c] = SCANNED
         path = path + (r, c)
@@ -36,9 +37,11 @@ def explore(battlefield: list[list[int]], path:tuple[tuple], ships:list[list[int
     logger.debug(f'{r, c = }')
     ships = ships if ships is not None else []
     logger.debug(f'{ships = }')
+
     for r, c in [rc for rc in get_coords(battlefield, r, c, FREE, SHIP) if rc not in path]:
         logger.debug(f'for_loop: {r, c = }')
         newpath = path + ((r, c),)
+
         if battlefield[r][c] == SHIP:
             logger.debug(f'call: scan_ship')
             ships.append(scan_ship(battlefield, newpath, r, c))
@@ -46,11 +49,15 @@ def explore(battlefield: list[list[int]], path:tuple[tuple], ships:list[list[int
             logger.debug(f'call: explore')
             explore(battlefield, newpath, ships, FREE, SHIP)
             battlefield[r][c] = VISITED
+        else:
+            logger.debug(f'battlefield[{r}][{c}] == {battlefield[r][c]}')
+
     return ships
 
 def check_ship(battlefield: list[list[int]], ship: list[int]) -> bool:
     ROWS = len(battlefield) 
     COLS = len(battlefield[0])
+    
     for ship_r, ship_c in ship:
         for check_r, check_c in [(ship_r+r, ship_c+c) for r in (-1, 1) for c in (-1, 1)]:
             if 0 <= check_r < ROWS and 0 <= check_c < COLS:
