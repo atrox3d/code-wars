@@ -1,5 +1,4 @@
 import logging
-import helpers.matrix as matrix
 
 logger = logging.getLogger(__name__)
 
@@ -39,9 +38,14 @@ def scan_ship(battlefield: list[list[int]], path:tuple[tuple], r:int, c:int, FRE
 
 def explore(battlefield: list[list[int]], path:tuple[tuple], ships:list[list[int]]=None, FREE:int=0, SHIP:int=1, VISITED:int=2) -> list[list[int]]:
     r, c = path[-1]
+    # logger.setLevel('DEBUG')
     logger.debug(f'{r, c = }')
     ships = ships if ships is not None else []
     logger.debug(f'{ships = }')
+
+    if battlefield[r][c] == SHIP:
+        logger.debug(f'call: scan_ship')
+        ships.append(scan_ship(battlefield, path, r, c))
 
     for r, c in [rc for rc in get_coords(battlefield, r, c, FREE, SHIP) if rc not in path]:
         logger.debug(f'for_loop: {r, c = }')
@@ -56,6 +60,8 @@ def explore(battlefield: list[list[int]], path:tuple[tuple], ships:list[list[int
             battlefield[r][c] = VISITED
         else:
             logger.debug(f'battlefield[{r}][{c}] == {battlefield[r][c]}')
+    logger.setLevel('INFO')
+    # exit()
 
     return ships
 
@@ -87,7 +93,7 @@ def count_ships(ships: list[list[int]]) -> bool:
     return True
 
 
-def validate(battlefield: list[list[int]]) -> bool:
+def validate_battlefield(battlefield: list[list[int]]) -> bool:
     bf = [row[:] for row in battlefield]
     START = 0, 0
     PATH = (START, )

@@ -51,4 +51,4 @@ def main(solution):
 
 if __name__ == '__main__':
     import sys
-    sys.exit(main(solution=battleship.validate))
+    sys.exit(main(solution=battleship.validate_battlefield))
