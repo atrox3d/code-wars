@@ -72,7 +72,7 @@ def find_v_ships(field: list[list]):
                 ship = []
     return ships
 
-def check_overlapping_ships_and_normalize(hships: list[list], vships: [list[list]]):
+def check_overlapping_ships_and_normalize(hships: list[list], vships: list[list]):
     done = False
     while not done:
         done = True
